@@ -4,12 +4,15 @@ Babel==2.4.0
 Django==1.11
 docutils==0.13.1
 imagesize==0.7.1
+isodate==0.5.4
 Jinja2==2.9.6
 MarkupSafe==1.0
 packaging==16.8
 Pygments==2.2.0
 pyparsing==2.2.0
 pytz==2017.2
+rdflib==4.2.2
+rdflib-jsonld==0.4.0
 requests==2.13.0
 six==1.10.0
 snowballstemmer==1.2.1
