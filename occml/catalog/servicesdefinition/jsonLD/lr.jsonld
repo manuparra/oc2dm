@@ -1,0 +1,105 @@
+{
+  "@context": {
+	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
+	"dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "gr": "http://purl.org/goodrelations/v1#",
+    "mls": "http://www.w3.org/ns/mls",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "waa": "http://purl.oclc.org/NET/WebAuthentication",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph":  [ 	 
+	 {
+		"@id": "dmmlcc:LinearRegresion_Service",
+		"@type": "dmmlcc:MLService",
+	 	"dcterms:description": "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression.",
+		"dcterms:creator":"Manuel Parra ....",
+		"dcterms:created":"2017-04-20",
+		"rdfs:comments":"Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression",
+		"dmmlcc:hasAuthentication": {
+			"@id": "dmmlcc:LinearRegresion_Service_Auth",
+			"@type": "dmmlcc:MLServiceAuthentication",
+			"waa:requiresAuthentication":"None"
+		},
+		"dmmlcc:hasOperation": {
+			"@id": "dmmlcc:LinearRegresion_Service_Operation",
+			"@type": "dmmlcc:MLOperation",
+			"mls:hasInput":{
+				"@id": "dmmlcc:LinearRegresion_Service_Input",
+				"@type": "dmmlcc:MLServiceInput",
+				"dcterms:description": "Input data contains Dataset or Feature/s",
+				"dmmlcc:contais":{
+					"mls:Data":{
+						"mls:DataSet":{
+							"@id":"dmmlcc:DataSet",
+							"dmmlcc:format":[
+								{
+									"@id":"ParameterFormat_CVS",
+									"@type": "csv",
+									"dcterms:description": "CSV Source file format"									
+								}	
+							],
+						 	"dcterms:description": "Dataset",
+							"dmmlcc:datafilename":"dicits://",
+							"dmmlcc:mandatory":"true"
+						},
+						"mls:Feature": [
+							{
+								"@id":"dmmlcc:Feature",
+								"@type":"dmmlcc:Feature",
+								"dcterms:description": "One-column dataset",
+								"dmmlcc:featurename":"",
+								"dmmlcc:mandatory":"false"
+							}
+						]
+					}
+				}
+			},
+			"mls:hasInput":{
+				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
+				"@type": "dmmlcc:MLServiceInputParameters",
+				"dcterms:description": "Input Parameters",
+				"dcterms:Parameters":[
+					{
+						"@id":"dmmlcc:response_parameter",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:description": "Response variable....",
+						"dmmlcc:mandatory":"true"						
+					}
+				]			
+			},
+			"mls:hasOutput":{
+				"@id": "dmmlcc:LinearRegresion_Service_Output",
+				"@type": "dmmlcc:MLServiceOutput",
+				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
+				"mls:Model":""
+			},
+			"mls:executes":{
+				"@id": "mls:LinearRegresion_Implementation",
+				"@type": "mls:Implementation",
+				"dcterms:description": "Implementation of Linear Regression Model",
+				"dmmlcc:implementations":[
+					{
+						"@id":"MLImplementation",
+						"@type":"mls:implementation",
+						"dmmlcc:ImplementationSource":"R",
+						"mls:implements":
+						{
+							"mls:Algoritm": {
+								"dmmlcc:package":"core",
+								"dmmlcc:functions":["lm"]
+							}
+						}
+					}
+					
+				]
+			}
+		}
+		
+	 }
+  ]
+ }

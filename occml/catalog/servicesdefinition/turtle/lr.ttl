@@ -1,0 +1,45 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <http://www.w3.org/ns/> .
+@prefix ns2: <http://dicits.ugr.es/dmmlcc#> .
+@prefix ns3: <http://purl.oclc.org/NET/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns2:LinearRegresion_Service a ns2:MLService ;
+    ns2:hasAuthentication ns2:LinearRegresion_Service_Auth ;
+    ns2:hasOperation ns2:LinearRegresion_Service_Operation ;
+    dcterms:created "2017-04-20" ;
+    dcterms:creator "Manuel Parra ...." ;
+    dcterms:description "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression." ;
+    rdfs:comments "Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression" .
+
+ns2:LinearRegresion_Service_Auth a ns2:MLServiceAuthentication ;
+    ns3:WebAuthenticationrequiresAuthentication "None" .
+
+ns2:LinearRegresion_Service_InputParameters a ns2:MLServiceInputParameters ;
+    dcterms:Parameters ns2:response_parameter ;
+    dcterms:description "Input Parameters" .
+
+ns2:LinearRegresion_Service_Operation a ns2:MLOperation ;
+    ns1:mlsexecutes ns1:mlsLinearRegresion_Implementation ;
+    ns1:mlshasInput ns2:LinearRegresion_Service_InputParameters ;
+    ns1:mlshasOutput ns2:LinearRegresion_Service_Output .
+
+ns2:LinearRegresion_Service_Output a ns2:MLServiceOutput ;
+    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+    ns1:mlsModel "" .
+
+ns2:response_parameter a ns2:MLServiceInputParameter ;
+    ns2:mandatory "true" .
+
+<http://json-ld.org/playground/MLImplementation> a ns1:mlsimplementation ;
+    ns2:ImplementationSource "R" ;
+    ns1:mlsimplements [ ns1:mlsAlgoritm [ ns2:functions "lm" ;
+                    ns2:package "core" ] ] .
+
+ns1:mlsLinearRegresion_Implementation a ns1:mlsImplementation ;
+    ns2:implementations <http://json-ld.org/playground/MLImplementation> ;
+    dcterms:description "Implementation of Linear Regression Model" .
+
