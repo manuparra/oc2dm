@@ -15,8 +15,18 @@ ns2:LinearRegresion_Service a ns2:MLService ;
     dcterms:description "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression." ;
     rdfs:comments "Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression" .
 
+ns2:DataSet ns2:datafilename "dicits://" ;
+    ns2:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
+    ns2:mandatory "true" ;
+    dcterms:description "Dataset" .
+
 ns2:LinearRegresion_Service_Auth a ns2:MLServiceAuthentication ;
     ns3:WebAuthenticationrequiresAuthentication "None" .
+
+ns2:LinearRegresion_Service_Input a ns2:MLServiceInput ;
+    ns2:contais [ ns1:mlsData [ ns1:mlsDataSet ns2:DataSet ;
+                    ns1:mlsFeature ns2:Feature ] ] ;
+    dcterms:description "Input data contains Dataset or Feature/s" .
 
 ns2:LinearRegresion_Service_InputParameters a ns2:MLServiceInputParameters ;
     dcterms:Parameters ns2:response_parameter ;
@@ -24,7 +34,8 @@ ns2:LinearRegresion_Service_InputParameters a ns2:MLServiceInputParameters ;
 
 ns2:LinearRegresion_Service_Operation a ns2:MLOperation ;
     ns1:mlsexecutes ns1:mlsLinearRegresion_Implementation ;
-    ns1:mlshasInput ns2:LinearRegresion_Service_InputParameters ;
+    ns1:mlshasInput ns2:LinearRegresion_Service_Input,
+        ns2:LinearRegresion_Service_InputParameters ;
     ns1:mlshasOutput ns2:LinearRegresion_Service_Output .
 
 ns2:LinearRegresion_Service_Output a ns2:MLServiceOutput ;
@@ -32,14 +43,22 @@ ns2:LinearRegresion_Service_Output a ns2:MLServiceOutput ;
     ns1:mlsModel "" .
 
 ns2:response_parameter a ns2:MLServiceInputParameter ;
-    ns2:mandatory "true" .
+    ns2:mandatory "true" ;
+    dcterms:description "Response variable...." .
 
 <http://json-ld.org/playground/MLImplementation> a ns1:mlsimplementation ;
     ns2:ImplementationSource "R" ;
     ns1:mlsimplements [ ns1:mlsAlgoritm [ ns2:functions "lm" ;
                     ns2:package "core" ] ] .
 
+<http://json-ld.org/playground/ParameterFormat_CVS> a <http://json-ld.org/playground/csv> ;
+    dcterms:description "CSV Source file format" .
+
 ns1:mlsLinearRegresion_Implementation a ns1:mlsImplementation ;
     ns2:implementations <http://json-ld.org/playground/MLImplementation> ;
     dcterms:description "Implementation of Linear Regression Model" .
 
+ns2:Feature a ns2:Feature ;
+    ns2:featurename "" ;
+    ns2:mandatory "false" ;
+    dcterms:description "One-column dataset" .
