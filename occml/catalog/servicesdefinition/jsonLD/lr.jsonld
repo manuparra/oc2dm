@@ -28,12 +28,12 @@
 		"dmmlcc:hasOperation": {
 			"@id": "dmmlcc:LinearRegresion_Service_Operation",
 			"@type": "dmmlcc:MLOperation",
-			"mls:hasInput":[
+			"mls:hasInput":
 				{
 				"@id": "dmmlcc:LinearRegresion_Service_Input",
 				"@type": "dmmlcc:MLServiceInput",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
-				"dmmlcc:contais":{
+				"dmmlcc:contains":{
 					"mls:Data":{
 						"mls:DataSet":{
 							"@id":"dmmlcc:DataSet",
@@ -60,20 +60,29 @@
 					}
 				}
 			},
+			"dmmlcc:hasInputParameters":
 			{
 				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
 				"@type": "dmmlcc:MLServiceInputParameters",
 				"dcterms:description": "Input Parameters",
-				"dcterms:Parameters":[
+				"dmmlcc:Parameters":[
 					{
-						"@id":"dmmlcc:response_parameter",
+						"@id":"dmmlcc:response_parameter_01",
 						"@type": "dmmlcc:MLServiceInputParameter",
 						"dcterms:description": "Response variable....",
 						"dmmlcc:mandatory":"true"						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_02",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:description": "na.action",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"remove"
+												
 					}
 				]			
 			}
-			],
+			,
 			"mls:hasOutput":{
 				"@id": "dmmlcc:LinearRegresion_Service_Output",
 				"@type": "dmmlcc:MLServiceOutput",
