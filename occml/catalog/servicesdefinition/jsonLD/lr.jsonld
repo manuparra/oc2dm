@@ -28,7 +28,8 @@
 		"dmmlcc:hasOperation": {
 			"@id": "dmmlcc:LinearRegresion_Service_Operation",
 			"@type": "dmmlcc:MLOperation",
-			"mls:hasInput":{
+			"mls:hasInput":[
+				{
 				"@id": "dmmlcc:LinearRegresion_Service_Input",
 				"@type": "dmmlcc:MLServiceInput",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
@@ -59,7 +60,7 @@
 					}
 				}
 			},
-			"mls:hasInput":{
+			{
 				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
 				"@type": "dmmlcc:MLServiceInputParameters",
 				"dcterms:description": "Input Parameters",
@@ -71,7 +72,8 @@
 						"dmmlcc:mandatory":"true"						
 					}
 				]			
-			},
+			}
+			],
 			"mls:hasOutput":{
 				"@id": "dmmlcc:LinearRegresion_Service_Output",
 				"@type": "dmmlcc:MLServiceOutput",
