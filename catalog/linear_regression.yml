@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+title: OPENCCML API
+version: "0.1"
+consumes:
+- application/json
+produces:
+- application/json
+basePath: "/openccml"
+paths:
+  '/linear_regression':
+    get:
+      tags: [Method]
+      operationId: linear_regression.execute
+      summary: Execute a linear regression over the provided dataset
+      parameters:
+        - name: dataset
+          description: Input data contains Dataset or Feature/s
+          in: query
+          required: true
+          schema:
+            $ref: "#/definitions/Dataset"
+        - name: feature
+          in: query
+          required: false
+          schema:
+            $ref: "#/definitions/Dataset"
+      responses:
+        200:
+          description: Output of the service contains Model or ModelEvaluation or Data
+definitions:
+  Dataset:
+    required:
+      - data
+    properties:
+      data:
+        type: csv
+      
