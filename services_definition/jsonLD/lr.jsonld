@@ -17,46 +17,45 @@
 		"@id": "dmmlcc:LinearRegresion_Service",
 		"@type": "dmmlcc:MLService",
 	 	"dcterms:description": "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression.",
-		"dcterms:creator":"Manuel Parra ....",
+		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
 		"dcterms:created":"2017-04-20",
+		"dcterms:modified":"2017-05-04",
+		"dcterms:publisher":"DICITS_ML",
+		"dcterms:title":"LinearRegression",
 		"rdfs:comments":"Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression",
 		"dmmlcc:hasAuthentication": {
+		
 			"@id": "dmmlcc:LinearRegresion_Service_Auth",
 			"@type": "dmmlcc:MLServiceAuthentication",
+		 	"dcterms:description": "The service requires authentication, and the type of authentication",
 			"waa:requiresAuthentication":"None"
 		},
 		"dmmlcc:hasOperation": {
 			"@id": "dmmlcc:LinearRegresion_Service_Operation",
 			"@type": "dmmlcc:MLOperation",
+			"dcterms:description": "Operation performing the service",
 			"mls:hasInput":
 				{
 				"@id": "dmmlcc:LinearRegresion_Service_Input",
 				"@type": "dmmlcc:MLServiceInput",
+				"dcterms:title":"InputDataSet",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
 					"mls:Data":{
 						"mls:DataSet":{
 							"@id":"dmmlcc:DataSet",
-							"dmmlcc:format":[
+							"dcterms:description": "Dataset on which the service is applied",
+							"dcterms:title": "DataSet",
+							"dmmlcc:format":
 								{
 									"@id":"ParameterFormat_CVS",
 									"@type": "csv",
 									"dcterms:description": "CSV Source file format"									
-								}	
-							],
+								},								,
 						 	"dcterms:description": "Dataset",
-							"dmmlcc:datafilename":"dicits://",
+							"dmmlcc:storagebucket":"dicits://",
 							"dmmlcc:mandatory":"true"
-						},
-						"mls:Feature": [
-							{
-								"@id":"dmmlcc:Feature",
-								"@type":"dmmlcc:Feature",
-								"dcterms:description": "One-column dataset",
-								"dmmlcc:featurename":"",
-								"dmmlcc:mandatory":"false"
-							}
-						]
+						}
 					}
 				}
 			},
@@ -65,19 +64,40 @@
 				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
 				"@type": "dmmlcc:MLServiceInputParameters",
 				"dcterms:description": "Input Parameters",
+				"dcterms:title": "Input",
 				"dmmlcc:Parameters":[
 					{
 						"@id":"dmmlcc:response_parameter_01",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:description": "Response variable....",
+						"dcterms:title": "formula",
+						"dcterms:description": "Response variable and Formulae ",
 						"dmmlcc:mandatory":"true"						
 					},
 					{
 						"@id":"dmmlcc:response_parameter_02",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:description": "na.action",
+						"dcterms:title": "subset",
+						"dcterms:description": "Optional vector specifying a subset of observations to be used in the fitting process",
+						"dmmlcc:mandatory":"optional"	
+						"dmmlcc:defaultvalue":"NULL"
+											
+					},
+					{
+						"@id":"dmmlcc:response_parameter_03",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "na.action",
+						"dcterms:description": "A function which indicates what should happen when the data contain NAs",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":"remove"
+												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_04",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "weights",
+						"dcterms:description": "Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"
 												
 					}
 				]			
@@ -87,26 +107,27 @@
 				"@id": "dmmlcc:LinearRegresion_Service_Output",
 				"@type": "dmmlcc:MLServiceOutput",
 				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
-				"mls:Model":""
+				"mls:Model":{
+					"@id":"dmmlcc:LinerRegresion_Model",
+					"@type": "dmmlcc:PMML_Model",
+					"dcterms:title": "PMML Model related",
+					"dcterms:description": "PMML model to represent mining models"
+					"dmmlcc:storagebucket":"dicits://models/",
+				}
 			},
 			"mls:executes":{
 				"@id": "mls:LinearRegresion_Implementation",
 				"@type": "mls:Implementation",
 				"dcterms:description": "Implementation of Linear Regression Model",
-				"dmmlcc:implementations":[
+				"dmmlcc:implements":[
 					{
-						"@id":"MLImplementation",
-						"@type":"mls:implementation",
+						"@id":"MLAlgorithm_01",
+						"@type":"mls:Algorithm",
+						"dcterms:description": "Linear Regresion Algorithm in R",
 						"dmmlcc:ImplementationSource":"R",
-						"mls:implements":
-						{
-							"mls:Algoritm": {
-								"dmmlcc:package":"core",
-								"dmmlcc:functions":["lm"]
-							}
-						}
+						"dmmlcc:package":"core",
+						"dmmlcc:functions":["lm"]
 					}
-					
 				]
 			}
 		}
