@@ -1,0 +1,134 @@
+{
+  "@context": {
+	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
+	"dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "gr": "http://purl.org/goodrelations/v1#",
+    "mls": "http://www.w3.org/ns/mls",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "waa": "http://purl.oclc.org/NET/WebAuthentication",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph":  [ 	 
+	 {
+		"@id": "dmmlcc:Correlation_Service",
+		"@type": "dmmlcc:MLService",
+	 	"dcterms:description": "Correlation",
+		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
+		"dcterms:created":"2017-04-20",
+		"dcterms:modified":"2017-05-04",
+		"dcterms:publisher":"DICITS_ML",
+		"dcterms:title":"Correlation",
+		"rdfs:comments":"Correlation",
+		"dmmlcc:hasAuthentication": {
+		
+			"@id": "dmmlcc:Correlation_Service_Auth",
+			"@type": "dmmlcc:MLServiceAuthentication",
+		 	"dcterms:description": "The service requires authentication, and the type of authentication",
+			"waa:requiresAuthentication":"None"
+		},
+		"dmmlcc:hasOperation": {
+			"@id": "dmmlcc:Correlation_Service_Operation",
+			"@type": "dmmlcc:MLOperation",
+			"dcterms:description": "Operation performing the service",
+			"mls:hasInput":
+				{
+				"@id": "dmmlcc:Correlation_Service_Input",
+				"@type": "dmmlcc:MLServiceInput",
+				"dcterms:title":"InputDataSet",
+				"dcterms:description": "Input data contains Dataset or Feature/s",
+				"dmmlcc:contains":{
+					"mls:Data":{
+						"mls:Feature": [
+							{
+							"@id":"dmmlcc:Feature_X",
+							"dcterms:description": "Feature ",
+							"dcterms:title": "Feature",
+							"dmmlcc:format":
+								{
+									"@id":"ParameterFormat_CVS",
+									"@type": "dmmlcc:csv",
+									"dcterms:description": "CSV Source file format"									
+								},
+						 	"dcterms:description": "Individual Feature",
+							"dmmlcc:storagebucket":"dicits://",
+							"dmmlcc:mandatory":"true"
+						},
+						{
+							"@id":"dmmlcc:Feature_Y",
+							"dcterms:description": "Feature Y",
+							"dcterms:title": "Feature",
+							"dmmlcc:format":
+								{
+									"@id":"ParameterFormat_CVS",
+									"@type": "dmmlcc:csv",
+									"dcterms:description": "CSV Source file format"									
+								},
+						 	"dcterms:description": "Individual Feature",
+							"dmmlcc:storagebucket":"dicits://",
+							"dmmlcc:mandatory":"true"
+						}
+						]
+					}
+				}
+			},
+			"dmmlcc:hasInputParameters":
+			{
+				"@id": "dmmlcc:Correlation_Service_InputParameters",
+				"@type": "dmmlcc:MLServiceInputParameters",
+				"dcterms:description": "Input Parameters",
+				"dcterms:title": "Input",
+				"dmmlcc:Parameters":[
+					{
+						"@id":"dmmlcc:response_parameter_01",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "use",
+						"dcterms:description": "An optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings 'everything', 'all.obs', 'complete.obs', 'na.or.complete', or 'pairwise.complete.obs'.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"everything"						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_02",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "method",
+						"dcterms:description": "A character string indicating which correlation coefficient (or covariance) is to be computed. One of 'pearson' (default), 'kendall', or 'spearman', can be abbreviated.",
+						"dmmlcc:mandatory":"true"											
+					}
+				]			
+			}
+			,
+			"mls:hasOutput":{
+				"@id": "dmmlcc:Correlation_Service_Output",
+				"@type": "dmmlcc:MLServiceOutput",
+				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
+				"mls:Model":{
+					"@id":"dmmlcc:Correlation_Model",
+					"@type": "dmmlcc:PMML_Model",
+					"dcterms:title": "PMML Model related",
+					"dcterms:description": "PMML model to represent mining models",
+					"dmmlcc:storagebucket":"dicits://models/"
+				}
+			},
+			"mls:executes":{
+				"@id": "mls:Correlation_Implementation",
+				"@type": "mls:Implementation",
+				"dcterms:description": "Implementation of Linear Regression Model",
+				"dmmlcc:implements":[
+					{
+						"@id":"MLAlgorithm_01",
+						"@type":"mls:Algorithm",
+						"dcterms:description": "Correlation Algorithm in R",
+						"dmmlcc:ImplementationSource":"R",
+						"dmmlcc:package":"core",
+						"dmmlcc:functions":["cor"]
+					}
+				]
+			}
+		}
+		
+	 }
+  ]
+ }
