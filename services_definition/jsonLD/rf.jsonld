@@ -1,0 +1,264 @@
+{
+  "@context": {
+	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
+	"dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "gr": "http://purl.org/goodrelations/v1#",
+    "mls": "http://www.w3.org/ns/mls",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "waa": "http://purl.oclc.org/NET/WebAuthentication",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph":  [ 	 
+	 {
+		"@id": "dmmlcc:RandomForest_Service",
+		"@type": "dmmlcc:MLService",
+	 	"dcterms:description": "Implements Breiman's random forest algorithm (based on Breiman and Cutler's original Fortran code) for classification and regression. It can also be used in unsupervised mode for assessing proximities among data points.",
+		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
+		"dcterms:created":"2017-05-06",
+		"dcterms:modified":"2017-05-06",
+		"dcterms:publisher":"DICITS_ML",
+		"dcterms:title":"RandomForest",
+		"rdfs:comments":"Random forests or random decision forests are an ensemble learning method for classification, regression and other tasks, that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set.",
+		"dmmlcc:hasAuthentication": {
+		
+			"@id": "dmmlcc:RandomForest_Service_Auth",
+			"@type": "dmmlcc:MLServiceAuthentication",
+		 	"dcterms:description": "The service requires authentication, and the type of authentication",
+			"waa:requiresAuthentication":"None"
+		},
+		"dmmlcc:hasOperation": {
+			"@id": "dmmlcc:RandomForest_Service_Operation",
+			"@type": "dmmlcc:MLOperation",
+			"dcterms:description": "Operation performing the service",
+			"mls:hasInput":
+				{
+				"@id": "dmmlcc:RandomForest_Service_Input",
+				"@type": "dmmlcc:MLServiceInput",
+				"dcterms:title":"InputDataSet",
+				"dcterms:description": "Input data contains Dataset or Feature/s",
+				"dmmlcc:contains":{
+					"mls:Data":{
+						"mls:DataSet":{
+							"@id":"dmmlcc:DataSet",
+							"dcterms:description": "Dataset on which the service is applied",
+							"dcterms:title": "DataSet",
+							"dmmlcc:format":
+								{
+									"@id":"ParameterFormat_CVS",
+									"@type": "dmmlcc:csv",
+									"dcterms:description": "CSV Source file format"									
+								},
+						 	"dcterms:description": "Dataset",
+							"dmmlcc:storagebucket":"dicits://",
+							"dmmlcc:mandatory":"true"
+						}
+					}
+				}
+			},
+			"dmmlcc:hasInputParameters":
+			{
+				"@id": "dmmlcc:RandomForest_Service_InputParameters",
+				"@type": "dmmlcc:MLServiceInputParameters",
+				"dcterms:description": "Input Parameters",
+				"dcterms:title": "Input",
+				"dmmlcc:Parameters":[
+					{
+						"@id":"dmmlcc:response_parameter_01",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "formula",
+						"dcterms:description": "Response variable and Formulae ",
+						"dmmlcc:mandatory":"true"						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_02",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "subset",
+						"dcterms:description": "Optional vector specifying a subset of observations to be used in the fitting process",
+						"dmmlcc:mandatory":"optional",	
+						"dmmlcc:defaultvalue":"NULL"
+											
+					},
+					{
+						"@id":"dmmlcc:response_parameter_03",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "na.action",
+						"dcterms:description": "A function which indicates what should happen when the data contain NAs",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"remove"
+												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_04",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "ntree",
+						"dcterms:description": "Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"500"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_06",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "mtry",
+						"dcterms:description": "Number of variables randomly sampled as candidates at each split. Note that the default values are different for classification (sqrt(p) where p is number of variables in x) and regression (p/3)",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_07",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "replace",
+						"dcterms:description": "Should sampling of cases be done with or without replacement?",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"true"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_08",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "classwt",
+						"dcterms:description": "Priors of the classes. Need not add up to one. Ignored for regression.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_09",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "cutoff",
+						"dcterms:description": "(Classification only) A vector of length equal to number of classes. The `winning' class for an observation is the one with the maximum ratio of proportion of votes to cutoff. Default is 1/k where k is the number of classes (i.e., majority vote wins).",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_10",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "strata",
+						"dcterms:description": "A (factor) variable that is used for stratified sampling.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_11",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "sampsize",
+						"dcterms:description": "Size(s) of sample to draw. For classification, if sampsize is a vector of the length the number of strata, then sampling is stratified by strata, and the elements of sampsize indicate the numbers to be drawn from the strata.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_12",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "nodesize",
+						"dcterms:description": "Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5).",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_13",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "maxnodes",
+						"dcterms:description": "Maximum number of terminal nodes trees in the forest can have. If not given, trees are grown to the maximum possible (subject to limits by nodesize). If set larger than maximum possible, a warning is issued.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_14",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "importance",
+						"dcterms:description": "Should importance of predictors be assessed?",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"FALSE"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_15",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "localImp",
+						"dcterms:description": "Should casewise importance measure be computed? (Setting this to TRUE will override importance.)",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"FALSE"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_16",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "nPerm",
+						"dcterms:description": "Number of times the OOB data are permuted per tree for assessing variable importance. Number larger than 1 gives slightly more stable estimate, but not very effective. Currently only implemented for regression.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"1"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_17",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "proximity",
+						"dcterms:description": "Should proximity measure among the rows be calculated?",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_18",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "oob.prox",
+						"dcterms:description": "Should proximity be calculated only on ``out-of-bag'' data?",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_19",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "norm.votes",
+						"dcterms:description": "If TRUE (default), the final result of votes are expressed as fractions. If FALSE, raw vote counts are returned (useful for combining results from different runs). Ignored for regression.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"TRUE"												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_20",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "keep.forest",
+						"dcterms:description": "If set to FALSE, the forest will not be retained in the output object. If xtest is given, defaults to FALSE.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""												
+					},
+					{
+						"@id":"dmmlcc:response_parameter_21",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "keep.inbag",
+						"dcterms:description": "Should an n by ntree matrix be returned that keeps track of which samples are ``in-bag'' in which trees (but not how many times, if sampling with replacement)",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"FALSE"												
+					}
+				]			
+			}
+			,
+			"mls:hasOutput":{
+				"@id": "dmmlcc:RandomForest_Service_Output",
+				"@type": "dmmlcc:MLServiceOutput",
+				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
+				"mls:Model":{
+					"@id":"dmmlcc:RandomForest_Model",
+					"@type": "dmmlcc:PMML_Model",
+					"dcterms:title": "PMML Model related",
+					"dcterms:description": "PMML model to represent mining models",
+					"dmmlcc:storagebucket":"dicits://models/"
+				}
+			},
+			"mls:executes":{
+				"@id": "mls:RandomForest_Implementation",
+				"@type": "mls:Implementation",
+				"dcterms:description": "Implementation of RandomForest Model",
+				"dmmlcc:implements":[
+					{
+						"@id":"MLAlgorithm_01",
+						"@type":"mls:Algorithm",
+						"dcterms:description": "RandomForest Algorithm in R",
+						"dmmlcc:ImplementationSource":"R",
+						"dmmlcc:package":"randomForest",
+						"dmmlcc:functions":["randomForest"]
+					}
+				]
+			}
+		}
+		
+	 }
+  ]
+ }

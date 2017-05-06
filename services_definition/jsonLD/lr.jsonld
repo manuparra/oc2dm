@@ -49,9 +49,9 @@
 							"dmmlcc:format":
 								{
 									"@id":"ParameterFormat_CVS",
-									"@type": "csv",
+									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
-								},								,
+								},
 						 	"dcterms:description": "Dataset",
 							"dmmlcc:storagebucket":"dicits://",
 							"dmmlcc:mandatory":"true"
@@ -78,7 +78,7 @@
 						"@type": "dmmlcc:MLServiceInputParameter",
 						"dcterms:title": "subset",
 						"dcterms:description": "Optional vector specifying a subset of observations to be used in the fitting process",
-						"dmmlcc:mandatory":"optional"	
+						"dmmlcc:mandatory":"optional",	
 						"dmmlcc:defaultvalue":"NULL"
 											
 					},
@@ -111,8 +111,8 @@
 					"@id":"dmmlcc:LinerRegresion_Model",
 					"@type": "dmmlcc:PMML_Model",
 					"dcterms:title": "PMML Model related",
-					"dcterms:description": "PMML model to represent mining models"
-					"dmmlcc:storagebucket":"dicits://models/",
+					"dcterms:description": "PMML model to represent mining models",
+					"dmmlcc:storagebucket":"dicits://models/"
 				}
 			},
 			"mls:executes":{

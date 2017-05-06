@@ -11,61 +11,85 @@ ns1:LinearRegresion_Service a ns1:MLService ;
     ns1:hasAuthentication ns1:LinearRegresion_Service_Auth ;
     ns1:hasOperation ns1:LinearRegresion_Service_Operation ;
     dcterms:created "2017-04-20" ;
-    dcterms:creator "Manuel Parra ...." ;
+    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
     dcterms:description "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression." ;
+    dcterms:modified "2017-05-04" ;
+    dcterms:publisher "DICITS_ML" ;
+    dcterms:title "LinearRegression" ;
     rdfs:comments "Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression" .
 
-ns1:DataSet ns1:datafilename "dicits://" ;
-    ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
+ns1:DataSet ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
     ns1:mandatory "true" ;
-    dcterms:description "Dataset" .
+    ns1:storagebucket "dicits://" ;
+    dcterms:description "Dataset" ;
+    dcterms:title "DataSet" .
 
 ns1:LinearRegresion_Service_Auth a ns1:MLServiceAuthentication ;
-    ns3:WebAuthenticationrequiresAuthentication "None" .
+    ns3:WebAuthenticationrequiresAuthentication "None" ;
+    dcterms:description "The service requires authentication, and the type of authentication" .
 
 ns1:LinearRegresion_Service_Input a ns1:MLServiceInput ;
-    ns1:contains [ ns2:mlsData [ ns2:mlsDataSet ns1:DataSet ;
-                    ns2:mlsFeature ns1:Feature ] ] ;
-    dcterms:description "Input data contains Dataset or Feature/s" .
+    ns1:contains [ ns2:mlsData [ ns2:mlsDataSet ns1:DataSet ] ] ;
+    dcterms:description "Input data contains Dataset or Feature/s" ;
+    dcterms:title "InputDataSet" .
 
 ns1:LinearRegresion_Service_InputParameters a ns1:MLServiceInputParameters ;
     ns1:Parameters ns1:response_parameter_01,
-        ns1:response_parameter_02 ;
-    dcterms:description "Input Parameters" .
+        ns1:response_parameter_02,
+        ns1:response_parameter_03,
+        ns1:response_parameter_04 ;
+    dcterms:description "Input Parameters" ;
+    dcterms:title "Input" .
 
 ns1:LinearRegresion_Service_Operation a ns1:MLOperation ;
     ns1:hasInputParameters ns1:LinearRegresion_Service_InputParameters ;
+    dcterms:description "Operation performing the service" ;
     ns2:mlsexecutes ns2:mlsLinearRegresion_Implementation ;
     ns2:mlshasInput ns1:LinearRegresion_Service_Input ;
     ns2:mlshasOutput ns1:LinearRegresion_Service_Output .
 
 ns1:LinearRegresion_Service_Output a ns1:MLServiceOutput ;
     dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
-    ns2:mlsModel "" .
+    ns2:mlsModel ns1:LinerRegresion_Model .
+
+ns1:LinerRegresion_Model a ns1:PMML_Model ;
+    ns1:storagebucket "dicits://models/" ;
+    dcterms:description "PMML model to represent mining models" ;
+    dcterms:title "PMML Model related" .
 
 ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
     ns1:mandatory "true" ;
-	ns1:defaultvalue "None" ;
-    dcterms:description "Response variable...." .
+    dcterms:description "Response variable and Formulae " ;
+    dcterms:title "formula" .
 
 ns1:response_parameter_02 a ns1:MLServiceInputParameter ;
+    ns1:defaultvalue "NULL" ;
+    ns1:mandatory "optional" ;
+    dcterms:description "Optional vector specifying a subset of observations to be used in the fitting process" ;
+    dcterms:title "subset" .
+
+ns1:response_parameter_03 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "remove" ;
     ns1:mandatory "optional" ;
-    dcterms:description "na.action" .
+    dcterms:description "A function which indicates what should happen when the data contain NAs" ;
+    dcterms:title "na.action" .
 
-<http://json-ld.org/playground/MLImplementation> a ns2:mlsimplementation ;
+ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
+    ns1:defaultvalue "NULL" ;
+    ns1:mandatory "optional" ;
+    dcterms:description "Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used" ;
+    dcterms:title "weights" .
+
+<http://json-ld.org/playground/MLAlgorithm_01> a ns2:mlsAlgorithm ;
     ns1:ImplementationSource "R" ;
-    ns2:mlsimplements [ ns2:mlsAlgoritm [ ns1:functions "lm" ;
-                    ns1:package "core" ] ] .
+    ns1:functions "lm" ;
+    ns1:package "core" ;
+    dcterms:description "Linear Regresion Algorithm in R" .
 
-<http://json-ld.org/playground/ParameterFormat_CVS> a <http://json-ld.org/playground/csv> ;
+<http://json-ld.org/playground/ParameterFormat_CVS> a ns1:csv ;
     dcterms:description "CSV Source file format" .
 
 ns2:mlsLinearRegresion_Implementation a ns2:mlsImplementation ;
-    ns1:implementations <http://json-ld.org/playground/MLImplementation> ;
+    ns1:implements <http://json-ld.org/playground/MLAlgorithm_01> ;
     dcterms:description "Implementation of Linear Regression Model" .
 
-ns1:Feature a ns1:Feature ;
-    ns1:featurename "" ;
-    ns1:mandatory "false" ;
-    dcterms:description "One-column dataset" .
