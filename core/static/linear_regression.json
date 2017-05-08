@@ -1,0 +1,48 @@
+{
+    "basePath": "/openccml",
+    "consumes": [
+        "application/json"
+    ],
+    "definitions": {
+        "Dataset": {
+            "properties": {
+                "data": {
+                    "type": "csv"
+                }
+            },
+            "required": [
+                "data"
+            ]
+        }
+    },
+    "info": null,
+    "paths": {
+        "/linear_regression": {
+            "get": {
+                "parameters": [
+                    {
+                        "default": "remove",
+                        "description": "A function which indicates what should happen when the data contain NAs",
+                        "name": "http://dicits.ugr.es/dmmlcc#response_parameter_03",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Output of the service contains Model or ModelEvaluation or Data"
+                    }
+                },
+                "summary": "Execute a linear regression over the provided dataset",
+                "tags": [
+                    "Method"
+                ]
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ],
+    "swagger": "2.0",
+    "title": "OPENCCML API",
+    "version": "0.1"
+}
