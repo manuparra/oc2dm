@@ -179,7 +179,51 @@ class SPARQL_driver:
         self.input=query_results.serialize(format="json")
         print self.input
     def _extract_output(self):
-        pass
+        
+        #Check if definition contains Model
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 ASK  { ?x  rdf:type  dmmlcc:PMML_Model }
+            """)
+        
+        _contains_model=query_results.serialize(format="json")
+        
+        print _contains_model
+        
+        #Check if definition contains ModelEvaluation
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 ASK  { ?x  mls:hasOutput ?output .
+                        ?output mls:ModelEvaluation ?mlmodel .
+                        ?mlmodel  rdf:type  dmmlcc:PMML_Model .
+                 }
+            """)
+        _contains_modelevaluation=query_results.serialize(format="json")
+        
+        print _contains_modelevaluation
+        
+        #Check if definition contains (in Output) dataSet
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 ASK  { ?x  mls:hasOutput ?output .
+                        ?output mls:DataSet ?mlmodel .                        
+                 }
+            """)
+        _contains_modeldataset=query_results.serialize(format="json")
+
+        print _contains_modeldataset
+
+
+            
+    
+        self.output=query_results.serialize(format="json")
+        print self.output
     def _extract_implementation(self):
         pass
     
@@ -194,5 +238,5 @@ for row in params:
 
 sparQL=SPARQL_driver(turtle_file="../../services_definition/turtle/cor.ttl")
 
-sparQL._extract_input()
+sparQL._extract_output()
         
