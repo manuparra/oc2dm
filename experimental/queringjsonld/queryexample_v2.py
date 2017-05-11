@@ -238,7 +238,7 @@ class SPARQL_driver:
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
-                 SELECT ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
+                 SELECT ?mlmodel ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
                      WHERE { 
                          ?mlservice dmmlcc:hasOperation ?b .
                          ?b mls:hasOutput ?mloutput .
@@ -256,7 +256,7 @@ class SPARQL_driver:
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
-                 SELECT ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
+                 SELECT ?mlmodelevaluation ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
                      WHERE { 
                          ?mlservice dmmlcc:hasOperation ?b .
                          ?b mls:hasOutput ?mloutput .
@@ -274,7 +274,7 @@ class SPARQL_driver:
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
-                 SELECT ?mltitle ?mldescription ?mlstoragebucket ?mlformat ?mlformatdescription
+                 SELECT ?mldata ?mltitle ?mldescription ?mlstoragebucket ?mlformat ?mlformatdescription
                      WHERE { 
                          ?mlservice dmmlcc:hasOperation ?b .
                          ?b mls:hasOutput ?mloutput .
