@@ -121,6 +121,7 @@ class SPARQL_driver:
         self.base=None
         self.auth=None
         self.input=None
+        self.inputparameters=None
         self.output=None
         self.implementation=None
                 
@@ -177,7 +178,26 @@ class SPARQL_driver:
             """)
         
         self.input=query_results.serialize(format="json")
-        print self.input
+
+    def _extract_inputparameters(self):
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 SELECT  ?mlinputparameter ?mlinputtitle ?mlinputdescription ?mlinputmandatory ?mlinputdefault 
+                     WHERE { 
+                         ?mlservice dmmlcc:hasOperation ?b .
+                         ?b dmmlcc:hasInputParameters ?inputparameters .
+                         ?inputparameters dmmlcc:Parameters ?mlinputparameter .
+                         ?mlinputparameter dcterms:title ?mlinputtitle .
+                         ?mlinputparameter dcterms:description ?mlinputdescription .
+                         ?mlinputparameter dmmlcc:mandatory ?mlinputmandatory .
+                         ?mlinputparameter dmmlcc:defaultvalue ?mlinputdefault .
+                        }
+            """)
+        
+        self.inputparameters=query_results.serialize(format="json")
+        
     def _extract_output(self):
         
         #Check if definition contains Model
@@ -190,21 +210,15 @@ class SPARQL_driver:
         
         _contains_model=query_results.serialize(format="json")
         
-        print _contains_model
-        
         #Check if definition contains ModelEvaluation
         query_results = self.graph.query(
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
-                 ASK  { ?x  mls:hasOutput ?output .
-                        ?output mls:ModelEvaluation ?mlmodel .
-                        ?mlmodel  rdf:type  dmmlcc:PMML_Model .
-                 }
+                 ASK  { ?x  rdf:type  dmmlcc:ModelEvaluation. }
             """)
         _contains_modelevaluation=query_results.serialize(format="json")
         
-        print _contains_modelevaluation
         
         #Check if definition contains (in Output) dataSet
         query_results = self.graph.query(
@@ -212,31 +226,95 @@ class SPARQL_driver:
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
                  ASK  { ?x  mls:hasOutput ?output .
-                        ?output mls:DataSet ?mlmodel .                        
+                        ?output mls:Data ?mlmodel .                        
                  }
             """)
         _contains_modeldataset=query_results.serialize(format="json")
 
-        print _contains_modeldataset
-
-
-            
-    
         self.output=query_results.serialize(format="json")
-        print self.output
+        
+        # Extract Output Segments
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 SELECT ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
+                     WHERE { 
+                         ?mlservice dmmlcc:hasOperation ?b .
+                         ?b mls:hasOutput ?mloutput .
+                         ?mloutput mls:Model ?mlmodel .
+                         ?mlmodel dcterms:title ?mlmodeltitle .
+                         ?mlmodel dcterms:description ?mlmodeldescription .
+                         ?mlmodel dmmlcc:storagebucket ?mlstoragebucket .
+                        }
+            """)
+        
+        model=query_results.serialize(format="json")
+        print model
+        
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 SELECT ?mlmodeltitle  ?mlmodeldescription ?mlstoragebucket 
+                     WHERE { 
+                         ?mlservice dmmlcc:hasOperation ?b .
+                         ?b mls:hasOutput ?mloutput .
+                         ?mloutput mls:ModelEvaluation ?mlmodelevaluation .
+                         ?mlmodelevaluation dcterms:title ?mlmodeltitle .
+                         ?mlmodelevaluation dcterms:description ?mlmodeldescription .
+                         ?mlmodelevaluation dmmlcc:storagebucket ?mlstoragebucket .
+                        }
+            """)
+        
+        modelevaluation=query_results.serialize(format="json")
+        print modelevaluation
+        
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 SELECT ?mltitle ?mldescription ?mlstoragebucket ?mlformat ?mlformatdescription
+                     WHERE { 
+                         ?mlservice dmmlcc:hasOperation ?b .
+                         ?b mls:hasOutput ?mloutput .
+                         ?mloutput mls:Data ?mldata .
+                         ?mldata dmmlcc:storagebucket ?mlstoragebucket .
+                         ?mldata dcterms:description ?mldescription .
+                         ?mldata dcterms:title ?mltitle .
+                         ?mldata dmmlcc:format ?mlformat .
+                         ?mlformat dcterms:description ?mlformatdescription .
+                        }
+            """)
+        
+        dataset=query_results.serialize(format="json")
+        print dataset
+        
     def _extract_implementation(self):
-        pass
-    
+        query_results = self.graph.query(
+                 """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+                 PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+                 PREFIX mls: <http://www.w3.org/ns/mls> 
+                 SELECT ?mldescription ?mlimplementationsource ?mlpackage ?mlfunctions
+                     WHERE { 
+                         ?mlservice dmmlcc:hasOperation ?b .
+                         ?b mls:executes ?mlexecute .
+                         ?mlexecute dmmlcc:implements ?mlimplements .
+                         ?mlimplements dcterms:description ?mldescription .
+                         ?mlimplements dmmlcc:ImplementationSource ?mlimplementationsource .
+                         ?mlimplements dmmlcc:package ?mlpackage .
+                         ?mlimplements dmmlcc:functions ?mlfunctions .
+                        }
+            """)
         
-
-        
+        self.implementation=query_results.serialize(format="json")
 
 for row in params:
         print("MLInputParameters_%s:" % row[0].split('#')[-1])  
         print(" - name: %s\n - id: %s\n - mandatory: %s\n - defaultvalue: %s" % row) 
 
 
-sparQL=SPARQL_driver(turtle_file="../../services_definition/turtle/cor.ttl")
+sparQL=SPARQL_driver(turtle_file="../../services_definition/turtle/lr.ttl")
 
 sparQL._extract_output()
         

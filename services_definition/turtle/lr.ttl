@@ -18,10 +18,11 @@ ns1:LinearRegresion_Service a ns1:MLService ;
     dcterms:title "LinearRegression" ;
     rdfs:comments "Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression" .
 
-ns1:DataSet ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
+ns1:DataSetOutput a ns1:DataSet ;
+    ns1:format <http://json-ld.org/playground/ParameterFormat_CVS_01> ;
     ns1:mandatory "true" ;
     ns1:storagebucket "dicits://" ;
-    dcterms:description "Dataset" ;
+    dcterms:description "Dataset on which the service is applied" ;
     dcterms:title "DataSet" .
 
 ns1:LinearRegresion_Service_Auth a ns1:MLServiceAuthentication ;
@@ -50,12 +51,19 @@ ns1:LinearRegresion_Service_Operation a ns1:MLOperation ;
 
 ns1:LinearRegresion_Service_Output a ns1:MLServiceOutput ;
     dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
-    ns2:mlsModel ns1:LinerRegresion_Model .
+    ns2:mlsData ns1:DataSetOutput ;
+    ns2:mlsModel ns1:LinerRegresion_Model ;
+    ns2:mlsModelEvaluation ns1:LinerRegresion_ModelEvaluation .
 
 ns1:LinerRegresion_Model a ns1:PMML_Model ;
     ns1:storagebucket "dicits://models/" ;
     dcterms:description "PMML model to represent mining models" ;
     dcterms:title "PMML Model related" .
+
+ns1:LinerRegresion_ModelEvaluation a ns1:ModelEvaluation ;
+    ns1:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
 
 ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
     ns1:mandatory "true" ;
@@ -89,7 +97,16 @@ ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
 <http://json-ld.org/playground/ParameterFormat_CVS> a ns1:csv ;
     dcterms:description "CSV Source file format" .
 
+<http://json-ld.org/playground/ParameterFormat_CVS_01> a ns1:csv ;
+    dcterms:description "CSV Source file format" .
+
 ns2:mlsLinearRegresion_Implementation a ns2:mlsImplementation ;
     ns1:implements <http://json-ld.org/playground/MLAlgorithm_01> ;
     dcterms:description "Implementation of Linear Regression Model" .
+
+ns1:DataSet ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
+    ns1:mandatory "true" ;
+    ns1:storagebucket "dicits://" ;
+    dcterms:description "Dataset" ;
+    dcterms:title "DataSet" .
 
