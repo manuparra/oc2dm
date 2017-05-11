@@ -167,18 +167,22 @@ class SPARQL_driver:
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
                  PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
                  PREFIX mls: <http://www.w3.org/ns/mls> 
-                 SELECT  ?mlservice ?dataset ?features
+                 SELECT  ?data ?datasettittle ?datasetdescription ?mlformat ?mlformatdescription
                      WHERE { 
                          ?mlservice dmmlcc:hasOperation ?b .
                          ?b mls:hasInput ?input .
                          ?input dmmlcc:contains ?contains .
                          ?contains mls:Data ?data .
-                         ?data mls:Feature ?features .
+                         ?data dcterms:title ?datasettittle .
+                         ?data dcterms:description ?datasetdescription .
+                         ?data dmmlcc:format ?mlformat .
+                         ?mlformat dcterms:description ?mlformatdescription .
+
                         }
             """)
         
         self.input=query_results.serialize(format="json")
-
+        print self.input
     def _extract_inputparameters(self):
         query_results = self.graph.query(
                  """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
@@ -316,5 +320,5 @@ for row in params:
 
 sparQL=SPARQL_driver(turtle_file="../../services_definition/turtle/lr.ttl")
 
-sparQL._extract_output()
+sparQL._extract_input()
         
