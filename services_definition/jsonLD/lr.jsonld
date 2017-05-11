@@ -42,8 +42,8 @@
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
 					"mls:Data":{
-						"mls:DataSet":{
 							"@id":"dmmlcc:DataSet",
+							"@type:":"mls:DataSet",
 							"dcterms:description": "Dataset on which the service is applied",
 							"dcterms:title": "DataSet",
 							"dmmlcc:format":
@@ -52,10 +52,8 @@
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
-						 	"dcterms:description": "Dataset",
 							"dmmlcc:storagebucket":"dicits://",
-							"dmmlcc:mandatory":"true"
-						}
+							"dmmlcc:mandatory":"true"					
 					}
 				}
 			},
