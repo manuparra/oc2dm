@@ -42,8 +42,8 @@
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
 					"mls:Data":{
-						"mls:DataSet":{
 							"@id":"dmmlcc:DataSet",
+							"@type:":"mls:DataSet",
 							"dcterms:description": "Dataset on which the service is applied",
 							"dcterms:title": "DataSet",
 							"dmmlcc:format":
@@ -52,15 +52,13 @@
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
-						 	"dcterms:description": "Dataset",
 							"dmmlcc:storagebucket":"dicits://",
-							"dmmlcc:mandatory":"true"
-						}
+							"dmmlcc:mandatory":"true"					
 					}
 				}
 			},
 			"dmmlcc:hasInputParameters":
-			{
+			{	
 				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
 				"@type": "dmmlcc:MLServiceInputParameters",
 				"dcterms:description": "Input Parameters",
@@ -113,6 +111,27 @@
 					"dcterms:title": "PMML Model related",
 					"dcterms:description": "PMML model to represent mining models",
 					"dmmlcc:storagebucket":"dicits://models/"
+				},
+				"mls:ModelEvaluation":{
+					"@id":"dmmlcc:LinerRegresion_ModelEvaluation",
+					"@type": "dmmlcc:ModelEvaluation",
+					"dcterms:title": "Model evaluation",
+					"dcterms:description": "Model Evaluation",
+					"dmmlcc:storagebucket":"dicits://modelevaluation/"
+				},
+				"mls:Data":{
+					"@id":"dmmlcc:DataSetOutput",
+					"@type":"dmmlcc:DataSet",
+					"dcterms:description": "Dataset on which the service is applied",
+					"dcterms:title": "DataSet",
+					"dmmlcc:format":
+						{
+							"@id":"ParameterFormat_CVS_01",
+							"@type": "dmmlcc:csv",
+							"dcterms:description": "CSV Source file format"									
+						},
+					"dmmlcc:storagebucket":"dicits://",
+					"dmmlcc:mandatory":"true"
 				}
 			},
 			"mls:executes":{
