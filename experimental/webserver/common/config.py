@@ -17,19 +17,15 @@
 Routines for configuring omlcc_catalog
 """
 
-
-import os
 import logging
 import logging.config
 import logging.handlers
+import os
 
+# (manuparra) Review this -->
+from omlcc_catalog.version import version_info as version
 from oslo_config import cfg
 from oslo_middleware import cors
-
-
-#(manuparra) Review this -->
-from omlcc_catalog.version import version_info as version
-
 
 CONF = cfg.CONF
 CONF.register_opts(paste_deploy_opts, group='paste_deploy')
@@ -45,7 +41,8 @@ def _get_deployment_flavor(flavor=None):
     if not flavor:
         flavor = CONF.paste_deploy.flavor
     return '' if not flavor else ('-' + flavor)
-    
+
+
 def _get_deployment_config_file():
     """
     Retrieve the deployment_config_file config item, formatted as an
@@ -70,7 +67,6 @@ def _get_paste_config_path():
     else:
         path = CONF.prog + paste_suffix
     return CONF.find_file(os.path.basename(path))
-
 
 
 def load_paste_app(app_name, flavor=None, conf_file=None):
@@ -120,14 +116,13 @@ def parse_args(args=None, usage=None, default_config_files=None):
          version=version.cached_version_string(),
          usage=usage,
          default_config_files=default_config_files)
-         
-         
+
+
 def set_config_defaults():
     """This method updates all configuration default values."""
     set_cors_middleware_defaults()
-    
-    
-    
+
+
 def set_cors_middleware_defaults():
     """Update default configuration options for oslo.middleware."""
     cors.set_defaults(

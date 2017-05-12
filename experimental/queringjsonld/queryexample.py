@@ -15,18 +15,20 @@
 
 """Example of Parse and Query JSON-LD and TURTLE Services Definition"""
 
+from os import path
 
 # Install rdflib and rdflib-jsonld package
-from rdflib import Graph, plugin
-from rdflib.serializer import Serializer
+from rdflib import Graph
+
+from config.config import turtle_folder
+
 
 def turtle_query(turtle_file):
     # Open Turtle file with Service description 
-    service_def=open("../services_definition/turtle/{}".format(turtle_file)).read()
+    service_def = open(path.join("..", turtle_folder, turtle_file)).read()
 
     # Parse Turtle data
     g = Graph().parse(data=service_def, format='turtle')
-
 
     # Query to the service about the next general service data:
     #
@@ -82,22 +84,3 @@ def turtle_query(turtle_file):
         """)
 
     return qres_base, qres_inputparams
-    """    
-    # Build the results in a YML string
-
-    #First: General Data of the service
-    for row in qres_base:
-        print("MLService: %s\n" \
-            "MLDescription: %s\n" \
-            "MLCreator: %s\n" \
-            "MLCreated: %s\n" \
-            "MLAuthType: %s\n" \
-            "MLInputDescription: %s\n" \
-            "MLDataSetDescription %s\n" \
-            "MLDataSetMandatory: %s\n" % row)
-
-    #Second: Input Parameter Data
-    for row in qres_inputparams:
-        print("MLInputParameters_%s:" % row[0].split('#')[-1])  
-        print(" - name: %s\n - id: %s\n - mandatory: %s\n - defaultvalue: %s" % row) 
-    """

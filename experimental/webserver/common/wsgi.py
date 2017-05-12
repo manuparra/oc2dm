@@ -18,7 +18,6 @@
 Utility methods for working with WSGI servers
 """
 
-
 from __future__ import print_function
 
 import errno
@@ -26,26 +25,13 @@ import functools
 import os
 import signal
 import sys
-import time
 
 import eventlet
-from eventlet.green import socket
-from eventlet.green import ssl
 import eventlet.greenio
 import eventlet.wsgi
-
-import routes
-import routes.middleware
-import six
-import webob.dec
-import webob.exc
-from webob import multidict
-
-
+from eventlet.green import socket
 from omlcc_catalog.common import config
 from omlcc_catalog.common import exception
-
-
 
 wsgi_opts = [
     cfg.StrOpt('secure_proxy_ssl_header',
@@ -85,6 +71,7 @@ class Server(object):
     This class requires initialize_glance_store set to True if
     glance store needs to be initialized.
     """
+
     def __init__(self, threads=1000, initialize_glance_store=False):
         os.umask(0o27)  # ensure files are created with the correct privileges
         self._logger = logging.getLogger("eventlet.wsgi.server")
@@ -220,6 +207,7 @@ class Server(object):
         configuration, are spawned. This allows preventing
         interruption to the service.
         """
+
         def _has_changed(old, new, param):
             old = old.get(param)
             new = getattr(new, param)
@@ -327,14 +315,14 @@ class Server(object):
         """
         # Do we need a fresh socket?
         new_sock = (old_conf is None or (
-                    has_changed('bind_host') or
-                    has_changed('bind_port')))
+            has_changed('bind_host') or
+            has_changed('bind_port')))
         # Will we be using https?
         use_ssl = not (not CONF.cert_file or not CONF.key_file)
         # Were we using https before?
         old_use_ssl = (old_conf is not None and not (
-                       not old_conf.get('key_file') or
-                       not old_conf.get('cert_file')))
+            not old_conf.get('key_file') or
+            not old_conf.get('cert_file')))
         # Do we now need to perform an SSL wrap on the socket?
         wrap_sock = use_ssl is True and (old_use_ssl is False or new_sock)
         # Do we now need to perform an SSL unwrap on the socket?
