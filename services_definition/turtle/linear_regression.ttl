@@ -72,19 +72,19 @@ ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
 
 ns1:response_parameter_02 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "NULL" ;
-    ns1:mandatory "optional" ;
+    ns1:mandatory "false" ;
     dcterms:description "Optional vector specifying a subset of observations to be used in the fitting process" ;
     dcterms:title "subset" .
 
 ns1:response_parameter_03 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "remove" ;
-    ns1:mandatory "optional" ;
+    ns1:mandatory "false" ;
     dcterms:description "A function which indicates what should happen when the data contain NAs" ;
     dcterms:title "na.action" .
 
 ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "NULL" ;
-    ns1:mandatory "optional" ;
+    ns1:mandatory "false" ;
     dcterms:description "Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used" ;
     dcterms:title "weights" .
 
