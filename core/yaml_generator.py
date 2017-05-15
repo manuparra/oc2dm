@@ -1,41 +1,55 @@
 import collections
+import json
+import os
+from os import listdir
+from pprint import pprint
 
 import ruamel.yaml
 
-from experimental.queringjsonld import queryexample
+from sparql_parser import sparql_parser
 
 
 class YamlGenerator:
-    ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
-                                                                 ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
+    def __init__(self, input_path, output_path):
+        ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
+                                                                     ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
+        self.services_list = listdir(input_path)
+        self.final_yaml = None
+        self.generate_yaml()
+        out_file = open(output_path + "/raw_catalog.yml", 'w')
+        ruamel.yaml.dump(self.final_yaml, out_file, Dumper=ruamel.yaml.RoundTripDumper)
+        os.system("sed 's/^.\{,2\}//' ../catalog/raw_catalog.yml > ../catalog/catalog.yml")
 
-    def __init__(self, input_file, output_file):
-        qres_base, qres_inputparams = queryexample.turtle_query(input_file)
+    def generate_yaml(self):
+        paths = {}
+        for file in self.services_list:
+            parameters = self.generate_input(file)
+            end_point = file[:-4]
+            method = {}
+            method["get"] = {"operationID": "api." + end_point + ".execute", "parameters": parameters, "type": "array",
+                             "summary": 'Execute a linear regression over the provided dataset'}
+            paths["\'/" + end_point + "\'"] = method
+        self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
+                                                   ('title', 'OPENCCML API'),
+                                                   ('version', '0.1'),
+                                                   ('consumes', ['application/json']),
+                                                   ('produces', ['application/json']),
+                                                   ('paths', paths)])
+        pprint(self.final_yaml)
+
+    def generate_input(self, input_file):
+        parser = sparql_parser.SPARQL_driver(input_file)
+        parser._extract_inputparameters()
+        data = json.loads(parser.inputparameters.decode("utf-8"))
         parameters = []
-
-        for row in qres_inputparams:
-            name = row[0][:]
-            description = row[1][:]
-            if row[2] == 'optional':
-                required = False
-            else:
-                required = True
-            default = row[3][:]
+        for parameter in data['results']['bindings']:
+            name = parameter["mlinputtitle"]["value"]
+            description = parameter["mlinputdescription"]["value"]
+            required = parameter["mlinputmandatory"]["value"]
+            default = parameter["mlinputdefault"]["value"]
             parameters.append(
                 {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default})
-        data = collections.OrderedDict([('swagger', '2.0'),
-                                        ('title', 'OPENCCML API'),
-                                        ('version', '0.1'),
-                                        ('consumes', ['application/json']),
-                                        ('produces', ['application/json']),
-                                        ('paths',
-                                         {'/linear_regression': {'get': {'operationId': 'linear_regression.execute',
-                                                                         'parameters': parameters,
-                                                                         'type': 'array',
-                                                                         'summary': 'Execute a linear regression over the provided dataset',
-                                                                         'tags': ['Method']}}})])
-        out_file = open('base.yml', 'w')
-        ruamel.yaml.dump(data, out_file, default_flow_style=False, Dumper=ruamel.yaml.RoundTripDumper, indent=2)
+        return parameters
 
 
-YamlGenerator("cor.ttl", "asd")
+YamlGenerator("../services_definition/turtle", "../catalog")
