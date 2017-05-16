@@ -18,7 +18,9 @@ class YamlGenerator:
         self.generate_yaml()
         out_file = open(output_path + "/raw_catalog.yml", 'w')
         ruamel.yaml.dump(self.final_yaml, out_file, Dumper=ruamel.yaml.RoundTripDumper)
-        os.system("sed 's/^.\{,2\}//' ../catalog/raw_catalog.yml > ../catalog/catalog.yml")
+        order = "sed 's/^.\{,2\}//' "
+        order_paths = "{}/raw_catalog.yml > {}/catalog.yml".format(output_path, output_path)
+        os.system(order + order_paths)
 
     def generate_yaml(self):
         paths = {}
@@ -28,7 +30,7 @@ class YamlGenerator:
             method = {}
             method["get"] = {"operationID": "api." + end_point + ".execute", "parameters": parameters, "type": "array",
                              "summary": 'Execute a linear regression over the provided dataset'}
-            paths["\'/" + end_point + "\'"] = method
+            paths["/" + end_point] = method
         self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
                                                    ('title', 'OPENCCML API'),
                                                    ('version', '0.1'),
