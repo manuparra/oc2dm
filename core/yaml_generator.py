@@ -2,7 +2,6 @@ import collections
 import json
 import os
 from os import listdir
-from pprint import pprint
 
 import ruamel.yaml
 
@@ -16,11 +15,17 @@ class YamlGenerator:
         self.services_list = listdir(input_path)
         self.final_yaml = None
         self.generate_yaml()
-        out_file = open(output_path + "/raw_catalog.yml", 'w')
+
+        out_file = open(output_path + "/raw_catalog.yml", 'rw')
         ruamel.yaml.dump(self.final_yaml, out_file, Dumper=ruamel.yaml.RoundTripDumper)
         order = "sed 's/^.\{,2\}//' "
-        order_paths = "{}/raw_catalog.yml > {}/catalog.yml".format(output_path, output_path)
+        order_paths = "{}/raw_catalog.yml > {}/catalog_a.yml".format(output_path, output_path)
         os.system(order + order_paths)
+        order = """ sed 's/\"//g' """
+        order_paths = "{}/catalog_a.yml > {}/catalog.yml".format(output_path, output_path)
+        os.system(order + order_paths)
+        os.remove(output_path + "/raw_catalog.yml")
+        os.remove(output_path + "/catalog_a.yml")
 
     def generate_yaml(self):
         paths = {}
@@ -28,16 +33,18 @@ class YamlGenerator:
             parameters = self.generate_input(file)
             end_point = file[:-4]
             method = {}
-            method["get"] = {"operationID": "api." + end_point + ".execute", "parameters": parameters, "type": "array",
-                             "summary": 'Execute a linear regression over the provided dataset'}
-            paths["/" + end_point] = method
+            method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "array",
+                             "summary": 'Execute a linear regression over the provided dataset', 'response': {200: {
+                    'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
+            paths["'/" + end_point + "'"] = method
         self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
+                                                   ('info', None),
                                                    ('title', 'OPENCCML API'),
                                                    ('version', '0.1'),
                                                    ('consumes', ['application/json']),
                                                    ('produces', ['application/json']),
+                                                   ('basePath', "'/openccml'"),
                                                    ('paths', paths)])
-        pprint(self.final_yaml)
 
     def generate_input(self, input_file):
         parser = sparql_parser.SPARQL_driver(input_file)
