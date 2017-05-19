@@ -100,5 +100,10 @@ class randomForest:
 		pass
 		
 		
-		
+input_params=...		
+ouput_params=...
+ds=DataSet(dataset_path='/tmp/dataset.csv',header=False,sep=" ")
+execute=core(ds.get(),input_params, output_params)
+execute.lm()
+
 	
