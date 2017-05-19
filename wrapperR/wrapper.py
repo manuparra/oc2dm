@@ -32,7 +32,7 @@ class LM:
 		ro.r('''
 			f <- function() {
 
-                library("r2pmml")
+                		library("r2pmml")
 				group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
 				weight <- c(ctl, trt)
 				lmprueba <- lm(weight ~ group - 1)
