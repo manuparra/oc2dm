@@ -22,10 +22,10 @@ from rdflib import Graph
 
 from config.config import turtle_folder
 
-
+	
 class SPARQL_driver:
-    def __init__(self, turtle_file=None):
-        self.service_file = open(path.join("..", turtle_folder, turtle_file)).read()
+    def __init__(self, turtle_file=None, test=False):
+        self.service_file = open(path.join(".." if test==False else "", turtle_folder, turtle_file)).read()
         self.graph = Graph().parse(data=self.service_file, format='turtle')
         self.base = None
         self.auth = None
