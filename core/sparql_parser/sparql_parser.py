@@ -74,13 +74,17 @@ class SPARQL_driver:
             """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
             PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
             PREFIX mls: <http://www.w3.org/ns/mls> 
-            SELECT  ?mlservice ?dataset ?features
+            SELECT  ?mlservice ?data ?datasetdesc ?datasettitle ?datasetformat ?datasetbucket ?datasetmandatory
                 WHERE { 
                     ?mlservice dmmlcc:hasOperation ?b .
                     ?b mls:hasInput ?input .
                     ?input dmmlcc:contains ?contains .
                     ?contains mls:Data ?data .
-                    ?data mls:Feature ?features .
+                    ?data dcterms:description ?datasetdesc .
+                    ?data dcterms:title ?datasettitle .
+                    ?data dmmlcc:format ?datasetformat .
+                    ?data dmmlcc:storagebucket ?datasetbucket .
+                    ?data dmmlcc:mandatory ?datasetmandatory .
                    }
        """)
 
@@ -213,3 +217,4 @@ class SPARQL_driver:
        """)
 
         self.implementation = query_results.serialize(format="json")
+

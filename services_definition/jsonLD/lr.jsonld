@@ -14,7 +14,7 @@
   },
   "@graph":  [ 	 
 	 {
-		"@id": "dmmlcc:LinearRegresion_Service",
+		"@id": "dmmlcc:LinearRegression_Service",
 		"@type": "dmmlcc:MLService",
 	 	"dcterms:description": "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression.",
 		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
@@ -25,57 +25,43 @@
 		"rdfs:comments":"Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression",
 		"dmmlcc:hasAuthentication": {
 		
-			"@id": "dmmlcc:LinearRegresion_Service_Auth",
+			"@id": "dmmlcc:LinearRegression_Service_Auth",
 			"@type": "dmmlcc:MLServiceAuthentication",
 		 	"dcterms:description": "The service requires authentication, and the type of authentication",
 			"waa:requiresAuthentication":"None"
 		},
 		"dmmlcc:hasOperation": {
-			"@id": "dmmlcc:LinearRegresion_Service_Operation",
+			"@id": "dmmlcc:LinearRegression_Service_Operation",
 			"@type": "dmmlcc:MLOperation",
 			"dcterms:description": "Operation performing the service",
 			"mls:hasInput":
 				{
-				"@id": "dmmlcc:LinearRegresion_Service_Input",
+				"@id": "dmmlcc:LinearRegression_Service_Input",
 				"@type": "dmmlcc:MLServiceInput",
 				"dcterms:title":"InputDataSet",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
 					"mls:Data":[
 						{
-							"@id":"dmmlcc:DataSet_01",
+							"@id":"dmmlcc:dataset_01",
 							"@type:":"mls:DataSet",
 							"dcterms:description": "Dataset on which the service is applied",
 							"dcterms:title": "DataSet",
 							"dmmlcc:format":
 								{
-									"@id":"ParameterFormat_CVS",
+									"@id":"dmmlcc:ParameterFormat_CVS_00",
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
 							"dmmlcc:storagebucket":"dicits://",
 							"dmmlcc:mandatory":"true"					
-						},
-						{
-						"@id":"dmmlcc:Feature_01",
-						"@type:":"mls:Feature",
-						"dcterms:description": "Feature",
-						"dcterms:title": "Feature A",
-						"dmmlcc:format":
-							{
-						 	"@id":"ParameterFormat_CVS",
-							"@type": "dmmlcc:csv",
-							"dcterms:description": "CSV Source file format"									
-							},
-						"dmmlcc:storagebucket":"dicits://",
-						"dmmlcc:mandatory":"true"					
 						}
 					]
 				}
 			},
 			"dmmlcc:hasInputParameters":
 			{	
-				"@id": "dmmlcc:LinearRegresion_Service_InputParameters",
+				"@id": "dmmlcc:LinearRegression_Service_InputParameters",
 				"@type": "dmmlcc:MLServiceInputParameters",
 				"dcterms:description": "Input Parameters",
 				"dcterms:title": "Input",
@@ -118,18 +104,18 @@
 			}
 			,
 			"mls:hasOutput":{
-				"@id": "dmmlcc:LinearRegresion_Service_Output",
+				"@id": "dmmlcc:LinearRegression_Service_Output",
 				"@type": "dmmlcc:MLServiceOutput",
 				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
 				"mls:Model":{
-					"@id":"dmmlcc:LinerRegresion_Model",
+					"@id":"dmmlcc:LinearRegression_Model",
 					"@type": "dmmlcc:PMML_Model",
 					"dcterms:title": "PMML Model related",
 					"dcterms:description": "PMML model to represent mining models",
 					"dmmlcc:storagebucket":"dicits://models/"
 				},
 				"mls:ModelEvaluation":{
-					"@id":"dmmlcc:LinerRegresion_ModelEvaluation",
+					"@id":"dmmlcc:LinearRegression_ModelEvaluation",
 					"@type": "dmmlcc:ModelEvaluation",
 					"dcterms:title": "Model evaluation",
 					"dcterms:description": "Model Evaluation",
@@ -137,12 +123,12 @@
 				},
 				"mls:Data":{
 					"@id":"dmmlcc:DataSetOutput",
-					"@type":"dmmlcc:DataSet",
+					"@type":"mls:DataSet",
 					"dcterms:description": "Dataset on which the service is applied",
 					"dcterms:title": "DataSet",
 					"dmmlcc:format":
 						{
-							"@id":"ParameterFormat_CVS_01",
+							"@id":"dmmlcc:ParameterFormat_CVS_01",
 							"@type": "dmmlcc:csv",
 							"dcterms:description": "CSV Source file format"									
 						},
@@ -151,14 +137,14 @@
 				}
 			},
 			"mls:executes":{
-				"@id": "mls:LinearRegresion_Implementation",
+				"@id": "mls:LinearRegression_Implementation",
 				"@type": "mls:Implementation",
 				"dcterms:description": "Implementation of Linear Regression Model",
 				"dmmlcc:implements":[
 					{
-						"@id":"MLAlgorithm_01",
+						"@id":"dmmlcc:MLAlgorithm_01",
 						"@type":"mls:Algorithm",
-						"dcterms:description": "Linear Regresion Algorithm in R",
+						"dcterms:description": "Linear Regression Algorithm in R",
 						"dmmlcc:ImplementationSource":"R",
 						"dmmlcc:package":"core",
 						"dmmlcc:functions":["lm"]
