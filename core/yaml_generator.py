@@ -5,7 +5,7 @@ from os import listdir
 
 import ruamel.yaml
 
-from sparql_parser import sparql_parser
+from core.sparql_parser import sparql_parser
 
 
 class YamlGenerator:
@@ -60,6 +60,10 @@ class YamlGenerator:
             name = parameter["mlinputtitle"]["value"]
             description = parameter["mlinputdescription"]["value"]
             required = parameter["mlinputmandatory"]["value"]
+            if 'false' in required:
+                required = False
+            else:
+                required = True
             default = parameter["mlinputdefault"]["value"]
             parameters.append(
                 {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default,
