@@ -16,7 +16,7 @@ class YamlGenerator:
         self.final_yaml = None
         self.generate_yaml()
 
-        out_file = open(output_path + "/raw_catalog.yml", 'rw')
+        out_file = open(output_path + "/raw_catalog.yml", 'w')
         ruamel.yaml.dump(self.final_yaml, out_file, Dumper=ruamel.yaml.RoundTripDumper)
         order = "sed 's/^.\{,2\}//' "
         order_paths = "{}/raw_catalog.yml > {}/catalog_a.yml".format(output_path, output_path)
@@ -33,10 +33,15 @@ class YamlGenerator:
             parameters = self.generate_input(file)
             end_point = file[:-4]
             method = {}
-            method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "array",
+            method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "string",
                              "summary": 'Execute a linear regression over the provided dataset', 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             paths["'/" + end_point + "'"] = method
+        method = {}
+        method["get"] = {"operationId": "api.catalog.execute", "type": "string",
+                         "summary": 'Returns the complete catalog', 'response': {200: {
+                'description': 'JSON containing the catalog.'}}}
+        paths["'/catalog'"] = method
         self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
                                                    ('info', None),
                                                    ('title', 'OPENCCML API'),
@@ -57,7 +62,8 @@ class YamlGenerator:
             required = parameter["mlinputmandatory"]["value"]
             default = parameter["mlinputdefault"]["value"]
             parameters.append(
-                {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default})
+                {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default,
+                 'type': 'string'})
         return parameters
 
 
