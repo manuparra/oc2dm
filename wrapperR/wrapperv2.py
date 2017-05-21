@@ -16,94 +16,41 @@
 """RWrapper"""
 
 import csv
-import pandas as pd
 import rpy2.robjects as ro
+from parameters import *
 from rpy2.robjects.packages import importr
 
 
-class DataSet:
-	"""
-	Read dataset with Pandas
-	"""
-	def __init__(self, dataset_path="dataset.csv",header=False,sep=","):
-		self.dataset_path=dataset_path
-		self.dataset=None
-		self.header=header
-		self.sep=sep
+class core(Parameters):
 
-	def __readdataset(self):
-		"""
-		Reading the CSV data file
-		"""
-		self.dataset=pd.read_csv(self.dataset,header=self.header, sep=self.sep)
-		
-	def get(self):
-		"""
-		Return Dataset Pandas Object
-		"""
-		self.__readdataset()
-		return self.dataset
-		
-
-
-class core:
 	"""
 	Package CORE of R. Includes methods from the CORE of R, and not included on additional Packages
 	"""
 	
-	def __init__(self,dataset=None,input_params=None, output_params=None):
-		self.dataset=dataset
-		self.input=input_params
-		self.output=output_params
+
+	def __init__(self, dataset, formula, entrada):
+		self.parameter = Parameters(dataset, formula, entrada)
 	
 	def lm (self):
 		"""
 		Linear Regression Method
 		"""
-		
 		#TAKS:
 		# Extract Columns from the dataset
 		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
 		# Analize formulae 
-		
-		
-		ro.globalenv["weight"] = self.dataset['weight'] # Or self.dataset[0] if header is not available
-		ro.globalenv["group"] = self.dataset['group'] # self.dataset[1] if header is not available
+		values = self.parameter.getDataset()
+		ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
+		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available
 
 		R=ro.r
-		
+		R.library("r2pmml")
+
 		lmfit=R.lm("weight ~ group")
-		R.r2pmml(lmfit,file=self.output_params)
-		
-		
-		
+		file = self.parameter.outputRoute + 'model.pmml'
+		R.r2pmml(lmfit,file=file)
 
-	def corr(self,input):
-		"""
-		Correlation Method
-		"""
-		pass
-		
-		
-class randomForest:
-	"""
-	Random Forest Package
-	"""
-	
-	def __init__(self,dataset):
-		self.dataset=dataset
-		
-	def randomForest(self):
-		"""
-		Main Method
-		"""
-		pass
-		
-		
-input_params=...		
-ouput_params=...
-ds=DataSet(dataset_path='/tmp/dataset.csv',header=False,sep=" ")
-execute=core(ds.get(),input_params, output_params)
-execute.lm()
-
-	
+formula = "mpg~disp"
+entrada = {"param1": "hola", "param2":"adios", "param3": None, "param4":"caracola"}
+p = core("dataset.csv", formula, entrada)
+p.lm()	
