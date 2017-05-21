@@ -95,7 +95,7 @@ ns1:response_parameter_03 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "remove" ;
     ns1:mandatory "false" ;
     dcterms:description "A function which indicates what should happen when the data contain NAs" ;
-    dcterms:title "na.action" .
+    dcterms:title "naaction" .
 
 ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
     ns1:defaultvalue "NULL" ;
