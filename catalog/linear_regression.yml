@@ -11,7 +11,7 @@ paths:
   '/linear_regression':
     get:
       tags: [Method]
-      operationId: linear_regression.execute
+      operationId: api.linear_regression.execute
       summary: Execute a linear regression over the provided dataset
       parameters:
         - name: dataset

@@ -27,23 +27,20 @@ import sys
 import eventlet
 from oslo_utils import encodeutils
 
-
 # Monkey patch socket, time, select, threads
 eventlet.patcher.monkey_patch(all=False, socket=True, time=True,
                               select=True, thread=True, os=True)
 
-
 possible_topdir = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
-                                   os.pardir,
-                                   os.pardir))
+                                                os.pardir,
+                                                os.pardir))
 
 if os.path.exists(os.path.join(possible_topdir, 'glance', '__init__.py')):
     sys.path.insert(0, possible_topdir)
 
-#import glance_store
+# import glance_store
 from oslo_config import cfg
 from oslo_log import log as logging
-import oslo_messaging
 import osprofiler.notifier
 import osprofiler.web
 

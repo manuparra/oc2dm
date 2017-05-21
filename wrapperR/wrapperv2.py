@@ -22,13 +22,14 @@ from rpy2.robjects.packages import importr
 
 
 class core(Parameters):
+
 	"""
 	Package CORE of R. Includes methods from the CORE of R, and not included on additional Packages
 	"""
 	
+
 	def __init__(self, dataset, formula, entrada):
 		self.parameter = Parameters(dataset, formula, entrada)
-		
 	
 	def lm (self):
 		"""

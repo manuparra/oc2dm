@@ -15,88 +15,72 @@
 
 """Example of Parse and Query JSON-LD and TURTLE Services Definition"""
 
+from os import path
 
 # Install rdflib and rdflib-jsonld package
-from rdflib import Graph, plugin
-from rdflib.serializer import Serializer
+from rdflib import Graph
 
-# Open Turtle file with Service description 
-service_def=open("../../occml/catalog/servicesdefinition/turtle/lr.ttl").read()
-
-# Parse Turtle data
-g = Graph().parse(data=service_def, format='turtle')
+from config.config import turtle_folder
 
 
-# Query to the service about the next general service data:
-#
-# - MLService: Internal Name of the service
-# - MLdescription: Service Long description
-# - MLCreator: Service Creator
-# - MLAuthtype: Authentication for the service and type
-# - MLInputDescr: Descripcion of te input
-# - MLDataSetDescr: Description of the DataSet
-# - MLDataFileNameMandatory: Is Mandatory this field
-qres_base = g.query(
-    """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
-       PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
-       PREFIX mls: <http://www.w3.org/ns/mls> 
-       SELECT  ?mlservice ?mldescription ?mlcreator ?mlcreated ?mlauthtype ?descrinput ?descrdataset ?datafilenamemandatory
+def turtle_query(turtle_file):
+    # Open Turtle file with Service description 
+    service_def = open(path.join("..", turtle_folder, turtle_file)).read()
+
+    # Parse Turtle data
+    g = Graph().parse(data=service_def, format='turtle')
+
+    # Query to the service about the next general service data:
+    #
+    # - MLService: Internal Name of the service
+    # - MLdescription: Service Long description
+    # - MLCreator: Service Creator
+    # - MLAuthtype: Authentication for the service and type
+    # - MLInputDescr: Descripcion of te input
+    # - MLDataSetDescr: Description of the DataSet
+    # - MLDataFileNameMandatory: Is Mandatory this field
+    qres_base = g.query(
+        """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+        PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+        PREFIX mls: <http://www.w3.org/ns/mls> 
+        SELECT  ?mlservice ?mldescription ?mlcreator ?mlcreated ?mlauthtype ?descrinput ?descrdataset ?datafilenamemandatory
+            WHERE { 
+                ?mlservice dmmlcc:hasOperation ?b .
+                ?mlservice dcterms:description ?mldescription .
+                ?mlservice dcterms:creator ?mlcreator .
+                ?mlservice dcterms:created ?mlcreated .            
+                ?mlservice dmmlcc:hasAuthentication ?c .
+                ?c waa:requiresAuthentication ?mlauthtype .
+                ?b mls:hasInput ?input .
+                ?input dcterms:description ?descrinput .
+                ?input dmmlcc:contains ?contains .
+                ?contains mls:Data ?data .
+                ?data mls:DataSet ?dataset . 
+                ?dataset dcterms:description ?descrdataset .
+                ?dataset dmmlcc:datafilename ?datafilename .
+                ?dataset dmmlcc:mandatory ?datafilenamemandatory .
+            }
+        """)
+
+    # Query to the service about the input parameters
+    #
+    # - MLParam: Internal name of the param 
+    # - MLParamDescription: Long description of the param
+    # - MLParamMandatory; Is the Param Mandatory
+    # - MLParamDefaultValue: Default value for the param
+
+    qres_inputparams = g.query(
+        """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
+        PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
+        PREFIX mls: <http://www.w3.org/ns/mls> 
+        SELECT  ?params  ?description ?mandatory ?defaultvalue
         WHERE { 
-            ?mlservice dmmlcc:hasOperation ?b .
-            ?mlservice dcterms:description ?mldescription .
-            ?mlservice dcterms:creator ?mlcreator .
-            ?mlservice dcterms:created ?mlcreated .            
-            ?mlservice dmmlcc:hasAuthentication ?c .
-            ?c waa:requiresAuthentication ?mlauthtype .
-            ?b mls:hasInput ?input .
-            ?input dcterms:description ?descrinput .
-            ?input dmmlcc:contains ?contains .
-            ?contains mls:Data ?data .
-            ?data mls:DataSet ?dataset . 
-            ?dataset dcterms:description ?descrdataset .
-            ?dataset dmmlcc:datafilename ?datafilename .
-            ?dataset dmmlcc:mandatory ?datafilenamemandatory .
-        }
-    """)
+                ?mlservice dmmlcc:hasInputParameters ?mlserviceinputparameters .
+                ?mlserviceinputparameters dmmlcc:Parameters ?params .
+                ?params dmmlcc:mandatory ?mandatory .
+                ?params dcterms:description ?description .
+                ?params dmmlcc:defaultvalue ?defaultvalue .
+            }
+        """)
 
-# Query to the service about the input parameters
-#
-# - MLParam: Internal name of the param 
-# - MLParamDescription: Long description of the param
-# - MLParamMandatory; Is the Param Mandatory
-# - MLParamDefaultValue: Default value for the param
-
-qres_inputparams = g.query(
-    """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
-       PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
-       PREFIX mls: <http://www.w3.org/ns/mls> 
-       SELECT  ?params  ?description ?mandatory ?defaultvalue
-       WHERE { 
-            ?mlservice dmmlcc:hasInputParameters ?mlserviceinputparameters .
-            ?mlserviceinputparameters dmmlcc:Parameters ?params .
-            ?params dmmlcc:mandatory ?mandatory .
-            ?params dcterms:description ?description .
-            ?params dmmlcc:defaultvalue ?defaultvalue .
-        }
-    """)
-
-
-
-# Build the results in a YML string
-
-#First: General Data of the service
-for row in qres_base:
-    print("MLService: %s\n" \
-          "MLDescription: %s\n" \
-          "MLCreator: %s\n" \
-          "MLCreated: %s\n" \
-          "MLAuthType: %s\n" \
-          "MLInputDescription: %s\n" \
-          "MLDataSetDescription %s\n" \
-          "MLDataSetMandatory: %s\n" % row)
-
-#Second: Input Parameter Data
-for row in qres_inputparams:
-    print("MLInputParameters_%s:" % row[0].split('#')[-1])  
-    print(" - name: %s\n - id: %s\n - mandatory: %s\n - defaultvalue: %s" % row) 
-
+    return qres_base, qres_inputparams

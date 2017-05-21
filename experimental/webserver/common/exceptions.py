@@ -15,9 +15,6 @@
 
 """omlcc-catalog exception subclasses"""
 
-import six
-import six.moves.urllib.parse as urlparse
 
 class WorkerCreationFailure(GlanceException):
     message = _("Server worker creation failed: %(reason)s.")
-

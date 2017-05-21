@@ -1,62 +1,70 @@
-from rdflib import Graph, plugin
-from rdflib.serializer import Serializer
-import yaml
+import collections
+import json
+import os
+from os import listdir
+
+import ruamel.yaml
+
+from sparql_parser import sparql_parser
+
 
 class YamlGenerator:
+    def __init__(self, input_path, output_path):
+        ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
+                                                                     ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
+        self.services_list = listdir(input_path)
+        self.final_yaml = None
+        self.generate_yaml()
 
-    def __init__(self, input_file, output_file):
-        service_def=open("../services_definition/turtle/{}".format(input_file)).read()
+        out_file = open(output_path + "/raw_catalog.yml", 'w')
+        ruamel.yaml.dump(self.final_yaml, out_file, Dumper=ruamel.yaml.RoundTripDumper)
+        order = "sed 's/^.\{,2\}//' "
+        order_paths = "{}/raw_catalog.yml > {}/catalog_a.yml".format(output_path, output_path)
+        os.system(order + order_paths)
+        order = """ sed 's/\"//g' """
+        order_paths = "{}/catalog_a.yml > {}/catalog.yml".format(output_path, output_path)
+        os.system(order + order_paths)
+        os.remove(output_path + "/raw_catalog.yml")
+        os.remove(output_path + "/catalog_a.yml")
 
-        g = Graph().parse(data=service_def, format='turtle')
+    def generate_yaml(self):
+        paths = {}
+        for file in self.services_list:
+            parameters = self.generate_input(file)
+            end_point = file[:-4]
+            method = {}
+            method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "string",
+                             "summary": 'Execute a linear regression over the provided dataset', 'response': {200: {
+                    'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
+            paths["'/" + end_point + "'"] = method
+        method = {}
+        method["get"] = {"operationId": "api.catalog.execute", "type": "string",
+                         "summary": 'Returns the complete catalog', 'response': {200: {
+                'description': 'JSON containing the catalog.'}}}
+        paths["'/catalog'"] = method
+        self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
+                                                   ('info', None),
+                                                   ('title', 'OPENCCML API'),
+                                                   ('version', '0.1'),
+                                                   ('consumes', ['application/json']),
+                                                   ('produces', ['application/json']),
+                                                   ('basePath', "'/openccml'"),
+                                                   ('paths', paths)])
 
-        qres_base = g.query(
-            """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
-            PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
-            PREFIX mls: <http://www.w3.org/ns/mls> 
-            SELECT  ?mlservice ?mldescription ?mlcreator ?mlcreated ?mlauthtype ?descrinput ?descrdataset ?datafilenamemandatory
-                WHERE { 
-                    ?mlservice dmmlcc:hasOperation ?b .
-                    ?mlservice dcterms:description ?mldescription .
-                    ?mlservice dcterms:creator ?mlcreator .
-                    ?mlservice dcterms:created ?mlcreated .            
-                    ?mlservice dmmlcc:hasAuthentication ?c .
-                    ?c waa:requiresAuthentication ?mlauthtype .
-                    ?b mls:hasInput ?input .
-                    ?input dcterms:description ?descrinput .
-                    ?input dmmlcc:contains ?contains .
-                    ?contains mls:Data ?data .
-                    ?data mls:DataSet ?dataset . 
-                    ?dataset dcterms:description ?descrdataset .
-                    ?dataset dmmlcc:datafilename ?datafilename .
-                    ?dataset dmmlcc:mandatory ?datafilenamemandatory .
-                }
-            """)
-
-        qres_inputparams = g.query(
-            """PREFIX dmmlcc: <http://dicits.ugr.es/dmmlcc#>
-            PREFIX waa: <http://purl.oclc.org/NET/WebAuthentication> 
-            PREFIX mls: <http://www.w3.org/ns/mls> 
-            SELECT  ?params  ?description ?mandatory ?defaultvalue
-            WHERE { 
-                    ?mlservice dmmlcc:hasInputParameters ?mlserviceinputparameters .
-                    ?mlserviceinputparameters dmmlcc:Parameters ?params .
-                    ?params dmmlcc:mandatory ?mandatory .
-                    ?params dcterms:description ?description .
-                    ?params dmmlcc:defaultvalue ?defaultvalue .
-                }
-            """)
-       
+    def generate_input(self, input_file):
+        parser = sparql_parser.SPARQL_driver(input_file)
+        parser._extract_inputparameters()
+        data = json.loads(parser.inputparameters.decode("utf-8"))
         parameters = []
-        for row in qres_inputparams:
-            name = row[0][:]
-            description = row[1][:]
-            if row[2] == 'optional':
-                required = False
-            else:
-                required = True
-            default = row[3][:]
-            parameters.append({'name':name, 'description':description, 'required':required, 'default':default})
-        print (yaml.dump(parameters, default_flow_style=False, indent=2)) 
-       # stream = open('document.yaml', 'w')
-       # yaml.dump(parameters, stream, default_flow_style=False, indent=2)
-YamlGenerator("lr.ttl", "asd")
+        for parameter in data['results']['bindings']:
+            name = parameter["mlinputtitle"]["value"]
+            description = parameter["mlinputdescription"]["value"]
+            required = parameter["mlinputmandatory"]["value"]
+            default = parameter["mlinputdefault"]["value"]
+            parameters.append(
+                {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default,
+                 'type': 'string'})
+        return parameters
+
+
+YamlGenerator("../services_definition/turtle", "../catalog")
