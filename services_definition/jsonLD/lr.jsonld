@@ -41,6 +41,8 @@
 				"dcterms:title":"InputDataSet",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
+					"@id":"dmmlcc:contains_dataset_01",
+					"@type:":"dmmlcc:contains",
 					"mls:Data":[
 						{
 							"@id":"dmmlcc:dataset_01",
@@ -71,7 +73,8 @@
 						"@type": "dmmlcc:MLServiceInputParameter",
 						"dcterms:title": "formula",
 						"dcterms:description": "Response variable and Formulae ",
-						"dmmlcc:mandatory":"true"						
+						"dmmlcc:mandatory":"true",
+						"dmmlcc:defaultvalue":""						
 					},
 					{
 						"@id":"dmmlcc:response_parameter_02",
@@ -88,7 +91,7 @@
 						"dcterms:title": "na.action",
 						"dcterms:description": "A function which indicates what should happen when the data contain NAs",
 						"dmmlcc:mandatory":"optional",
-						"dmmlcc:defaultvalue":"remove"
+						"dmmlcc:defaultvalue":"na.remove"
 												
 					},
 					{
@@ -120,21 +123,7 @@
 					"dcterms:title": "Model evaluation",
 					"dcterms:description": "Model Evaluation",
 					"dmmlcc:storagebucket":"dicits://modelevaluation/"
-				},
-				"mls:Data":{
-					"@id":"dmmlcc:DataSetOutput",
-					"@type":"mls:DataSet",
-					"dcterms:description": "Dataset on which the service is applied",
-					"dcterms:title": "DataSet",
-					"dmmlcc:format":
-						{
-							"@id":"dmmlcc:ParameterFormat_CVS_01",
-							"@type": "dmmlcc:csv",
-							"dcterms:description": "CSV Source file format"									
-						},
-					"dmmlcc:storagebucket":"dicits://",
-					"dmmlcc:mandatory":"true"
-				}
+				}				
 			},
 			"mls:executes":{
 				"@id": "mls:LinearRegression_Implementation",
