@@ -1,10 +1,10 @@
 {
   "@context": {
 	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
-	"dcterms": "http://purl.org/dc/terms/",
-    "foaf": "http://xmlns.com/foaf/0.1/",
+	"dcterms": "http://purl.org/dc/terms/#",
+    "foaf": "http://xmlns.com/foaf/0.1/#",
     "gr": "http://purl.org/goodrelations/v1#",
-    "mls": "http://www.w3.org/ns/mls",
+    "mls": "http://www.w3.org/ns/mls#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -19,7 +19,7 @@
 	 	"dcterms:description": "Correlation",
 		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
 		"dcterms:created":"2017-04-20",
-		"dcterms:modified":"2017-05-04",
+		"dcterms:modified":"2017-05-29",
 		"dcterms:publisher":"DICITS_ML",
 		"dcterms:title":"Correlation",
 		"rdfs:comments":"Correlation",
@@ -41,15 +41,17 @@
 				"dcterms:title":"InputDataSet",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
-					"mls:Data":{
-						"mls:Feature": [
+					"@id":"dmmlcc:contains_features",
+					"@type:":"dmmlcc:contains",
+					"mls:Data":[						
 							{
-							"@id":"dmmlcc:Feature_X",
-							"dcterms:description": "Feature ",
+							"@id":"dmmlcc:Feature_00",
+							"@type:":"mls:Feature",
+							"dcterms:description": "Feature",
 							"dcterms:title": "Feature",
 							"dmmlcc:format":
 								{
-									"@id":"ParameterFormat_CVS",
+									"@id":"dmmlcc:ParameterFormat_CVS",
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
@@ -58,12 +60,12 @@
 							"dmmlcc:mandatory":"true"
 						},
 						{
-							"@id":"dmmlcc:Feature_Y",
+							"@id":"dmmlcc:Feature_01",
 							"dcterms:description": "Feature Y",
 							"dcterms:title": "Feature",
 							"dmmlcc:format":
 								{
-									"@id":"ParameterFormat_CVS",
+									"@id":"dmmlcc:ParameterFormat_CVS",
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
@@ -71,8 +73,7 @@
 							"dmmlcc:storagebucket":"dicits://",
 							"dmmlcc:mandatory":"true"
 						}
-						]
-					}
+					]					
 				}
 			},
 			"dmmlcc:hasInputParameters":
@@ -103,13 +104,13 @@
 			"mls:hasOutput":{
 				"@id": "dmmlcc:Correlation_Service_Output",
 				"@type": "dmmlcc:MLServiceOutput",
-				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
-				"mls:Model":{
-					"@id":"dmmlcc:Correlation_Model",
-					"@type": "dmmlcc:PMML_Model",
-					"dcterms:title": "PMML Model related",
-					"dcterms:description": "PMML model to represent mining models",
-					"dmmlcc:storagebucket":"dicits://models/"
+				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",				
+				"mls:ModelEvaluation":{
+					"@id":"dmmlcc:Correlation_ModelEvaluation",
+					"@type": "dmmlcc:ModelEvaluation",
+					"dcterms:title": "Model evaluation",
+					"dcterms:description": "Model Evaluation",
+					"dmmlcc:storagebucket":"dicits://modelevaluation/"
 				}
 			},
 			"mls:executes":{
@@ -118,7 +119,7 @@
 				"dcterms:description": "Implementation of Linear Regression Model",
 				"dmmlcc:implements":[
 					{
-						"@id":"MLAlgorithm_01",
+						"@id":"dmmlcc:MLAlgorithm_01",
 						"@type":"mls:Algorithm",
 						"dcterms:description": "Correlation Algorithm in R",
 						"dmmlcc:ImplementationSource":"R",

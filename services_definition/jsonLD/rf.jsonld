@@ -1,10 +1,10 @@
 {
   "@context": {
 	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
-	"dcterms": "http://purl.org/dc/terms/",
-    "foaf": "http://xmlns.com/foaf/0.1/",
+	"dcterms": "http://purl.org/dc/terms/#",
+    "foaf": "http://xmlns.com/foaf/0.1/#",
     "gr": "http://purl.org/goodrelations/v1#",
-    "mls": "http://www.w3.org/ns/mls",
+    "mls": "http://www.w3.org/ns/mls#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -24,7 +24,6 @@
 		"dcterms:title":"RandomForest",
 		"rdfs:comments":"Random forests or random decision forests are an ensemble learning method for classification, regression and other tasks, that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set.",
 		"dmmlcc:hasAuthentication": {
-		
 			"@id": "dmmlcc:RandomForest_Service_Auth",
 			"@type": "dmmlcc:MLServiceAuthentication",
 		 	"dcterms:description": "The service requires authentication, and the type of authentication",
@@ -41,23 +40,24 @@
 				"dcterms:title":"InputDataSet",
 				"dcterms:description": "Input data contains Dataset or Feature/s",
 				"dmmlcc:contains":{
-					"mls:Data":{
-						"mls:DataSet":{
-							"@id":"dmmlcc:DataSet",
+					"@id":"dmmlcc:contains_dataset_01",
+					"@type:":"dmmlcc:contains",
+					"mls:Data":[{
+							"@id":"dmmlcc:dataset_01",
+							"@type:":"mls:DataSet",
 							"dcterms:description": "Dataset on which the service is applied",
 							"dcterms:title": "DataSet",
 							"dmmlcc:format":
 								{
-									"@id":"ParameterFormat_CVS",
+									"@id":"dmmlcc:ParameterFormat_CVS_01",
 									"@type": "dmmlcc:csv",
 									"dcterms:description": "CSV Source file format"									
 								},
-						 	"dcterms:description": "Dataset",
 							"dmmlcc:storagebucket":"dicits://",
 							"dmmlcc:mandatory":"true"
-						}
+							}
+						]
 					}
-				}
 			},
 			"dmmlcc:hasInputParameters":
 			{
@@ -71,7 +71,8 @@
 						"@type": "dmmlcc:MLServiceInputParameter",
 						"dcterms:title": "formula",
 						"dcterms:description": "Response variable and Formulae ",
-						"dmmlcc:mandatory":"true"						
+						"dmmlcc:mandatory":"true",	
+						"dmmlcc:defaultvalue":""					
 					},
 					{
 						"@id":"dmmlcc:response_parameter_02",
@@ -85,7 +86,7 @@
 					{
 						"@id":"dmmlcc:response_parameter_03",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:title": "na.action",
+						"dcterms:title": "na__action",
 						"dcterms:description": "A function which indicates what should happen when the data contain NAs",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":"remove"
@@ -198,7 +199,7 @@
 					{
 						"@id":"dmmlcc:response_parameter_18",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:title": "oob.prox",
+						"dcterms:title": "oob__prox",
 						"dcterms:description": "Should proximity be calculated only on ``out-of-bag'' data?",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":""												
@@ -206,7 +207,7 @@
 					{
 						"@id":"dmmlcc:response_parameter_19",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:title": "norm.votes",
+						"dcterms:title": "norm__votes",
 						"dcterms:description": "If TRUE (default), the final result of votes are expressed as fractions. If FALSE, raw vote counts are returned (useful for combining results from different runs). Ignored for regression.",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":"TRUE"												
@@ -214,7 +215,7 @@
 					{
 						"@id":"dmmlcc:response_parameter_20",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:title": "keep.forest",
+						"dcterms:title": "keep__forest",
 						"dcterms:description": "If set to FALSE, the forest will not be retained in the output object. If xtest is given, defaults to FALSE.",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":""												
@@ -222,7 +223,7 @@
 					{
 						"@id":"dmmlcc:response_parameter_21",
 						"@type": "dmmlcc:MLServiceInputParameter",
-						"dcterms:title": "keep.inbag",
+						"dcterms:title": "keep__inbag",
 						"dcterms:description": "Should an n by ntree matrix be returned that keeps track of which samples are ``in-bag'' in which trees (but not how many times, if sampling with replacement)",
 						"dmmlcc:mandatory":"optional",
 						"dmmlcc:defaultvalue":"FALSE"												
@@ -240,6 +241,13 @@
 					"dcterms:title": "PMML Model related",
 					"dcterms:description": "PMML model to represent mining models",
 					"dmmlcc:storagebucket":"dicits://models/"
+				},
+				"mls:ModelEvaluation":{
+					"@id":"dmmlcc:RandomForest_ModelEvaluation",
+					"@type": "dmmlcc:ModelEvaluation",
+					"dcterms:title": "Model evaluation",
+					"dcterms:description": "Model Evaluation",
+					"dmmlcc:storagebucket":"dicits://modelevaluation/"
 				}
 			},
 			"mls:executes":{
@@ -248,7 +256,7 @@
 				"dcterms:description": "Implementation of RandomForest Model",
 				"dmmlcc:implements":[
 					{
-						"@id":"MLAlgorithm_01",
+						"@id":"dmmlcc:MLAlgorithm_01",
 						"@type":"mls:Algorithm",
 						"dcterms:description": "RandomForest Algorithm in R",
 						"dmmlcc:ImplementationSource":"R",

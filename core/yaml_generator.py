@@ -5,7 +5,7 @@ from os import listdir
 
 import ruamel.yaml
 
-from sparql_parser import sparql_parser
+from core.sparql_parser import sparql_parser
 
 
 class YamlGenerator:
@@ -24,6 +24,9 @@ class YamlGenerator:
         order = """ sed 's/\"//g' """
         order_paths = "{}/catalog_a.yml > {}/catalog.yml".format(output_path, output_path)
         os.system(order + order_paths)
+        order = "sed -i '1d' "
+        order_paths = "{}/catalog.yml".format(output_path)
+        os.system(order + order_paths)
         os.remove(output_path + "/raw_catalog.yml")
         os.remove(output_path + "/catalog_a.yml")
 
@@ -31,10 +34,11 @@ class YamlGenerator:
         paths = {}
         for file in self.services_list:
             parameters = self.generate_input(file)
+            description = self.generate_base(file)
             end_point = file[:-4]
             method = {}
             method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "string",
-                             "summary": 'Execute a linear regression over the provided dataset', 'response': {200: {
+                             "summary": description, 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             paths["'/" + end_point + "'"] = method
         method = {}
@@ -51,16 +55,40 @@ class YamlGenerator:
                                                    ('basePath', "'/openccml'"),
                                                    ('paths', paths)])
 
+    def generate_base(self, input_file):
+        parser = sparql_parser.SPARQL_driver(input_file)
+        base = json.loads(parser.base.decode("utf-8"))
+        description = base['results']['bindings']
+        print(type(description))
+        return description[0]['mldescription']['value']
+
     def generate_input(self, input_file):
         parser = sparql_parser.SPARQL_driver(input_file)
-        parser._extract_inputparameters()
-        data = json.loads(parser.inputparameters.decode("utf-8"))
+        input_parameters = json.loads(parser.inputparameters.decode("utf-8"))
+        input = json.loads(parser.input.decode("utf-8"))
+        base = json.loads(parser.base.decode("utf-8"))
+        print(base)
         parameters = []
-        for parameter in data['results']['bindings']:
+        for parameter in input_parameters['results']['bindings']:
             name = parameter["mlinputtitle"]["value"]
             description = parameter["mlinputdescription"]["value"]
             required = parameter["mlinputmandatory"]["value"]
+            if 'false' in required:
+                required = False
+            else:
+                required = True
             default = parameter["mlinputdefault"]["value"]
+            parameters.append(
+                {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default,
+                 'type': 'string'})
+        for parameter in input['results']['bindings']:
+            name = parameter['mldatasettitle']['value'].lower()
+            description = parameter['mldatasetdescr']['value']
+            required = parameter["mlmandatory"]["value"]
+            if 'false' in required:
+                required = False
+            else:
+                required = True
             parameters.append(
                 {'in': 'query', 'name': name, 'description': description, 'required': required, 'default': default,
                  'type': 'string'})

@@ -1,88 +1,92 @@
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix ns1: <http://dicits.ugr.es/dmmlcc#> .
-@prefix ns2: <http://www.w3.org/ns/> .
-@prefix ns3: <http://purl.oclc.org/NET/> .
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ns1:Correlation_Service a ns1:MLService ;
-    ns1:hasAuthentication ns1:Correlation_Service_Auth ;
-    ns1:hasOperation ns1:Correlation_Service_Operation ;
+dmmlcc:Correlation_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:Correlation_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:Correlation_Service_Operation ;
     dcterms:created "2017-04-20" ;
     dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
     dcterms:description "Correlation" ;
-    dcterms:modified "2017-05-04" ;
+    dcterms:modified "2017-05-29" ;
     dcterms:publisher "DICITS_ML" ;
     dcterms:title "Correlation" ;
     rdfs:comments "Correlation" .
 
-ns1:Correlation_Model a ns1:PMML_Model ;
-    ns1:storagebucket "dicits://models/" ;
-    dcterms:description "PMML model to represent mining models" ;
-    dcterms:title "PMML Model related" .
+dmmlcc:Correlation_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
 
-ns1:Correlation_Service_Auth a ns1:MLServiceAuthentication ;
-    ns3:WebAuthenticationrequiresAuthentication "None" ;
+dmmlcc:Correlation_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
     dcterms:description "The service requires authentication, and the type of authentication" .
 
-ns1:Correlation_Service_Input a ns1:MLServiceInput ;
-    ns1:contains [ ns2:mlsData [ ns2:mlsFeature ns1:Feature_X,
-                        ns1:Feature_Y ] ] ;
+dmmlcc:Correlation_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_features ;
     dcterms:description "Input data contains Dataset or Feature/s" ;
     dcterms:title "InputDataSet" .
 
-ns1:Correlation_Service_InputParameters a ns1:MLServiceInputParameters ;
-    ns1:Parameters ns1:response_parameter_01,
-        ns1:response_parameter_02 ;
+dmmlcc:Correlation_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02 ;
     dcterms:description "Input Parameters" ;
     dcterms:title "Input" .
 
-ns1:Correlation_Service_Operation a ns1:MLOperation ;
-    ns1:hasInputParameters ns1:Correlation_Service_InputParameters ;
+dmmlcc:Correlation_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:Correlation_Service_InputParameters ;
     dcterms:description "Operation performing the service" ;
-    ns2:mlsexecutes ns2:mlsCorrelation_Implementation ;
-    ns2:mlshasInput ns1:Correlation_Service_Input ;
-    ns2:mlshasOutput ns1:Correlation_Service_Output .
+    mls:executes mls:Correlation_Implementation ;
+    mls:hasInput dmmlcc:Correlation_Service_Input ;
+    mls:hasOutput dmmlcc:Correlation_Service_Output .
 
-ns1:Correlation_Service_Output a ns1:MLServiceOutput ;
+dmmlcc:Correlation_Service_Output a dmmlcc:MLServiceOutput ;
     dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
-    ns2:mlsModel ns1:Correlation_Model .
+    mls:ModelEvaluation dmmlcc:Correlation_ModelEvaluation .
 
-ns1:Feature_X ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
+dmmlcc:Feature_00 a mls:Feature  ;
+    dmmlcc:format dmmlcc:ParameterFormat_CVS ;
+    dmmlcc:mandatory "true" ;
+    dmmlcc:storagebucket "dicits://" ;
     dcterms:description "Individual Feature" ;
     dcterms:title "Feature" .
 
-ns1:Feature_Y ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
+dmmlcc:Feature_01 dmmlcc:format dmmlcc:ParameterFormat_CVS ;
+    dmmlcc:mandatory "true" ;
+    dmmlcc:storagebucket "dicits://" ;
     dcterms:description "Individual Feature" ;
     dcterms:title "Feature" .
 
-ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "everything" ;
-    ns1:mandatory "optional" ;
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "cor" ;
+    dmmlcc:package "core" ;
+    dcterms:description "Correlation Algorithm in R" .
+
+dmmlcc:contains_features a dmmlcc:contains ;
+    mls:Data dmmlcc:Feature_00,
+        dmmlcc:Feature_01 .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "everything" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "An optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings 'everything', 'all.obs', 'complete.obs', 'na.or.complete', or 'pairwise.complete.obs'." ;
     dcterms:title "use" .
 
-ns1:response_parameter_02 a ns1:MLServiceInputParameter ;
-    ns1:mandatory "true" ;
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:mandatory "true" ;
     dcterms:description "A character string indicating which correlation coefficient (or covariance) is to be computed. One of 'pearson' (default), 'kendall', or 'spearman', can be abbreviated." ;
     dcterms:title "method" .
 
-<http://json-ld.org/playground/MLAlgorithm_01> a ns2:mlsAlgorithm ;
-    ns1:ImplementationSource "R" ;
-    ns1:functions "cor" ;
-    ns1:package "core" ;
-    dcterms:description "Correlation Algorithm in R" .
-
-ns2:mlsCorrelation_Implementation a ns2:mlsImplementation ;
-    ns1:implements <http://json-ld.org/playground/MLAlgorithm_01> ;
+mls:Correlation_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
     dcterms:description "Implementation of Linear Regression Model" .
 
-<http://json-ld.org/playground/ParameterFormat_CVS> a ns1:csv ;
+dmmlcc:ParameterFormat_CVS a dmmlcc:csv ;
     dcterms:description "CSV Source file format" .
 

@@ -1,15 +1,15 @@
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix ns1: <http://dicits.ugr.es/dmmlcc#> .
-@prefix ns2: <http://www.w3.org/ns/> .
-@prefix ns3: <http://purl.oclc.org/NET/> .
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ns1:LinearRegresion_Service a ns1:MLService ;
-    ns1:hasAuthentication ns1:LinearRegresion_Service_Auth ;
-    ns1:hasOperation ns1:LinearRegresion_Service_Operation ;
+dmmlcc:LinearRegression_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:LinearRegression_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:LinearRegression_Service_Operation ;
     dcterms:created "2017-04-20" ;
     dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
     dcterms:description "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression." ;
@@ -18,104 +18,89 @@ ns1:LinearRegresion_Service a ns1:MLService ;
     dcterms:title "LinearRegression" ;
     rdfs:comments "Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression" .
 
-ns1:DataSetOutput a ns1:DataSet ;
-    ns1:format <http://json-ld.org/playground/ParameterFormat_CVS_01> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
-    dcterms:description "Dataset on which the service is applied" ;
-    dcterms:title "DataSet" .
-
-ns1:DataSet_01 <file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/@type:> "mls:DataSet" ;
-    ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
-    dcterms:description "Dataset on which the service is applied" ;
-    dcterms:title "DataSet" .
-
-ns1:Feature_01 <file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/@type:> "mls:Feature" ;
-    ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
-    dcterms:description "Feature" ;
-    dcterms:title "Feature A" .
-
-ns1:LinearRegresion_Service_Auth a ns1:MLServiceAuthentication ;
-    ns3:WebAuthenticationrequiresAuthentication "None" ;
-    dcterms:description "The service requires authentication, and the type of authentication" .
-
-ns1:LinearRegresion_Service_Input a ns1:MLServiceInput ;
-    ns1:contains [ ns2:mlsData ns1:DataSet_01,
-                ns1:Feature_01 ] ;
-    dcterms:description "Input data contains Dataset or Feature/s" ;
-    dcterms:title "InputDataSet" .
-
-ns1:LinearRegresion_Service_InputParameters a ns1:MLServiceInputParameters ;
-    ns1:Parameters ns1:response_parameter_01,
-        ns1:response_parameter_02,
-        ns1:response_parameter_03,
-        ns1:response_parameter_04 ;
-    dcterms:description "Input Parameters" ;
-    dcterms:title "Input" .
-
-ns1:LinearRegresion_Service_Operation a ns1:MLOperation ;
-    ns1:hasInputParameters ns1:LinearRegresion_Service_InputParameters ;
-    dcterms:description "Operation performing the service" ;
-    ns2:mlsexecutes ns2:mlsLinearRegresion_Implementation ;
-    ns2:mlshasInput ns1:LinearRegresion_Service_Input ;
-    ns2:mlshasOutput ns1:LinearRegresion_Service_Output .
-
-ns1:LinearRegresion_Service_Output a ns1:MLServiceOutput ;
-    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
-    ns2:mlsData ns1:DataSetOutput ;
-    ns2:mlsModel ns1:LinerRegresion_Model ;
-    ns2:mlsModelEvaluation ns1:LinerRegresion_ModelEvaluation .
-
-ns1:LinerRegresion_Model a ns1:PMML_Model ;
-    ns1:storagebucket "dicits://models/" ;
+dmmlcc:LinearRegression_Model a dmmlcc:PMML_Model ;
+    dmmlcc:storagebucket "dicits://models/" ;
     dcterms:description "PMML model to represent mining models" ;
     dcterms:title "PMML Model related" .
 
-ns1:LinerRegresion_ModelEvaluation a ns1:ModelEvaluation ;
-    ns1:storagebucket "dicits://modelevaluation/" ;
+dmmlcc:LinearRegression_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
     dcterms:description "Model Evaluation" ;
     dcterms:title "Model evaluation" .
 
-ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
-    ns1:mandatory "true" ;
+dmmlcc:LinearRegression_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
+    dcterms:description "The service requires authentication, and the type of authentication" .
+
+dmmlcc:LinearRegression_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_dataset_01 ;
+    dcterms:description "Input data contains Dataset or Feature/s" ;
+    dcterms:title "InputDataSet" .
+
+dmmlcc:LinearRegression_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02,
+        dmmlcc:response_parameter_03,
+        dmmlcc:response_parameter_04 ;
+    dcterms:description "Input Parameters" ;
+    dcterms:title "Input" .
+
+dmmlcc:LinearRegression_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:LinearRegression_Service_InputParameters ;
+    dcterms:description "Operation performing the service" ;
+    mls:executes mls:LinearRegression_Implementation ;
+    mls:hasInput dmmlcc:LinearRegression_Service_Input ;
+    mls:hasOutput dmmlcc:LinearRegression_Service_Output .
+
+dmmlcc:LinearRegression_Service_Output a dmmlcc:MLServiceOutput ;
+    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+    mls:Model dmmlcc:LinearRegression_Model ;
+    mls:ModelEvaluation dmmlcc:LinearRegression_ModelEvaluation .
+
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "lm" ;
+    dmmlcc:package "core" ;
+    dcterms:description "Linear Regression Algorithm in R" .
+
+dmmlcc:ParameterFormat_CVS_00 a dmmlcc:csv ;
+    dcterms:description "CSV Source file format" .
+
+dmmlcc:contains_dataset_01 a dmmlcc:contains ;
+    mls:Data dmmlcc:dataset_01 .
+
+dmmlcc:dataset_01  a mls:DataSet ;
+    dmmlcc:format dmmlcc:ParameterFormat_CVS_00 ;
+    dmmlcc:mandatory "true" ;
+    dmmlcc:storagebucket "dicits://" ;
+    dcterms:description "Dataset on which the service is applied" ;
+    dcterms:title "DataSet" .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
     dcterms:description "Response variable and Formulae " ;
     dcterms:title "formula" .
 
-ns1:response_parameter_02 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "NULL" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Optional vector specifying a subset of observations to be used in the fitting process" ;
     dcterms:title "subset" .
 
-ns1:response_parameter_03 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "remove" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "na.remove" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "A function which indicates what should happen when the data contain NAs" ;
     dcterms:title "na.action" .
 
-ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "NULL" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_04 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used" ;
     dcterms:title "weights" .
 
-<http://json-ld.org/playground/MLAlgorithm_01> a ns2:mlsAlgorithm ;
-    ns1:ImplementationSource "R" ;
-    ns1:functions "lm" ;
-    ns1:package "core" ;
-    dcterms:description "Linear Regresion Algorithm in R" .
-
-<http://json-ld.org/playground/ParameterFormat_CVS_01> a ns1:csv ;
-    dcterms:description "CSV Source file format" .
-
-ns2:mlsLinearRegresion_Implementation a ns2:mlsImplementation ;
-    ns1:implements <http://json-ld.org/playground/MLAlgorithm_01> ;
+mls:LinearRegression_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
     dcterms:description "Implementation of Linear Regression Model" .
-
-<http://json-ld.org/playground/ParameterFormat_CVS> a ns1:csv ;
-    dcterms:description "CSV Source file format" .
 

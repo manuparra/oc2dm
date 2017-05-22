@@ -1,10 +1,8 @@
-from rpy2.robjects.packages import importr
 import pandas as pd
 
-import rpy2.robjects as ro
 
 class Parameters():
-
+    
 	def __init__(self, dataset, formula, input_parameter):
 		self.input = self.__parser(input_parameter)
 		self.dataset = dataset
@@ -31,4 +29,3 @@ class Parameters():
 
 	def getDataset(self):
 		self.__readDataset()
-		return self.dataset

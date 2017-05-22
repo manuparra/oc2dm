@@ -1,15 +1,15 @@
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix ns1: <http://dicits.ugr.es/dmmlcc#> .
-@prefix ns2: <http://www.w3.org/ns/> .
-@prefix ns3: <http://purl.oclc.org/NET/> .
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ns1:RandomForest_Service a ns1:MLService ;
-    ns1:hasAuthentication ns1:RandomForest_Service_Auth ;
-    ns1:hasOperation ns1:RandomForest_Service_Operation ;
+dmmlcc:RandomForest_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:RandomForest_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:RandomForest_Service_Operation ;
     dcterms:created "2017-05-06" ;
     dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
     dcterms:description "Implements Breiman's random forest algorithm (based on Breiman and Cutler's original Fortran code) for classification and regression. It can also be used in unsupervised mode for assessing proximities among data points." ;
@@ -18,190 +18,201 @@ ns1:RandomForest_Service a ns1:MLService ;
     dcterms:title "RandomForest" ;
     rdfs:comments "Random forests or random decision forests are an ensemble learning method for classification, regression and other tasks, that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set." .
 
-ns1:DataSet ns1:format <http://json-ld.org/playground/ParameterFormat_CVS> ;
-    ns1:mandatory "true" ;
-    ns1:storagebucket "dicits://" ;
-    dcterms:description "Dataset" ;
-    dcterms:title "DataSet" .
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "randomForest" ;
+    dmmlcc:package "randomForest" ;
+    dcterms:description "RandomForest Algorithm in R" .
 
-ns1:RandomForest_Model a ns1:PMML_Model ;
-    ns1:storagebucket "dicits://models/" ;
+dmmlcc:ParameterFormat_CVS_01 a dmmlcc:csv ;
+    dcterms:description "CSV Source file format" .
+
+dmmlcc:RandomForest_Model a dmmlcc:PMML_Model ;
+    dmmlcc:storagebucket "dicits://models/" ;
     dcterms:description "PMML model to represent mining models" ;
     dcterms:title "PMML Model related" .
 
-ns1:RandomForest_Service_Auth a ns1:MLServiceAuthentication ;
-    ns3:WebAuthenticationrequiresAuthentication "None" ;
+dmmlcc:RandomForest_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
+
+dmmlcc:RandomForest_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
     dcterms:description "The service requires authentication, and the type of authentication" .
 
-ns1:RandomForest_Service_Input a ns1:MLServiceInput ;
-    ns1:contains [ ns2:mlsData [ ns2:mlsDataSet ns1:DataSet ] ] ;
+dmmlcc:RandomForest_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_dataset_01 ;
     dcterms:description "Input data contains Dataset or Feature/s" ;
     dcterms:title "InputDataSet" .
 
-ns1:RandomForest_Service_InputParameters a ns1:MLServiceInputParameters ;
-    ns1:Parameters ns1:response_parameter_01,
-        ns1:response_parameter_02,
-        ns1:response_parameter_03,
-        ns1:response_parameter_04,
-        ns1:response_parameter_06,
-        ns1:response_parameter_07,
-        ns1:response_parameter_08,
-        ns1:response_parameter_09,
-        ns1:response_parameter_10,
-        ns1:response_parameter_11,
-        ns1:response_parameter_12,
-        ns1:response_parameter_13,
-        ns1:response_parameter_14,
-        ns1:response_parameter_15,
-        ns1:response_parameter_16,
-        ns1:response_parameter_17,
-        ns1:response_parameter_18,
-        ns1:response_parameter_19,
-        ns1:response_parameter_20,
-        ns1:response_parameter_21 ;
+dmmlcc:RandomForest_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02,
+        dmmlcc:response_parameter_03,
+        dmmlcc:response_parameter_04,
+        dmmlcc:response_parameter_06,
+        dmmlcc:response_parameter_07,
+        dmmlcc:response_parameter_08,
+        dmmlcc:response_parameter_09,
+        dmmlcc:response_parameter_10,
+        dmmlcc:response_parameter_11,
+        dmmlcc:response_parameter_12,
+        dmmlcc:response_parameter_13,
+        dmmlcc:response_parameter_14,
+        dmmlcc:response_parameter_15,
+        dmmlcc:response_parameter_16,
+        dmmlcc:response_parameter_17,
+        dmmlcc:response_parameter_18,
+        dmmlcc:response_parameter_19,
+        dmmlcc:response_parameter_20,
+        dmmlcc:response_parameter_21 ;
     dcterms:description "Input Parameters" ;
     dcterms:title "Input" .
 
-ns1:RandomForest_Service_Operation a ns1:MLOperation ;
-    ns1:hasInputParameters ns1:RandomForest_Service_InputParameters ;
+dmmlcc:RandomForest_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:RandomForest_Service_InputParameters ;
     dcterms:description "Operation performing the service" ;
-    ns2:mlsexecutes ns2:mlsRandomForest_Implementation ;
-    ns2:mlshasInput ns1:RandomForest_Service_Input ;
-    ns2:mlshasOutput ns1:RandomForest_Service_Output .
+    mls:executes mls:RandomForest_Implementation ;
+    mls:hasInput dmmlcc:RandomForest_Service_Input ;
+    mls:hasOutput dmmlcc:RandomForest_Service_Output .
 
-ns1:RandomForest_Service_Output a ns1:MLServiceOutput ;
+dmmlcc:RandomForest_Service_Output a dmmlcc:MLServiceOutput ;
     dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
-    ns2:mlsModel ns1:RandomForest_Model .
+    mls:Model dmmlcc:RandomForest_Model ;
+    mls:ModelEvaluation dmmlcc:RandomForest_ModelEvaluation .
 
-ns1:response_parameter_01 a ns1:MLServiceInputParameter ;
-    ns1:mandatory "true" ;
+dmmlcc:contains_dataset_01 a dmmlcc:contains ;
+    mls:Data dmmlcc:dataset_01 .
+
+dmmlcc:dataset_01  a mls:DataSet ;
+    dmmlcc:format dmmlcc:ParameterFormat_CVS_01 ;
+    dmmlcc:mandatory "true" ;
+    dmmlcc:storagebucket "dicits://" ;
+    dcterms:description "Dataset on which the service is applied" ;
+    dcterms:title "DataSet" .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
     dcterms:description "Response variable and Formulae " ;
     dcterms:title "formula" .
 
-ns1:response_parameter_02 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "NULL" ;
-    ns1:mandatory "false" ;
-    dcterms:description "false vector specifying a subset of observations to be used in the fitting process" ;
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
+    dcterms:description "Optional vector specifying a subset of observations to be used in the fitting process" ;
     dcterms:title "subset" .
 
-ns1:response_parameter_03 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "remove" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "remove" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "A function which indicates what should happen when the data contain NAs" ;
-    dcterms:title "na.action" .
+    dcterms:title "na__action" .
 
-ns1:response_parameter_04 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "500" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_04 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "500" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Number of trees to grow. This should not be set to too small a number, to ensure that every input row gets predicted at least a few times." ;
     dcterms:title "ntree" .
 
-ns1:response_parameter_06 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_06 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Number of variables randomly sampled as candidates at each split. Note that the default values are different for classification (sqrt(p) where p is number of variables in x) and regression (p/3)" ;
     dcterms:title "mtry" .
 
-ns1:response_parameter_07 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "true" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_07 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "true" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should sampling of cases be done with or without replacement?" ;
     dcterms:title "replace" .
 
-ns1:response_parameter_08 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "NULL" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_08 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Priors of the classes. Need not add up to one. Ignored for regression." ;
     dcterms:title "classwt" .
 
-ns1:response_parameter_09 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_09 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "(Classification only) A vector of length equal to number of classes. The `winning' class for an observation is the one with the maximum ratio of proportion of votes to cutoff. Default is 1/k where k is the number of classes (i.e., majority vote wins)." ;
     dcterms:title "cutoff" .
 
-ns1:response_parameter_10 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_10 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "A (factor) variable that is used for stratified sampling." ;
     dcterms:title "strata" .
 
-ns1:response_parameter_11 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_11 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Size(s) of sample to draw. For classification, if sampsize is a vector of the length the number of strata, then sampling is stratified by strata, and the elements of sampsize indicate the numbers to be drawn from the strata." ;
     dcterms:title "sampsize" .
 
-ns1:response_parameter_12 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_12 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Minimum size of terminal nodes. Setting this number larger causes smaller trees to be grown (and thus take less time). Note that the default values are different for classification (1) and regression (5)." ;
     dcterms:title "nodesize" .
 
-ns1:response_parameter_13 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "NULL" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_13 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Maximum number of terminal nodes trees in the forest can have. If not given, trees are grown to the maximum possible (subject to limits by nodesize). If set larger than maximum possible, a warning is issued." ;
     dcterms:title "maxnodes" .
 
-ns1:response_parameter_14 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "FALSE" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_14 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "FALSE" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should importance of predictors be assessed?" ;
     dcterms:title "importance" .
 
-ns1:response_parameter_15 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "FALSE" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_15 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "FALSE" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should casewise importance measure be computed? (Setting this to TRUE will override importance.)" ;
     dcterms:title "localImp" .
 
-ns1:response_parameter_16 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "1" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_16 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "1" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Number of times the OOB data are permuted per tree for assessing variable importance. Number larger than 1 gives slightly more stable estimate, but not very effective. Currently only implemented for regression." ;
     dcterms:title "nPerm" .
 
-ns1:response_parameter_17 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_17 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should proximity measure among the rows be calculated?" ;
     dcterms:title "proximity" .
 
-ns1:response_parameter_18 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_18 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should proximity be calculated only on ``out-of-bag'' data?" ;
-    dcterms:title "oob.prox" .
+    dcterms:title "oob__prox" .
 
-ns1:response_parameter_19 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "TRUE" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_19 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "TRUE" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "If TRUE (default), the final result of votes are expressed as fractions. If FALSE, raw vote counts are returned (useful for combining results from different runs). Ignored for regression." ;
-    dcterms:title "norm.votes" .
+    dcterms:title "norm__votes" .
 
-ns1:response_parameter_20 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_20 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "If set to FALSE, the forest will not be retained in the output object. If xtest is given, defaults to FALSE." ;
-    dcterms:title "keep.forest" .
+    dcterms:title "keep__forest" .
 
-ns1:response_parameter_21 a ns1:MLServiceInputParameter ;
-    ns1:defaultvalue "FALSE" ;
-    ns1:mandatory "false" ;
+dmmlcc:response_parameter_21 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "FALSE" ;
+    dmmlcc:mandatory "optional" ;
     dcterms:description "Should an n by ntree matrix be returned that keeps track of which samples are ``in-bag'' in which trees (but not how many times, if sampling with replacement)" ;
-    dcterms:title "keep.inbag" .
+    dcterms:title "keep__inbag" .
 
-<http://json-ld.org/playground/MLAlgorithm_01> a ns2:mlsAlgorithm ;
-    ns1:ImplementationSource "R" ;
-    ns1:functions "randomForest" ;
-    ns1:package "randomForest" ;
-    dcterms:description "RandomForest Algorithm in R" .
-
-<http://json-ld.org/playground/ParameterFormat_CVS> a ns1:csv ;
-    dcterms:description "CSV Source file format" .
-
-ns2:mlsRandomForest_Implementation a ns2:mlsImplementation ;
-    ns1:implements <http://json-ld.org/playground/MLAlgorithm_01> ;
+mls:RandomForest_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
     dcterms:description "Implementation of RandomForest Model" .
 
