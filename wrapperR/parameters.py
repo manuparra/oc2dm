@@ -15,9 +15,9 @@ class Parameters():
 	def __parser (self, input_parameters):
 		string = ''
 		for key, value in input_parameters.items():
-			if(value != None):
-				string += key + ' = ' + value + ', '
-		return string
+			if(value != 'NULL'):
+				string += key.replace("__", ".") + ' = ' + value + ', '
+		return string[:-2] 
 
 	def __datasetParser (self, dataset):
 		split = dataset.rsplit('/', 1)
@@ -32,7 +32,3 @@ class Parameters():
 	def getDataset(self):
 		self.__readDataset()
 		return self.dataset
-
-formula = "mpg~disp"
-entrada = {"param1": "hola", "param2":"adios", "param3": None, "param4":"caracola"}
-p = Parameters("dataset.csv", formula, entrada)
