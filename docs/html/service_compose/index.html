@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; OpenCCML 0.1 beta documentation</title>
+  <title>Compose services description &mdash; OpenCCML 0.5 documentation</title>
   
 
   
@@ -26,19 +26,19 @@
 
   
   
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   
 
   
 
   
         <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="#"/>
-    <link rel="top" title="OpenCCML 0.1 beta documentation" href="index.html"/> 
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="OpenCCML 0.5 documentation" href="../index.html"/> 
 
   
-  <script src="_static/js/modernizr.min.js"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> OpenCCML
+            <a href="../index.html" class="icon icon-home"> OpenCCML
           
 
           
@@ -64,14 +64,14 @@
             
             
               <div class="version">
-                0.1 beta
+                0.5
               </div>
             
           
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -90,8 +90,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="servicesschema.html">Services Schema</a></li>
-<li class="toctree-l1"><a class="reference internal" href="servicecompose.html">Compose a service description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../servicecompose.html">Compose services description of a Data Mining / Machine Learning</a></li>
 </ul>
 
             
@@ -106,7 +105,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">OpenCCML</a>
+          <a href="../index.html">OpenCCML</a>
         
       </nav>
 
@@ -134,12 +133,16 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Compose services description</li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/service_compose/index.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -151,19 +154,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="compose-services-description">
+<h1>Compose services description<a class="headerlink" href="#compose-services-description" title="Permalink to this headline">¶</a></h1>
+<p>How to compose a service description of a Data Mining / Machine Learning.</p>
+<p>Composing the description of a service consists of creating a service definition within a RDF/TURTLE/JSON-LD file</p>
+<p>The description of a data mining service is performed taking into account several parts necessary for the definition of the particular service.</p>
+<p>These are the following:</p>
+<ul class="simple">
+<li>base information of the algorithm,</li>
+<li>authentication,</li>
+<li>input parameters corresponding to the DataSet or characteristics,</li>
+<li>the additional input parameters, ie the operating parameters of the mining method,</li>
+<li>the output of the algorithm / method that can be a model, an evaluation of the model or a DataSet,</li>
+<li>indicate how the method is executed; In this case it is necessary to indicate the type of implementation that is executed, whenever possible.</li>
+</ul>
+<hr class="docutils" />
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            <div class="articleComments">
@@ -198,24 +205,23 @@
 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1 beta',
+            URL_ROOT:'../',
+            VERSION:'0.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
             SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="_static/js/theme.js"></script>
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
   
@@ -225,14 +231,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

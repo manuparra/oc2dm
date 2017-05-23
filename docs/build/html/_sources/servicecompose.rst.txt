@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Compose services description
-============================
+Compose a service description
+=============================
  *Created by Manuel Parra, May 2017*
 
 How to compose a service description of a Data Mining / Machine Learning.
@@ -312,5 +312,377 @@ A full example for ``Linear Regression`` in ``R`` and ``lm`` R function enabled 
 		]
 	}
 
+If you want to describe execution of ``Linear Regression`` in ``Spark+R`` the following code must be included in your description::
 
+
+	"mls:executes":{
+		"@id": "mls:LinearRegression_Implementation",
+		"@type": "mls:Implementation",
+		"dcterms:description": "Implementation of Linear Regression Model",
+		"dmmlcc:implements":[
+			{
+				"@id":"dmmlcc:MLAlgorithm_01",
+				"@type":"mls:Algorithm",
+				"dcterms:description": "Linear Regression Algorithm in R",
+				"dmmlcc:ImplementationSource":"R",
+				"dmmlcc:package":"core",
+				"dmmlcc:functions":["lm"]
+			},
+			{
+				"@id":"dmmlcc:MLAlgorithm_02",
+				"@type":"mls:Algorithm",
+				"dcterms:description": "Linear Regression Algorithm in Spark+R",
+				"dmmlcc:ImplementationSource":"SparkR",
+				"dmmlcc:package":"core",
+				"dmmlcc:functions":["lm"]
+			},
+		]
+	}
+
+
+Starting from a template
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another way to build and define a service can be done using existing service definitions. In the project folder ``/services_definition/`` you can review all descriptions of data mining and machine learning services available for OpenCCML. They are available in two formats ``Turtle`` (turtle folder) and ``JSON-LD`` (jsonld folder). Both formats are understood by OpenCCML and therefore you can define your service with any of them.
+
+To start working from a service description template already created, we recommend using a simple algorithm or method such as simple data processing operations, for example a ``correlation``.
+
+Service description of Correlation with JSON-LD::
+
+
+	{
+	  "@context": {
+		"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
+		"dcterms": "http://purl.org/dc/terms/#",
+	    "foaf": "http://xmlns.com/foaf/0.1/#",
+	    "gr": "http://purl.org/goodrelations/v1#",
+	    "mls": "http://www.w3.org/ns/mls#",
+	    "owl": "http://www.w3.org/2002/07/owl#",
+	    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+	    "skos": "http://www.w3.org/2004/02/skos/core#",
+	    "waa": "http://purl.oclc.org/NET/WebAuthentication",
+	    "xsd": "http://www.w3.org/2001/XMLSchema#"
+	  },
+	  "@graph":  [ 	 
+		 {
+			"@id": "dmmlcc:Correlation_Service",
+			"@type": "dmmlcc:MLService",
+		 	"dcterms:description": "Correlation",
+			"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
+			"dcterms:created":"2017-04-20",
+			"dcterms:modified":"2017-05-29",
+			"dcterms:publisher":"DICITS_ML",
+			"dcterms:title":"Correlation",
+			"rdfs:comments":"Correlation",
+			"dmmlcc:hasAuthentication": {
+		
+				"@id": "dmmlcc:Correlation_Service_Auth",
+				"@type": "dmmlcc:MLServiceAuthentication",
+			 	"dcterms:description": "The service requires authentication, and the type of authentication",
+				"waa:requiresAuthentication":"None"
+			},
+			"dmmlcc:hasOperation": {
+				"@id": "dmmlcc:Correlation_Service_Operation",
+				"@type": "dmmlcc:MLOperation",
+				"dcterms:description": "Operation performing the service",
+				"mls:hasInput":
+					{
+					"@id": "dmmlcc:Correlation_Service_Input",
+					"@type": "dmmlcc:MLServiceInput",
+					"dcterms:title":"InputDataSet",
+					"dcterms:description": "Input data contains Dataset or Feature/s",
+					"dmmlcc:contains":{
+						"@id":"dmmlcc:contains_features",
+						"@type:":"dmmlcc:contains",
+						"mls:Data":[						
+								{
+								"@id":"dmmlcc:Feature_00",
+								"@type:":"mls:Feature",
+								"dcterms:description": "Feature",
+								"dcterms:title": "Feature",
+								"dmmlcc:format":
+									{
+										"@id":"dmmlcc:ParameterFormat_CVS",
+										"@type": "dmmlcc:csv",
+										"dcterms:description": "CSV Source file format"									
+									},
+							 	"dcterms:description": "Individual Feature",
+								"dmmlcc:storagebucket":"dicits://",
+								"dmmlcc:mandatory":"true"
+							},
+							{
+								"@id":"dmmlcc:Feature_01",
+								"dcterms:description": "Feature Y",
+								"dcterms:title": "Feature",
+								"dmmlcc:format":
+									{
+										"@id":"dmmlcc:ParameterFormat_CVS",
+										"@type": "dmmlcc:csv",
+										"dcterms:description": "CSV Source file format"									
+									},
+							 	"dcterms:description": "Individual Feature",
+								"dmmlcc:storagebucket":"dicits://",
+								"dmmlcc:mandatory":"true"
+							}
+						]					
+					}
+				},
+				"dmmlcc:hasInputParameters":
+				{
+					"@id": "dmmlcc:Correlation_Service_InputParameters",
+					"@type": "dmmlcc:MLServiceInputParameters",
+					"dcterms:description": "Input Parameters",
+					"dcterms:title": "Input",
+					"dmmlcc:Parameters":[
+						{
+							"@id":"dmmlcc:response_parameter_01",
+							"@type": "dmmlcc:MLServiceInputParameter",
+							"dcterms:title": "use",
+							"dcterms:description": "An optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings 'everything', 'all.obs', 'complete.obs', 'na.or.complete', or 'pairwise.complete.obs'.",
+							"dmmlcc:mandatory":"optional",
+							"dmmlcc:defaultvalue":"everything"						
+						},
+						{
+							"@id":"dmmlcc:response_parameter_02",
+							"@type": "dmmlcc:MLServiceInputParameter",
+							"dcterms:title": "method",
+							"dcterms:description": "A character string indicating which correlation coefficient (or covariance) is to be computed. One of 'pearson' (default), 'kendall', or 'spearman', can be abbreviated.",
+							"dmmlcc:mandatory":"true"											
+						}
+					]			
+				}
+				,
+				"mls:hasOutput":{
+					"@id": "dmmlcc:Correlation_Service_Output",
+					"@type": "dmmlcc:MLServiceOutput",
+					"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",				
+					"mls:ModelEvaluation":{
+						"@id":"dmmlcc:Correlation_ModelEvaluation",
+						"@type": "dmmlcc:ModelEvaluation",
+						"dcterms:title": "Model evaluation",
+						"dcterms:description": "Model Evaluation",
+						"dmmlcc:storagebucket":"dicits://modelevaluation/"
+					}
+				},
+				"mls:executes":{
+					"@id": "mls:Correlation_Implementation",
+					"@type": "mls:Implementation",
+					"dcterms:description": "Implementation of Linear Regression Model",
+					"dmmlcc:implements":[
+						{
+							"@id":"dmmlcc:MLAlgorithm_01",
+							"@type":"mls:Algorithm",
+							"dcterms:description": "Correlation Algorithm in R",
+							"dmmlcc:ImplementationSource":"R",
+							"dmmlcc:package":"core",
+							"dmmlcc:functions":["cor"]
+						}
+					]
+				}
+			}
+		
+		 }
+	  ]
+	 }
+
+
+Copy this code to a file ``<yourmethod>.jsonld`` and change:
+
+* ``@id`` All IDs are in accordance with the specific algorithms to which the service corresponds
+
+* ``dcterms:description``, ``@dcterms:title``, ``@dcterms:comments``, etc. must be modified to be in line with the new service.
+
+* ``mls:Data`` must contain either a DataSet or a list of features.
+
+* ``dmmlcc:hasInputParameters``  must contain the list of all auxiliary parameters to execute the algorithm. Including whether the parameter is mandatory or not, default values, parameter name, etc.
+
+* ``mls:hasOutput`` must contain, for the case, an algorithm that generates a model: ``Model`` and ``ModelEvaluation``. If it is a pre-processing function, it should only contain a ``DataSet`` type in the list.
+
+
+Composing with N3-TURTLE
+------------------------
+
+A Turtle document is a textual representations of an RDF graph. The Turtle grammar for triples is a subset of the SPARQL 1.1 Query Language [SPARQL11-QUERY] grammar for TriplesBlock. The two grammars share production and terminal names where possible. A Turtle document allows writing down an RDF graph in a compact textual form. An RDF graph is made up of triples consisting of a subject, predicate and object.
+
+Composing the description of a service consists of creating a service definition within a RDF/TURTLE/JSON-LD file.
+The description of a data mining service is performed taking into account several parts necessary for the definition of the particular service. These are the following:
+
+* base information of the algorithm,
+* authentication,
+* input parameters corresponding to the DataSet or characteristics,
+* the additional input parameters, ie the operating parameters of the mining method,
+* the output of the algorithm / method that can be a model, an evaluation of the model or a DataSet,
+* indicate how the method is executed; In this case it is necessary to indicate the type of implementation that is executed, whenever possible.
+
+
+Basic information of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Turtle has a way of compose the descriptions of the service maintaining the same volcabulary, but not the same strcuture. This is the begining of MLService::
+
+	dmmlcc:Correlation_Service a dmmlcc:MLService ;
+	    dmmlcc:hasAuthentication dmmlcc:Correlation_Service_Auth ;
+	    dmmlcc:hasOperation dmmlcc:Correlation_Service_Operation ;
+	    dcterms:created "2017-04-20" ;
+	    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+	    dcterms:description "Correlation" ;
+	    dcterms:modified "2017-05-29" ;
+	    dcterms:publisher "DICITS_ML" ;
+	    dcterms:title "Correlation" ;
+	    rdfs:comments "Correlation" .
+
+Each sentence has Subject, Predicate and Object. In this case:
+
+* Subject ``dmmlcc:Correlation_Service a dmmlcc:MLService ;``
+
+* Predicate ::
+	  
+	    dcterms:created "2017-04-20" ;
+	    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+	    dcterms:description "Correlation" ;
+	    dcterms:modified "2017-05-29" ;
+	    dcterms:publisher "DICITS_ML" ;
+	    dcterms:title "Correlation" ;
+	    rdfs:comments "Correlation" .
+		
+* Object ::
+
+	    dmmlcc:hasAuthentication dmmlcc:Correlation_Service_Auth ;
+	    dmmlcc:hasOperation dmmlcc:Correlation_Service_Operation ;
+
+
+Object ``dmmlcc:Correlation_Service_Auth`` you must specify Authentication Services associated with the service::
+
+	dmmlcc:Correlation_Service_Auth a dmmlcc:MLServiceAuthentication ;
+	    waa:WebAuthenticationrequiresAuthentication "None" ;
+	    dcterms:description "The service requires authentication, and the type of authentication" .
+
+The same with ``dmmlcc:hasOperation`` ::
+
+	dmmlcc:Correlation_Service_Operation a dmmlcc:MLOperation ;
+	    dmmlcc:hasInputParameters dmmlcc:Correlation_Service_InputParameters ;
+	    dcterms:description "Operation performing the service" ;
+	    mls:executes mls:Correlation_Implementation ;
+	    mls:hasInput dmmlcc:Correlation_Service_Input ;
+	    mls:hasOutput dmmlcc:Correlation_Service_Output .
+
+And this must continue to define each of the objects.
+	
+
+
+Starting from a template
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another way to build and define a service can be done using existing service definitions. In the project folder ``/services_definition/`` you can review all descriptions of data mining and machine learning services available for OpenCCML. They are available in two formats ``Turtle`` (turtle folder) and ``JSON-LD`` (jsonld folder). Both formats are understood by OpenCCML and therefore you can define your service with any of them.
+
+To start working from a service description template already created, we recommend using a simple algorithm or method such as simple data processing operations, for example a ``correlation``.
+
+Service description of Correlation with TURTLE::
+
+
+	@prefix mls: <http://www.w3.org/ns/mls#> .
+	@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+	@prefix dcterms: <http://purl.org/dc/terms/#> .
+	@prefix waa: <http://purl.oclc.org/NET/> .
+	@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+	@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+	@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+	@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+	dmmlcc:Correlation_Service a dmmlcc:MLService ;
+	    dmmlcc:hasAuthentication dmmlcc:Correlation_Service_Auth ;
+	    dmmlcc:hasOperation dmmlcc:Correlation_Service_Operation ;
+	    dcterms:created "2017-04-20" ;
+	    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+	    dcterms:description "Correlation" ;
+	    dcterms:modified "2017-05-29" ;
+	    dcterms:publisher "DICITS_ML" ;
+	    dcterms:title "Correlation" ;
+	    rdfs:comments "Correlation" .
+
+	dmmlcc:Correlation_ModelEvaluation a dmmlcc:ModelEvaluation ;
+	    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+	    dcterms:description "Model Evaluation" ;
+	    dcterms:title "Model evaluation" .
+
+	dmmlcc:Correlation_Service_Auth a dmmlcc:MLServiceAuthentication ;
+	    waa:WebAuthenticationrequiresAuthentication "None" ;
+	    dcterms:description "The service requires authentication, and the type of authentication" .
+
+	dmmlcc:Correlation_Service_Input a dmmlcc:MLServiceInput ;
+	    dmmlcc:contains dmmlcc:contains_features ;
+	    dcterms:description "Input data contains Dataset or Feature/s" ;
+	    dcterms:title "InputDataSet" .
+
+	dmmlcc:Correlation_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+	    dmmlcc:Parameters dmmlcc:response_parameter_01,
+	        dmmlcc:response_parameter_02 ;
+	    dcterms:description "Input Parameters" ;
+	    dcterms:title "Input" .
+
+	dmmlcc:Correlation_Service_Operation a dmmlcc:MLOperation ;
+	    dmmlcc:hasInputParameters dmmlcc:Correlation_Service_InputParameters ;
+	    dcterms:description "Operation performing the service" ;
+	    mls:executes mls:Correlation_Implementation ;
+	    mls:hasInput dmmlcc:Correlation_Service_Input ;
+	    mls:hasOutput dmmlcc:Correlation_Service_Output .
+
+	dmmlcc:Correlation_Service_Output a dmmlcc:MLServiceOutput ;
+	    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+	    mls:ModelEvaluation dmmlcc:Correlation_ModelEvaluation .
+
+	dmmlcc:Feature_00 a mls:Feature  ;
+	    dmmlcc:format dmmlcc:ParameterFormat_CVS ;
+	    dmmlcc:mandatory "true" ;
+	    dmmlcc:storagebucket "dicits://" ;
+	    dcterms:description "Individual Feature" ;
+	    dcterms:title "Feature" .
+
+	dmmlcc:Feature_01 dmmlcc:format dmmlcc:ParameterFormat_CVS ;
+	    dmmlcc:mandatory "true" ;
+	    dmmlcc:storagebucket "dicits://" ;
+	    dcterms:description "Individual Feature" ;
+	    dcterms:title "Feature" .
+
+	dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+	    dmmlcc:ImplementationSource "R" ;
+	    dmmlcc:functions "cor" ;
+	    dmmlcc:package "core" ;
+	    dcterms:description "Correlation Algorithm in R" .
+
+	dmmlcc:contains_features a dmmlcc:contains ;
+	    mls:Data dmmlcc:Feature_00,
+	        dmmlcc:Feature_01 .
+
+	dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+	    dmmlcc:defaultvalue "everything" ;
+	    dmmlcc:mandatory "optional" ;
+	    dcterms:description "An optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings 'everything', 'all.obs', 'complete.obs', 'na.or.complete', or 'pairwise.complete.obs'." ;
+	    dcterms:title "use" .
+
+	dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+	    dmmlcc:mandatory "true" ;
+	    dcterms:description "A character string indicating which correlation coefficient (or covariance) is to be computed. One of 'pearson' (default), 'kendall', or 'spearman', can be abbreviated." ;
+	    dcterms:title "method" .
+
+	mls:Correlation_Implementation a mls:Implementation ;
+	    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
+	    dcterms:description "Implementation of Linear Regression Model" .
+
+	dmmlcc:ParameterFormat_CVS a dmmlcc:csv ;
+	    dcterms:description "CSV Source file format" .
+
+	
+
+
+Copy this code to a file ``<yourmethod>.ttl`` and change:
+
+* ``dcterms:description``, ``@dcterms:title``, ``@dcterms:comments``, etc. must be modified to be in line with the new service.
+
+* ``mls:Data`` must contain either a DataSet or a list of features.
+
+* ``dmmlcc:hasInputParameters``  must contain the list of all auxiliary parameters to execute the algorithm. Including whether the parameter is mandatory or not, default values, parameter name, etc.
+
+* ``mls:hasOutput`` must contain, for the case, an algorithm that generates a model: ``Model`` and ``ModelEvaluation``. If it is a pre-processing function, it should only contain a ``DataSet`` type in the list.
 

@@ -1,0 +1,294 @@
+#@base <http://dicits.ugr.es/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix mls: <http://www.w3.org/ns/mls> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix waa: <http://purl.oclc.org/NET/WebAuthentication> .
+@base <http://dicits.ugr.es/dmmlcc/v1.0/> .
+
+dmmlcc: rdf:type owl:Ontology ;
+	dcterms:hasVersion 1.0 ;
+	dcterms:description ""@en ;
+	dcterms:title ""@en ; 
+	dcterms:created "2012-09-20"^^xsd:date ;
+	dcterms:issued "2014-01-14"^^xsd:date ;
+	rdfs:label "Linked USDL Core"@en ;
+	foaf:page <http://dicits.ugr.es/dmmlcc/start/> ;
+	dcterms:creator dmmlcc:manuelparra ;
+	owl:versionInfo "1.1" .
+
+dmmlcc:manuelparra a foaf:Person;
+	foaf:name "Manuel Parra";
+	foaf:mbox "manuelparra@ugr.es";
+	foaf:homepage <http://dicits.ugr.es/members/#manuelparra> .
+	
+	
+#################################################################
+#    Object Properties
+#################################################################
+dmmlcc:hasAuthentication rdf:type owl:ObjectProperty ;
+	rdfs:label "hasAuthentication"@en ;
+	rdfs:comment "A relation between Service and an Authentication method required by the service"@en ;
+	dcterms:description "A relation beween Service and an Authentication method required by the service"@en ;
+	rdfs:domain dmmlcc:Service ;
+	rdfs:range dmmlcc:ServiceAuthentication ;
+	.
+	
+	
+dmmlcc:hasPart rdf:type owl:ObjectProperty ;
+	rdfs:label "hasPart"@en ;
+	rdfs:comment "A relation between Service and the businnes entity"@en ;
+	dcterms:description "A relation between Service and the businnes entity"@en ;
+	.
+	
+dmmlcc:hasRole rdf:type owl:ObjectProperty ;
+	rdfs:label "hasRole"@en ;
+	rdfs:comment "A relation between an entity and a Role tyoe"@en ;
+	dcterms:description "A relation between Service and the businnes entity"@en ;
+	.
+	
+dmmlcc:hasClassifiction rdf:type owl:ObjectProperty ;
+	rdfs:label "hasClassifiction"@en ;
+	rdfs:comment "A relation between the service and Catalog of the service. Link the service with de service catalog"@en ;
+	dcterms:description "A relation between the service and Catalog of the service. Link the service with de service catalog"@en ;
+	.
+	
+dmmlcc:hasSLA rdf:type owl:ObjectProperty ;
+	rdfs:label "hasSLA"@en ;
+	rdfs:comment "A relation between Service and SLA"@en ;
+	dcterms:description "A relation between Service and SLA"@en ;
+	.
+
+
+dmmlcc:includes  rdf:type owl:ObjectProperty ;
+	rdfs:label "includes"@en ;
+	rdfs:comment "Relation of inclusion of the class Service Offering on Service"@en ;
+	dcterms:description "Relation of inclusion of the class Service Offering on Service"@en ;
+	rdfs:domain dmmlcc:ServiceOffering ;
+	rdfs:range dmmlcc:Service ;
+	.
+	
+dmmlcc:contains  rdf:type owl:ObjectProperty ;
+	rdfs:label "contains"@en ;
+	rdfs:comment "Relation with Service Input and Data"@en ;
+	dcterms:description "Relation with Service Input and Data"@en ;
+	rdfs:domain mls:Data ;
+	rdfs:range dmmlcc:ServiceInput ;
+	.
+	
+	
+dmmlcc:hasOutputFault  rdf:type owl:ObjectProperty ;
+	rdfs:label "hasOutputFault"@en ;
+	rdfs:comment "Relation about Output Fault"@en ;
+	dcterms:description "Relation about Output Fault"@en ;
+	rdfs:subPropertyOf owl:topObjectProperty 
+	.
+	
+dmmlcc:hasInputFault  rdf:type owl:ObjectProperty ;
+	rdfs:label "hasInputFault"@en ;
+	rdfs:comment "Relation about Input Fault"@en ;
+	dcterms:description "Relation about Input Fault"@en ;
+	rdfs:subPropertyOf owl:topObjectProperty 
+	.
+	
+dmmlcc:hasMethod rdf:type owl:ObjectProperty ;
+	rdfs:label "hasMethod"@en ;
+	rdfs:comment "API Method"@en ;
+	dcterms:description "API Method"@en ;
+	rdfs:domain dmmlcc:Service ;
+	rdfs:range dmmlcc:APIMethod ;
+	.
+	
+dmmlcc:hasAddress rdf:type owl:ObjectProperty ;
+	rdfs:label "hasAddress"@en ;
+	rdfs:comment "API Service Address"@en ;
+	dcterms:description "API Service Address"@en ;
+	rdfs:domain dmmlcc:Service ;
+	rdfs:range dmmlcc:APIMethod ;
+	.
+
+
+#################################################################
+#    Classes
+#################################################################
+
+dmmlcc:Service rdf:Class owl:Class ;
+	rdfs:subClassOf 
+          [ rdf:type owl:Restriction ;
+            owl:onProperty dmmlcc:hasAuthentication ;
+            owl:someValuesFrom dmmlcc:ServiceAuthentication 
+          ], 
+          [ rdf:type owl:Restriction ;
+            owl:onProperty dmmlcc:hasClassification ;
+            owl:someValuesFrom dmmlcc:ServicesCatalog 
+          ] , 
+          [ rdf:type owl:Restriction ;
+            owl:onProperty dmmlcc:hasPart ;
+            owl:someValuesFrom dmmlcc:Entity 
+          ]  , 
+          [ rdf:type owl:Restriction ;
+            owl:onProperty dmmlcc:hasOperation ;
+            owl:someValuesFrom dmmlcc:Operation 
+          ];
+     rdfs:label "Service"@en ;
+     rdfs:comment "Describing the service in a way that the information can help consumers in deciding which services are more suited for their needs."@en ;
+     dcterms:description "Describing the service in a way that the information can help consumers in deciding which services are more suited for their needs."@en ;
+     .
+
+
+dmmlcc:ServiceAuthentication rdf:Class owl:Class ;
+	rdfs:subClassOf waa:ServiceAuthentication, waa:AuthenticationMechanism ;
+	rdfs:comment "ServiceAuthentication is the set of mandantory methods required to use the Service"@en ;
+	dcterms:description "ServiceAuthentication is the set of mandantory methods required to use the Service"@en ;	
+	.
+	
+	
+dmmlcc:Entity rdf:type owl:Class ;
+	rdfs:subClassOf
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty dmmlcc:hasRole ;
+                        owl:someValuesFrom dmmlcc:Roles 
+                      ] ;
+	rdfs:subClassOf gr:BusinessEntity ;				 
+	rdfs:comment "Entity that use or produce the service"@en ;
+	dcterms:description "Entity that use or produce the service"@en ;	
+	.
+
+
+dmmlcc:Roles rdf:type owl:Class ;
+	rdfs:subClassOf skos:ConceptScheme ;
+	rdfs:comment "Roles taken from consumer or provider on the service"@en ;
+	dcterms:description "Roles taken from consumer or provider on the service"@en ;	
+	dcterms:title "List of roles availables" ;
+	skos:hasTopConcept dmmlcc:Provider ;
+	skos:hasTopConcept dmmlcc::Consumer ;
+	.
+
+dmmlcc:ServiceModel rdfs:Class  owl:Class ;
+	rdfs:label "Service Model"@en ;
+	rdfs:comment "A ServiceModel is used to represent classes of services"@en ;
+	dcterms:description "A ServiceModel is used to represent classes of services"@en ;	
+	rdfs:subClassOf dmmlcc:Service, gr:ProductOrService ;
+	.
+
+
+dmmlcc:ServiceIndividual rdfs:Class  owl:Class ;
+	rdfs:label "Service Model"@en ;
+	rdfs:comment "Instances of ServiceIndividual are actual services that are creating value to a network of business entities."@en ;
+	dcterms:description "Instances of ServiceIndividual are actual services that are creating value to a network of business entities."@en ;	
+	rdfs:subClassOf dmmlcc:Service, gr:Individual ;
+	.
+
+
+dmmlcc:Provider rdf:type owl:Class ;
+	rdfs:subClassOf dmmlcc:Roles ;
+	rdfs:comment "Entity that provides the service as a provider"@en ;
+	dcterms:description "Entity that provides the service as a provider"@en ;	
+	dcterms:title "Provider"@en ;
+	skos:prefLabel "consumer"@en;	
+	skos:broader dmmlcc:Roles ;
+	.
+
+dmmlcc:Consumer rdf:type owl:Class ;
+	rdfs:subClassOf dmmlcc:Roles ;
+	rdfs:comment "Entity that provides the service as a consumer"@en ;
+	dcterms:description "Entity that provides the service as a consumer"@en ;	
+	dcterms:title "Consumer"@en ;
+	skos:prefLabel "consumer"@en;
+	skos:broader dmmlcc:Roles ;
+	.
+
+dmmlcc:ServicesCatalog rdf:type owl:Class ;
+	rdfs:subClassOf skos:ConceptSchema ;				 
+	rdfs:comment "Services Catalog"@en ;
+	dcterms:description "Services Catalog"@en ;	
+	.
+	
+dmmlcc:SLA rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty dmmlcc:hasSLA ;
+		  owl:someValuesFrom dmmlcc:SLA
+		] ;			 
+	rdfs:comment "SLA for the Service"@en ;
+	dcterms:description "SLA for the Service"@en ;	
+	.
+
+dmmlcc:ServiceOffering rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty dmmlcc:include ;
+		  owl:someValuesFrom dmmlcc:ServiceOffering
+		] ;
+	rdfs:label "Service Offering"@en ;
+	rdfs:comment "Service Offering"@en ;
+	dcterms:description "Service Offering"@en ;	
+	rdfs:subClassOf gr:Offering ;
+	.
+
+dmmlcc:Operation rdf:type owl:Class ;
+	rdfs:subClassOf 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty mls:hasOutput ;
+		  owl:someValuesFrom dmmlcc:ServiceOutput
+		],
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty mls:hasInput ;
+		  owl:someValuesFrom dmmlcc:ServiceInput
+		], 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty mls:achieves ;
+		  owl:someValuesFrom mls:Task
+		],
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty mls:executes ;
+		  owl:someValuesFrom mls:Implementation
+		], 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty mls:realizes ;
+		  owl:someValuesFrom mls:Algorithm
+		], 
+		[ rdf:type owl:Restriction ;
+		  owl:onProperty dmmlcc:hasInputFault ;
+		  owl:someValuesFrom dmmlcc:ServiceInput
+		  ], 
+		[ rdf:type owl:Restriction ;
+			owl:onProperty dmmlcc:hasOutputFault ;
+			owl:someValuesFrom dmmlcc:ServiceOutput
+		];
+	rdfs:label "Execution of Service (operation)"@en ;
+	rdfs:comment "Execution of Service (operation)"@en ;
+	dcterms:description "Execution of a implementation"@en ;	
+	.
+
+
+dmmlcc:ServiceOutput rdf:type owl:Class;
+	rdfs:subClassOf mls:Model, mls:ModelEvaluation, mls:DataSet ;	
+	rdfs:label "Output of the operation and related service"@en ;
+	rdfs:comment "Output of the operation and related service"@en ;
+	dcterms:description "Output of the operation and related service"@en ;	
+	.
+	
+dmmlcc:ServiceInput rdf:type owl:Class;
+	rdfs:subClassOf mls:Data ;	
+	rdfs:label "Input of the operation and related service"@en ;
+	rdfs:comment "Input of the operation and related service"@en ;
+	dcterms:description "Output of the operation and related service"@en ;	
+	.
+
+
+dmmlcc:APIMethod rdf:type owl:Class;
+	rdfs:subClassOf mls:Service, rdfs:Resource, rdfs:Datatype ;	
+	rdfs:label "API Method of the related service"@en ;
+	rdfs:comment "API Method of the related service"@en ;
+	dcterms:description "API Method of the related service"@en ;	
+	.
+
+
