@@ -15,10 +15,7 @@
 
 """RWrapper"""
 
-import csv
-import rpy2.robjects as ro
-from parameters import *
-from rpy2.robjects.packages import importr
+from wrapperR.parameters import *
 
 
 class core(Parameters):
@@ -40,7 +37,7 @@ class core(Parameters):
 		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
 		# Analize formulae 
 		values = self.parameter.getDataset()
-		file = self.parameter.outputRoute + 'model.pmml'
+        file = self.parameter.outputRoute + '/model.pmml'
 		ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
 		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available
 
@@ -50,8 +47,11 @@ class core(Parameters):
 	        r2pmml(resultfit,file="{1}")
      	""".format(self.parameter.input, file))
 
-		print(lm)
+        return (file)
 
+
+"""
 entrada = {'na__action':'na.omit', 'dataset': 'dataset.csv', 'formula': 'weight~group', 'weights': 'NULL', 'subset': 'NULL'}
 p = core(entrada)
 p.lm()	
+"""
