@@ -44,3 +44,8 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
+
+builder/
+_builder/
+build/
+_build/
