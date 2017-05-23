@@ -30,7 +30,6 @@ class core(Parameters):
 
 	def __init__(self, dictionary):
 		self.parameter = Parameters(dictionary)
-		print(self.parameter.input)
 	
 	def lm (self):
 		"""
@@ -41,17 +40,18 @@ class core(Parameters):
 		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
 		# Analize formulae 
 		values = self.parameter.getDataset()
+		file = self.parameter.outputRoute + 'model.pmml'
 		ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
 		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available
 
-		R=ro.r
-		R.library("r2pmml")
+		lm = ro.r("""
+			library("r2pmml")
+	        resultfit = lm({0})
+	        r2pmml(resultfit,file="{1}")
+     	""".format(self.parameter.input, file))
 
-		lmfit=R.lm("weight ~ group")
-		file = self.parameter.outputRoute + 'model.pmml'
-		R.r2pmml(lmfit,file=file)
+		print(lm)
 
-formula = "mpg~disp"
-entrada = {'na__action': 'na.remove', 'dataset': 'dataset.csv', 'formula': 'a~b', 'weights': 'NULL', 'subset': 'NULL'}
+entrada = {'na__action':'na.omit', 'dataset': 'dataset.csv', 'formula': 'weight~group', 'weights': 'NULL', 'subset': 'NULL'}
 p = core(entrada)
 p.lm()	
