@@ -15,7 +15,10 @@
 
 """RWrapper"""
 
+import csv
+import rpy2.robjects as ro
 from wrapperR.parameters import *
+from rpy2.robjects.packages import importr
 
 
 class core(Parameters):
@@ -23,11 +26,11 @@ class core(Parameters):
 	"""
 	Package CORE of R. Includes methods from the CORE of R, and not included on additional Packages
 	"""
-	
+
 
 	def __init__(self, dictionary):
 		self.parameter = Parameters(dictionary)
-	
+
 	def lm (self):
 		"""
 		Linear Regression Method
@@ -35,9 +38,9 @@ class core(Parameters):
 		#TAKS:
 		# Extract Columns from the dataset
 		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
-		# Analize formulae 
+		# Analize formulae
 		values = self.parameter.getDataset()
-        file = self.parameter.outputRoute + '/model.pmml'
+		file = self.parameter.outputRoute + '/model.pmml'
 		ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
 		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available
 
@@ -47,9 +50,7 @@ class core(Parameters):
 	        r2pmml(resultfit,file="{1}")
      	""".format(self.parameter.input, file))
 
-        return (file)
-
-
+		return(file)
 """
 entrada = {'na__action':'na.omit', 'dataset': 'dataset.csv', 'formula': 'weight~group', 'weights': 'NULL', 'subset': 'NULL'}
 p = core(entrada)
