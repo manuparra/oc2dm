@@ -28,8 +28,8 @@ class core(Parameters):
 	"""
 	
 
-	def __init__(self, dataset, formula, entrada):
-		self.parameter = Parameters(dataset, formula, entrada)
+	def __init__(self, dictionary):
+		self.parameter = Parameters(dictionary)
 		print(self.parameter.input)
 	
 	def lm (self):
@@ -52,6 +52,6 @@ class core(Parameters):
 		R.r2pmml(lmfit,file=file)
 
 formula = "mpg~disp"
-entrada = {'na__action': 'na.remove', 'dataset': 'balbalabl.csv', 'formula': 'a~b', 'weights': 'NULL', 'subset': 'NULL'}
-p = core("dataset.csv", formula, entrada)
+entrada = {'na__action': 'na.remove', 'dataset': 'dataset.csv', 'formula': 'a~b', 'weights': 'NULL', 'subset': 'NULL'}
+p = core(entrada)
 p.lm()	
