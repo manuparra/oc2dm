@@ -58,8 +58,177 @@ And this is the equivalent figure og the code:
    :align: center
    
 
+Authentication for the service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the service requires authentication, the parameters must be indicated. This is done filling the ``"dmmlcc:hasAuthentication"`` attribute as follows::
 
 
+		"dmmlcc:hasAuthentication": {
+		
+			"@id": "dmmlcc:LinearRegression_Service_Auth",
+			"@type": "dmmlcc:MLServiceAuthentication",
+		 	"dcterms:description": "The service requires authentication, and the type of authentication",
+			"waa:requiresAuthentication":"None"
+		},
+
+Operations in the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The service operations section contains much of the service definition. Among them is the data entry and characteristics, also the input parameters of the algorithm such as for a logistic regression, parameters such as the type of formula, what to do with nulls, weights, etc. It includes the output of the algorithm that can be a model, an evaluated model, or a DataSet (according to operations such as processing). Finally, it includes execution data, such as the implementation to be used of the algorithm, the package and the exact function.
+
+This is the general structure of operations ``"dmmlcc:hasOperation``::
 
 
+	"dmmlcc:hasOperation": {
+		"mls:hasInput":{ ... },
+		"dmmlcc:hasInputParameters":{ ... },
+		"mls:hasOutput":{ ... },
+		"mls:executes":{ ... }
+	}
+	
+	
+Within each of these sections as ``hasInput``, ``hasInputParameters``, ``output`` and ``execution``, contains different attributes and characteristics that identify them.
 
+Operation: hasInput
+~~~~~~~~~~~~~~~~~~~
+
+To indicate that the service requires a data entry it is necessary to compose this entry as follows. The entry has a property that contains what data it will receive. This entry can be of two types, DataSet or Features::
+
+
+	"mls:hasInput":
+		{
+		"@id": "dmmlcc:LinearRegression_Service_Input",
+		"@type": "dmmlcc:MLServiceInput",
+		"dcterms:title":"InputDataSet",
+		"dcterms:description": "Input data contains Dataset or Feature/s",
+		"dmmlcc:contains":{
+			"@id":"dmmlcc:contains_dataset_01",
+			"@type:":"dmmlcc:contains",
+			"mls:Data":[
+				{
+				"@id":"dmmlcc:dataset_01",
+				"@type:":"mls:DataSet",
+				"dcterms:title": "DataSet",
+				"dcterms:description": "Dataset on which the service is applied",
+				"dmmlcc:storagebucket":"dicits://",
+				"dmmlcc:mandatory":"true"									
+				"dmmlcc:format":
+					{
+					"@id":"dmmlcc:ParameterFormat_CVS_00",
+					"@type": "dmmlcc:csv",
+					"dcterms:description": "CSV Source file format"						
+					},
+				}
+			]
+			}
+		},
+		
+
+If the type is a DataSet just as if it is a feature needs to be identified by the file format that contains the data. In this example the dataset is a CSV.
+
+In the case where the algorithm has an entry corresponding to a column or vector of a DataSet, it would only be necessary to indicate the feature or features that will form the input of the algorithm. 
+
+Features are usually used when algorithms receive a column or vector  to process and return the same column or columns with some transformations. That is, for preprocessing algorithms for example.::
+
+
+	"mls:hasInput":{
+		...
+		"dmmlcc:contains":{
+			"@id":"dmmlcc:contains_features",
+			"@type:":"dmmlcc:contains",
+			"mls:Data":[						
+					{
+					"@id":"dmmlcc:Feature_00",
+					"@type:":"mls:Feature",
+					"dcterms:description": "Feature",
+					"dcterms:title": "Feature",
+				 	"dcterms:description": "Individual Feature",
+					"dmmlcc:storagebucket":"dicits://",
+					"dmmlcc:mandatory":"true"				
+					"dmmlcc:format":
+						{
+							"@id":"dmmlcc:ParameterFormat_CVS",
+							"@type": "dmmlcc:csv",
+							"dcterms:description": "CSV Source file format"									
+						},
+				},
+				{
+					"@id":"dmmlcc:Feature_01",
+					"dcterms:description": "Feature Y",
+					"dcterms:title": "Feature",
+				 	"dcterms:description": "Individual Feature",
+					"dmmlcc:storagebucket":"dicits://",
+					"dmmlcc:mandatory":"true"
+					"dmmlcc:format":
+						{
+							"@id":"dmmlcc:ParameterFormat_CVS",
+							"@type": "dmmlcc:csv",
+							"dcterms:description": "CSV Source file format"									
+						},
+				}
+			]					
+		}
+	}
+
+
+Operation: hasInputParameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The input parameters correspond to all those characteristics necessary for the algorithm to be executed. It shares all those parameters that the function or algorithm requires. For example in a linear regression, it would be anything that is not the dataset ie. modifiers associated with the function like  associated weights or the type of regression and so on::
+
+
+	"dmmlcc:hasInputParameters":
+	{	
+		"@id": "dmmlcc:LinearRegression_Service_InputParameters",
+		"@type": "dmmlcc:MLServiceInputParameters",
+		"dcterms:description": "Input Parameters",
+		"dcterms:title": "Input",
+		"dmmlcc:Parameters":[
+			{
+				"@id":"dmmlcc:response_parameter_01",
+				"@type": "dmmlcc:MLServiceInputParameter",
+				"dcterms:title": "formula",
+				"dcterms:description": "Response variable and Formulae ",
+				"dmmlcc:mandatory":"true",
+				"dmmlcc:defaultvalue":""						
+			},
+			{
+				"@id":"dmmlcc:response_parameter_02",
+				"@type": "dmmlcc:MLServiceInputParameter",
+				"dcterms:title": "subset",
+				"dcterms:description": "Optional vector specifying a subset of observations to be used in the fitting process",
+				"dmmlcc:mandatory":"optional",	
+				"dmmlcc:defaultvalue":"NULL"
+									
+			},
+			{
+				"@id":"dmmlcc:response_parameter_03",
+				"@type": "dmmlcc:MLServiceInputParameter",
+				"dcterms:title": "na.action",
+				"dcterms:description": "A function which indicates what should happen when the data contain NAs",
+				"dmmlcc:mandatory":"optional",
+				"dmmlcc:defaultvalue":"na.remove"
+										
+			},
+			{
+				"@id":"dmmlcc:response_parameter_04",
+				"@type": "dmmlcc:MLServiceInputParameter",
+				"dcterms:title": "weights",
+				"dcterms:description": "Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used",
+				"dmmlcc:mandatory":"optional",
+				"dmmlcc:defaultvalue":"NULL"
+										
+			}
+		]			
+	}
+			
+
+Operation: output
+~~~~~~~~~~~~~~~~~
+
+The output of the algorithm must be fully specified. There are three possible output types that are the model, the evaluation of the model or a DataSet. The model corresponds to the output of the execution of the algorithm, ie the model generated by the function. The evaluation of the model corresponds to the extraction of the individual parameters of the model. The model generated by a function must be exported PMML instead the model evaluated corresponds to the set of attributes contained in the model. In reference to DataSet as a result of the output of the section of an algorithm, this corresponds to operations performed by the algorithm for a pre-processing or modification of an input DataSet.
+
+
+Operation: executes
+~~~~~~~~~~~~~~~~~~~

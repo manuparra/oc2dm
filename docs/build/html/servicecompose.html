@@ -94,6 +94,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Compose services description</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#composing-with-json-ld">Composing with JSON-LD</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-information">Base Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication-for-the-service">Authentication for the service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operations-in-the-service">Operations in the service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operation-hasinput">Operation: hasInput</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operation-hasinputparameters">Operation: hasInputParameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operation-output">Operation: output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operation-executes">Operation: executes</a></li>
 </ul>
 </li>
 </ul>
@@ -201,6 +207,166 @@ The description of a data mining service is performed taking into account severa
 </div>
 <p>And this is the equivalent figure og the code:</p>
 <a class="reference internal image-reference" href="_images/graph.png"><img alt="Graph of the service composition" class="align-center" src="_images/graph.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="authentication-for-the-service">
+<h3>Authentication for the service<a class="headerlink" href="#authentication-for-the-service" title="Permalink to this headline">¶</a></h3>
+<p>If the service requires authentication, the parameters must be indicated. This is done filling the <code class="docutils literal"><span class="pre">&quot;dmmlcc:hasAuthentication&quot;</span></code> attribute as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;dmmlcc:hasAuthentication&quot;</span><span class="p">:</span> <span class="p">{</span>
+
+        <span class="s2">&quot;@id&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:LinearRegression_Service_Auth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceAuthentication&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;The service requires authentication, and the type of authentication&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;waa:requiresAuthentication&quot;</span><span class="p">:</span><span class="s2">&quot;None&quot;</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operations-in-the-service">
+<h3>Operations in the service<a class="headerlink" href="#operations-in-the-service" title="Permalink to this headline">¶</a></h3>
+<p>The service operations section contains much of the service definition. Among them is the data entry and characteristics, also the input parameters of the algorithm such as for a logistic regression, parameters such as the type of formula, what to do with nulls, weights, etc. It includes the output of the algorithm that can be a model, an evaluated model, or a DataSet (according to operations such as processing). Finally, it includes execution data, such as the implementation to be used of the algorithm, the package and the exact function.</p>
+<p>This is the general structure of operations <code class="docutils literal"><span class="pre">&quot;dmmlcc:hasOperation</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;dmmlcc:hasOperation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mls:hasInput&quot;</span><span class="p">:{</span> <span class="o">...</span> <span class="p">},</span>
+        <span class="s2">&quot;dmmlcc:hasInputParameters&quot;</span><span class="p">:{</span> <span class="o">...</span> <span class="p">},</span>
+        <span class="s2">&quot;mls:hasOutput&quot;</span><span class="p">:{</span> <span class="o">...</span> <span class="p">},</span>
+        <span class="s2">&quot;mls:executes&quot;</span><span class="p">:{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Within each of these sections as <code class="docutils literal"><span class="pre">hasInput</span></code>, <code class="docutils literal"><span class="pre">hasInputParameters</span></code>, <code class="docutils literal"><span class="pre">output</span></code> and <code class="docutils literal"><span class="pre">execution</span></code>, contains different attributes and characteristics that identify them.</p>
+</div>
+<div class="section" id="operation-hasinput">
+<h3>Operation: hasInput<a class="headerlink" href="#operation-hasinput" title="Permalink to this headline">¶</a></h3>
+<p>To indicate that the service requires a data entry it is necessary to compose this entry as follows. The entry has a property that contains what data it will receive. This entry can be of two types, DataSet or Features:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;mls:hasInput&quot;</span><span class="p">:</span>
+        <span class="p">{</span>
+        <span class="s2">&quot;@id&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:LinearRegression_Service_Input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInput&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span><span class="s2">&quot;InputDataSet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Input data contains Dataset or Feature/s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dmmlcc:contains&quot;</span><span class="p">:{</span>
+                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:contains_dataset_01&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;@type:&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:contains&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mls:Data&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span>
+                        <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:dataset_01&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;@type:&quot;</span><span class="p">:</span><span class="s2">&quot;mls:DataSet&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;DataSet&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Dataset on which the service is applied&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:storagebucket&quot;</span><span class="p">:</span><span class="s2">&quot;dicits://&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
+                        <span class="s2">&quot;dmmlcc:format&quot;</span><span class="p">:</span>
+                                <span class="p">{</span>
+                                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:ParameterFormat_CVS_00&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:csv&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;CSV Source file format&quot;</span>
+                                <span class="p">},</span>
+                        <span class="p">}</span>
+                <span class="p">]</span>
+                <span class="p">}</span>
+        <span class="p">},</span>
+</pre></div>
+</div>
+<p>If the type is a DataSet just as if it is a feature needs to be identified by the file format that contains the data. In this example the dataset is a CSV.</p>
+<p>In the case where the algorithm has an entry corresponding to a column or vector of a DataSet, it would only be necessary to indicate the feature or features that will form the input of the algorithm.</p>
+<p>Features are usually used when algorithms receive a column or vector  to process and return the same column or columns with some transformations. That is, for preprocessing algorithms for example.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;mls:hasInput&quot;</span><span class="p">:{</span>
+        <span class="o">...</span>
+        <span class="s2">&quot;dmmlcc:contains&quot;</span><span class="p">:{</span>
+                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:contains_features&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;@type:&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:contains&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mls:Data&quot;</span><span class="p">:[</span>
+                                <span class="p">{</span>
+                                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:Feature_00&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;@type:&quot;</span><span class="p">:</span><span class="s2">&quot;mls:Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Individual Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dmmlcc:storagebucket&quot;</span><span class="p">:</span><span class="s2">&quot;dicits://&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
+                                <span class="s2">&quot;dmmlcc:format&quot;</span><span class="p">:</span>
+                                        <span class="p">{</span>
+                                                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:ParameterFormat_CVS&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:csv&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;CSV Source file format&quot;</span>
+                                        <span class="p">},</span>
+                        <span class="p">},</span>
+                        <span class="p">{</span>
+                                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:Feature_01&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Feature Y&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Individual Feature&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dmmlcc:storagebucket&quot;</span><span class="p">:</span><span class="s2">&quot;dicits://&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
+                                <span class="s2">&quot;dmmlcc:format&quot;</span><span class="p">:</span>
+                                        <span class="p">{</span>
+                                                <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:ParameterFormat_CVS&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:csv&quot;</span><span class="p">,</span>
+                                                <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;CSV Source file format&quot;</span>
+                                        <span class="p">},</span>
+                        <span class="p">}</span>
+                <span class="p">]</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operation-hasinputparameters">
+<h3>Operation: hasInputParameters<a class="headerlink" href="#operation-hasinputparameters" title="Permalink to this headline">¶</a></h3>
+<p>The input parameters correspond to all those characteristics necessary for the algorithm to be executed. It shares all those parameters that the function or algorithm requires. For example in a linear regression, it would be anything that is not the dataset ie. modifiers associated with the function like  associated weights or the type of regression and so on:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;dmmlcc:hasInputParameters&quot;</span><span class="p">:</span>
+<span class="p">{</span>
+        <span class="s2">&quot;@id&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:LinearRegression_Service_InputParameters&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInputParameters&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Input Parameters&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;Input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dmmlcc:Parameters&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:response_parameter_01&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInputParameter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;formula&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Response variable and Formulae &quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:defaultvalue&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:response_parameter_02&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInputParameter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;subset&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Optional vector specifying a subset of observations to be used in the fitting process&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;optional&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:defaultvalue&quot;</span><span class="p">:</span><span class="s2">&quot;NULL&quot;</span>
+
+                <span class="p">},</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:response_parameter_03&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInputParameter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;na.action&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;A function which indicates what should happen when the data contain NAs&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;optional&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:defaultvalue&quot;</span><span class="p">:</span><span class="s2">&quot;na.remove&quot;</span>
+
+                <span class="p">},</span>
+                <span class="p">{</span>
+                        <span class="s2">&quot;@id&quot;</span><span class="p">:</span><span class="s2">&quot;dmmlcc:response_parameter_04&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;@type&quot;</span><span class="p">:</span> <span class="s2">&quot;dmmlcc:MLServiceInputParameter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:title&quot;</span><span class="p">:</span> <span class="s2">&quot;weights&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dcterms:description&quot;</span><span class="p">:</span> <span class="s2">&quot;Optional vector of weights to be used in the fitting process. If non-NULL, weighted least squares is used with weights weights (that is, minimizing sum(w*e^2)); otherwise ordinary least squares is used&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:mandatory&quot;</span><span class="p">:</span><span class="s2">&quot;optional&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;dmmlcc:defaultvalue&quot;</span><span class="p">:</span><span class="s2">&quot;NULL&quot;</span>
+
+                <span class="p">}</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operation-output">
+<h3>Operation: output<a class="headerlink" href="#operation-output" title="Permalink to this headline">¶</a></h3>
+<p>The output of the algorithm must be fully specified. There are three possible output types that are the model, the evaluation of the model or a DataSet. The model corresponds to the output of the execution of the algorithm, ie the model generated by the function. The evaluation of the model corresponds to the extraction of the individual parameters of the model. The model generated by a function must be exported PMML instead the model evaluated corresponds to the set of attributes contained in the model. In reference to DataSet as a result of the output of the section of an algorithm, this corresponds to operations performed by the algorithm for a pre-processing or modification of an input DataSet.</p>
+</div>
+<div class="section" id="operation-executes">
+<h3>Operation: executes<a class="headerlink" href="#operation-executes" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
