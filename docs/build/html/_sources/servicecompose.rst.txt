@@ -1,0 +1,65 @@
+.. OpenCCML documentation master file, created by
+   sphinx-quickstart on Tue May 23 00:45:48 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Compose services description
+============================
+ *Created by Manuel Parra, May 2017*
+
+How to compose a service description of a Data Mining / Machine Learning.
+
+Composing the description of a service consists of creating a service definition within a RDF/TURTLE/JSON-LD file.
+The description of a data mining service is performed taking into account several parts necessary for the definition of the particular service. These are the following:
+
+* base information of the algorithm,
+* authentication,
+* input parameters corresponding to the DataSet or characteristics,
+* the additional input parameters, ie the operating parameters of the mining method,
+* the output of the algorithm / method that can be a model, an evaluation of the model or a DataSet,
+* indicate how the method is executed; In this case it is necessary to indicate the type of implementation that is executed, whenever possible.
+
+
+Each of these elements listed above has a concrete set of attributes. These attributes are indicated with a specific and specific terminology of each of   the service definition languages that are used. In our case we will use two types of definition of comma services or service definition languages on the one hand Turtle files and another JSON-LD. Let's start defining a service with the definition language JSON-LD.
+
+
+Composing with JSON-LD
+----------------------
+
+Each of the service definition languages initially has a context that corresponds to the vocabulary that will be used within the service definition file. This context allows to use vocabularies
+  Specific, for example names of attributes or characteristics of that vocabulary; A concrete example would be, for example, how to define a date type attribute, in this case the dcterms: created attribute: "2017-03-12" would be used. You can also define more attributes equivalent to this from other vocabularies and are still fully compatible.
+
+
+Base Information
+~~~~~~~~~~~~~~~~
+
+This is at the main level of the ``graph`` and contains the following attributes::
+ 
+	"@graph":  [ {
+		"@id": "dmmlcc:LinearRegression_Service",
+		"@type": "dmmlcc:MLService",
+		"dcterms:description": "Linear regression is an approach for modeling the relationship between a scalar dependent variable y and one or more explanatory variables (or independent variables) denoted X. The case of one explanatory variable is called simple linear regression.",
+		"dcterms:creator":"Manuel Parra, Ruben Castro, J. Antonio Cortes",
+		"dcterms:created":"2017-04-20",
+		"dcterms:modified":"2017-05-04",
+		"dcterms:publisher":"DICITS_ML",
+		"dcterms:title":"LinearRegression",
+		"rdfs:comments":"Linear regression models are often fitted using the least squares approach, but they may also be fitted in other ways, such as by minimizing the 'lack of fit' in some other norm (as with least absolute deviations regression), or by minimizing a penalized version of the least squares loss function as in ridge regression",
+		"dmmlcc:hasAuthentication": {...},
+		"dmmlcc:hasOperation": {...}
+	}]
+  
+  
+And this is the equivalent figure og the code:
+
+.. image:: images/graph.png
+   :width: 800 px
+   :alt: Graph of the service composition
+   :align: center
+   
+
+
+
+
+
+

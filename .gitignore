@@ -7,7 +7,6 @@ __pycache__/
 
 # Distribution / packaging
 bin/
-build/
 develop-eggs/
 dist/
 eggs/
@@ -45,6 +44,3 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
-
-# Sphinx documentation
-docs/_build/

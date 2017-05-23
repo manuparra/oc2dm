@@ -1,0 +1,25 @@
+.. OpenCCML documentation master file, created by
+   sphinx-quickstart on Tue May 23 00:45:48 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Compose services description
+============================
+
+How to compose a service description of a Data Mining / Machine Learning.
+
+Composing the description of a service consists of creating a service definition within a RDF/TURTLE/JSON-LD file
+
+The description of a data mining service is performed taking into account several parts necessary for the definition of the particular service. 
+
+These are the following:
+
+* base information of the algorithm,
+* authentication,
+* input parameters corresponding to the DataSet or characteristics,
+* the additional input parameters, ie the operating parameters of the mining method,
+* the output of the algorithm / method that can be a model, an evaluation of the model or a DataSet,
+* indicate how the method is executed; In this case it is necessary to indicate the type of implementation that is executed, whenever possible.
+
+
+-----------------
