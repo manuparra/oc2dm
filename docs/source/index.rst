@@ -10,6 +10,7 @@ Welcome to Open Cloud Computing Machine Learning's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   openccml
    servicesschema
    servicecompose
 
