@@ -1,19 +1,21 @@
+from rpy2.robjects.packages import importr
 import pandas as pd
 
+import rpy2.robjects as ro
 
 class Parameters():
-    
-	def __init__(self, dataset, formula, input_parameter):
-		self.input = self.__parser(input_parameter)
-		self.dataset = dataset
-		self.outputRoute = self.__datasetParser(dataset)
-		self.formula = formula
+
+	def __init__(self, dictionary):
+		self.input = self.__parser(dictionary)
+		self.dataset = dictionary['dataset']
+		self.outputRoute = self.__datasetParser(dictionary['dataset'])
+		self.formula = dictionary['formula']
 
 
 	def __parser (self, input_parameters):
 		string = ''
 		for key, value in input_parameters.items():
-			if(value != 'NULL'):
+			if(value != 'NULL' and key != 'dataset'):
 				string += key.replace("__", ".") + ' = ' + value + ', '
 		return string[:-2] 
 
@@ -29,3 +31,4 @@ class Parameters():
 
 	def getDataset(self):
 		self.__readDataset()
+		return self.dataset
