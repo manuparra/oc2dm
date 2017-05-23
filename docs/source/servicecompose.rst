@@ -26,6 +26,14 @@ Each of these elements listed above has a concrete set of attributes. These attr
 Composing with JSON-LD
 ----------------------
 
+**What's JSON-LD**
+
+JSON-LD is a lightweight Linked Data format. It is easy for humans to read and write. It is based on the already successful JSON format and provides a way to help JSON data interoperate at Web-scale. JSON-LD is an ideal data format for programming environments, REST Web services, and unstructured databases such as CouchDB and MongoDB.
+
+More info: https://json-ld.org/
+
+**JSON-LD and service definition**
+
 Each of the service definition languages initially has a context that corresponds to the vocabulary that will be used within the service definition file. This context allows to use vocabularies
   Specific, for example names of attributes or characteristics of that vocabulary; A concrete example would be, for example, how to define a date type attribute, in this case the dcterms: created attribute: "2017-03-12" would be used. You can also define more attributes equivalent to this from other vocabularies and are still fully compatible.
 
@@ -273,3 +281,69 @@ Model and ModelEvaluation should always be together in the output of this type. 
 
 Operation: executes
 ~~~~~~~~~~~~~~~~~~~
+
+The implementation (execution function) of the algorithms must also be fully specified. It is important that the selection of the implementation will be  adequate to execute the Algorithm and the Features. The implementation should include the package (if it exists) and the corresponding function that solves (executes) the algorithm such that to detail the execution of an implementation you must indicate the source of the implementation (Python, R, Scala, ...) , the package and the function/s to be executed.
+
+For example, for a ``Linear Regression`` service to run in ``R``, it is necessary to indicate::
+
+	"dmmlcc: ImplementationSource": "R",
+	"dmmlcc: package": "core",
+	"dmmlcc: functions": ["lm"]
+	
+Where ``dmmlcc: ImplementationSource``` indicates the support of the algorithm, ``dmmlcc: package`` corresponds to the container package of the function to be executed and ``"dmmlcc: functions"`` select the specific method of the package to be executed in this implementation.
+
+In execution you can have multiple implementations, as many as languages ​​and variants of functions exist.
+
+A full example for ``Linear Regression`` in ``R`` and ``lm`` R function enabled to be executed at the entrypoint of the service ::
+
+	"mls:executes":{
+		"@id": "mls:LinearRegression_Implementation",
+		"@type": "mls:Implementation",
+		"dcterms:description": "Implementation of Linear Regression Model",
+		"dmmlcc:implements":[
+			{
+				"@id":"dmmlcc:MLAlgorithm_01",
+				"@type":"mls:Algorithm",
+				"dcterms:description": "Linear Regression Algorithm in R",
+				"dmmlcc:ImplementationSource":"R",
+				"dmmlcc:package":"core",
+				"dmmlcc:functions":["lm"]
+			}
+		]
+	}
+
+If you want to describe execution of ``Linear Regression`` in ``Spark+R`` the following code must be included in your description::
+
+
+	"mls:executes":{
+		"@id": "mls:LinearRegression_Implementation",
+		"@type": "mls:Implementation",
+		"dcterms:description": "Implementation of Linear Regression Model",
+		"dmmlcc:implements":[
+			{
+				"@id":"dmmlcc:MLAlgorithm_01",
+				"@type":"mls:Algorithm",
+				"dcterms:description": "Linear Regression Algorithm in R",
+				"dmmlcc:ImplementationSource":"R",
+				"dmmlcc:package":"core",
+				"dmmlcc:functions":["lm"]
+			},
+			{
+				"@id":"dmmlcc:MLAlgorithm_02",
+				"@type":"mls:Algorithm",
+				"dcterms:description": "Linear Regression Algorithm in Spark+R",
+				"dmmlcc:ImplementationSource":"SparkR",
+				"dmmlcc:package":"core",
+				"dmmlcc:functions":["lm"]
+			},
+		]
+	}
+
+
+Starting from a template
+------------------------
+
+Another way to build and define a service can be done using existing service definitions. In the project folder ``/services_definition/`` you can review all descriptions of data mining and machine learning services available for OpenCCML. They are available in two formats ``Turtle`` and ``JSON-LD``. Both formats are understood by OpenCCML and therefore you can define your service with any of them.
+
+To start working from a service description template already created, we recommend using a simple algorithm or method such as simple data processing operations, for example a ``corelation``.
+
