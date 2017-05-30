@@ -1,15 +1,15 @@
 import collections
 import json
 import os
+import sys
 from os import listdir
 
 import ruamel.yaml
 
-from core.sparql_parser import sparql_parser
-
 
 class YamlGenerator:
     def __init__(self, input_path, output_path):
+
         ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
                                                                      ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
         self.services_list = listdir(input_path)
@@ -59,7 +59,6 @@ class YamlGenerator:
         parser = sparql_parser.SPARQL_driver(input_file)
         base = json.loads(parser.base.decode("utf-8"))
         description = base['results']['bindings']
-        print(type(description))
         return description[0]['mldescription']['value']
 
     def generate_input(self, input_file):
@@ -67,7 +66,6 @@ class YamlGenerator:
         input_parameters = json.loads(parser.inputparameters.decode("utf-8"))
         input = json.loads(parser.input.decode("utf-8"))
         base = json.loads(parser.base.decode("utf-8"))
-        print(base)
         parameters = []
         for parameter in input_parameters['results']['bindings']:
             name = parameter["mlinputtitle"]["value"]
@@ -95,4 +93,13 @@ class YamlGenerator:
         return parameters
 
 
-YamlGenerator("../services_definition/turtle", "../catalog")
+def main():
+    YamlGenerator("../services_definition/turtle", "../catalog")
+
+
+if __name__ == '__main__':
+    sys.path.append(os.getcwd())
+    sys.path.append('~/openccml')
+    from core.sparql_parser import sparql_parser
+
+    main()
