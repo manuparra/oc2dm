@@ -6,10 +6,12 @@ from os import listdir
 
 import ruamel.yaml
 
+from config.config import turtle_folder
+
 
 class YamlGenerator:
     def __init__(self, input_path, output_path):
-
+        print(input_path, output_path)
         ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
                                                                      ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
         self.services_list = listdir(input_path)
@@ -98,7 +100,8 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.path.append(os.getcwd())
+    print(os.path.dirname(os.path.abspath(__file__)))
+    print(turtle_folder)
     sys.path.append('~/openccml')
     from core.sparql_parser import sparql_parser
 
