@@ -11,7 +11,6 @@ from config.config import turtle_folder
 
 class YamlGenerator:
     def __init__(self, input_path, output_path):
-        print(input_path, output_path)
         ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
                                                                      ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
         self.services_list = listdir(input_path)
