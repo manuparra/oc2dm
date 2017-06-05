@@ -19,7 +19,7 @@
 	 	"dcterms:description": "Fit an ARIMA model to a univariate time series",
 		"dcterms:creator":"Esperanza Jiménez",
 		"dcterms:created":"2017-05-28",
-		"dcterms:modified":"2017-05-30",
+		"dcterms:modified":"2017-06-05",
 		"dcterms:publisher":"DICITS_ML",
 		"dcterms:title":"ARIMA",
 		"rdfs:comments":"ARIMA (AutoRegressive Integrated Moving Average) models are, the most general class of models for forecasting a time series which can be made to be “stationary” by differencing (if necessary), perhaps in conjunction with nonlinear transformations such as logging or deflating (if necessary).",
@@ -226,7 +226,7 @@
 						"@type":"mls:Algorithm",
 						"dcterms:description": "ARIMA Algorithm in R",
 						"dmmlcc:ImplementationSource":"R",
-						"dmmlcc:package":"stats",
+						"dmmlcc:package":"core",
 						"dmmlcc:functions":["arima"]
 					}
 				]
