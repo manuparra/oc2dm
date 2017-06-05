@@ -1,0 +1,238 @@
+{
+  "@context": {
+	"dmmlcc": "http://dicits.ugr.es/dmmlcc#",
+	"dcterms": "http://purl.org/dc/terms/#",
+    "foaf": "http://xmlns.com/foaf/0.1/#",
+    "gr": "http://purl.org/goodrelations/v1#",
+    "mls": "http://www.w3.org/ns/mls#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "waa": "http://purl.oclc.org/NET/WebAuthentication",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph":  [ 	 
+	 {
+		"@id": "dmmlcc:ARIMA_Service",
+		"@type": "dmmlcc:MLService",
+	 	"dcterms:description": "Fit an ARIMA model to a univariate time series",
+		"dcterms:creator":"Esperanza Jiménez",
+		"dcterms:created":"2017-05-28",
+		"dcterms:modified":"2017-06-05",
+		"dcterms:publisher":"DICITS_ML",
+		"dcterms:title":"ARIMA",
+		"rdfs:comments":"ARIMA (AutoRegressive Integrated Moving Average) models are, the most general class of models for forecasting a time series which can be made to be “stationary” by differencing (if necessary), perhaps in conjunction with nonlinear transformations such as logging or deflating (if necessary).",
+		"dmmlcc:hasAuthentication": {
+		
+			"@id": "dmmlcc:ARIMA_Service_Auth",
+			"@type": "dmmlcc:MLServiceAuthentication",
+		 	"dcterms:description": "The service requires authentication, and the type of authentication",
+			"waa:requiresAuthentication":"None"
+		},
+		"dmmlcc:hasOperation": {
+			"@id": "dmmlcc:ARIMA_Service_Operation",
+			"@type": "dmmlcc:MLOperation",
+			"dcterms:description": "Operation performing the service",
+			"mls:hasInput":
+				{
+				"@id": "dmmlcc:ARIMA_Service_Input",
+				"@type": "dmmlcc:MLServiceInput",
+				"dcterms:title":"InputDataSet",
+				"dcterms:description": "Input data contains Dataset or Feature/s",
+				"dmmlcc:contains":{
+					"@id":"dmmlcc:contains_dataset_01",
+					"@type:":"dmmlcc:contains",
+					"mls:Data":[
+						{
+							"@id":"dmmlcc:dataset_01",
+							"@type:":"mls:DataSet",
+							"dcterms:description": "Dataset on which the service is applied",
+							"dcterms:title": "DataSet",
+							"dmmlcc:format":
+								{
+									"@id":"dmmlcc:ParameterFormat_CVS_00",
+									"@type": "dmmlcc:csv",
+									"dcterms:description": "CSV Source file format"									
+								},
+							"dmmlcc:storagebucket":"dicits://",
+							"dmmlcc:mandatory":"true"					
+						}
+					]
+				}
+			},
+			"dmmlcc:hasInputParameters":
+			{	
+				"@id": "dmmlcc:ARIMA_Service_InputParameters",
+				"@type": "dmmlcc:MLServiceInputParameters",
+				"dcterms:description": "Input Parameters",
+				"dcterms:title": "Input",
+				"dmmlcc:Parameters":[
+					{
+						"@id":"dmmlcc:response_parameter_01",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "x",
+						"dcterms:description": "A univariate time series",
+						"dmmlcc:mandatory":"true",
+						"dmmlcc:defaultvalue":""						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_02",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "order",
+						"dcterms:description": "A specification of the non-seasonal part of the ARIMA model: the three integer components (p, d, q) are the AR order, the degree of differencing, and the MA order.",
+						"dmmlcc:mandatory":"true",	
+						"dmmlcc:defaultvalue":"c(0L,0L,0L)"
+											
+					},
+					{
+						"@id":"dmmlcc:response_parameter_03",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "seasonal",
+						"dcterms:description": "A specification of the seasonal part of the ARIMA model, plus the period (which defaults to frequency(x)). This should be a list with components order and period, but a specification of just a numeric vector of length 3 will be turned into a suitable list with the specification as the order.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"list(order = c(0L, 0L, 0L), period = NA)"
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_04",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "xreg",
+						"dcterms:description": "Optional vector or matrix of external regressors, which must have the same number of rows as x.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_05",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "include.mean",
+						"dcterms:description": "It's a mean/intercept term. The default is TRUE for undifferenced series, and it is ignored for ARIMA models with differencing.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"TRUE"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_06",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "transform.pars",
+						"dcterms:description": "logical; if true, the AR parameters are transformed to ensure that they remain in the region of stationarity. Not used for method = 'CSS'. For method = 'ML', it has been advantageous to set transform.pars = FALSE in some cases, see also fixed.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"TRUE"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_07",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "fixed",
+						"dcterms:description": "Optional numeric vector of the same length as the total number of parameters. If supplied, only NA entries in fixed will be varied. transform.pars = TRUE will be overridden (with a warning) if any AR parameters are fixed. It may be wise to set transform.pars = FALSE when fixing MA parameters, especially near non-invertibility.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_08",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "init",
+						"dcterms:description": "Optional numeric vector of initial parameter values. Missing values will be filled in, by zeroes except for regression coefficients. Values already specified in fixed will be ignored.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"NULL"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_09",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "method",
+						"dcterms:description": "Fitting method: maximum likelihood or minimize conditional sum-of-squares. The default (unless there are missing values) is to use conditional-sum-of-squares to find starting values, then maximum likelihood.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"CSS"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_10",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "n.cond",
+						"dcterms:description": "Only used if fitting by conditional-sum-of-squares: the number of initial observations to ignore. It will be ignored if less than the maximum lag of an AR term.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_11",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "SSinit",
+						"dcterms:description": "A string specifying the algorithm to compute the state-space initialization of the likelihood.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_12",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "optim.method",
+						"dcterms:description": "The value passed as the method argument to optim.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"BFGS"	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_13",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "optim.control",
+						"dcterms:description": "List of control parameters for optim.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":""	
+						
+					},
+					{
+						"@id":"dmmlcc:response_parameter_14",
+						"@type": "dmmlcc:MLServiceInputParameter",
+						"dcterms:title": "kappa",
+						"dcterms:description": "The prior variance (as a multiple of the innovations variance) for the past observations in a differenced model. Do not reduce this.",
+						"dmmlcc:mandatory":"optional",
+						"dmmlcc:defaultvalue":"1e6"	
+						
+					}
+					
+				]			
+			}
+			,
+			"mls:hasOutput":{
+				"@id": "dmmlcc:ARIMA_Service_Output",
+				"@type": "dmmlcc:MLServiceOutput",
+				"dcterms:description": "Output of the service contains Model or ModelEvaluation or Data",
+				"mls:Data":{
+					"@id":"dmmlcc:ARIMA_Model",
+					"@type": "dmmlcc:PMML_Model",
+					"dcterms:title": "PMML Model related",
+					"dcterms:description": "PMML model to represent mining models",
+					"dmmlcc:storagebucket":"dicits://models/"
+				},
+				"mls:ModelEvaluation":{
+					"@id":"dmmlcc:LinearRegression_ModelEvaluation",
+					"@type": "dmmlcc:ModelEvaluation",
+					"dcterms:title": "Model evaluation",
+					"dcterms:description": "Model Evaluation",
+					"dmmlcc:storagebucket":"dicits://modelevaluation/"
+				}				
+			},
+			"mls:executes":{
+				"@id": "mls:ARIMA_Implementation",
+				"@type": "mls:Implementation",
+				"dcterms:description": "Implementation of ARIMA Model",
+				"dmmlcc:implements":[
+					{
+						"@id":"dmmlcc:MLAlgorithm_01",
+						"@type":"mls:Algorithm",
+						"dcterms:description": "ARIMA Algorithm in R",
+						"dmmlcc:ImplementationSource":"R",
+						"dmmlcc:package":"core",
+						"dmmlcc:functions":["arima"]
+					}
+				]
+			}
+		}
+		
+	 }
+  ]
+ }
