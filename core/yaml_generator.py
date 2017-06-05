@@ -41,11 +41,16 @@ class YamlGenerator:
             method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "string",
                              "summary": description, 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
+            method["post"] = {"operationId": "api." + end_point + ".execute_post", "parameters": parameters,
+                              "type": "string",
+                              "summary": description, 'response': {200: {
+                    'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             paths["'/" + end_point + "'"] = method
         method = {}
         method["get"] = {"operationId": "api.catalog.execute", "type": "string",
                          "summary": 'Returns the complete catalog', 'response': {200: {
                 'description': 'JSON containing the catalog.'}}}
+
         paths["'/catalog'"] = method
         self.final_yaml = collections.OrderedDict([('swagger', '2.0'),
                                                    ('info', None),
