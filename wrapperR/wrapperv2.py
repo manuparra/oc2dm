@@ -17,20 +17,22 @@
 
 import csv
 import rpy2.robjects as ro
-from wrapperR.parameters import *
+from dataset import *
 from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+import pandas as pd
 
 
-class core(Parameters):
+class core:
 
 	"""
 	Package CORE of R. Includes methods from the CORE of R, and not included on additional Packages
 	"""
-
+	
 
 	def __init__(self, dictionary):
-		self.parameter = Parameters(dictionary)
-
+		self.parameter = Dataset(dictionary)
+	
 	def lm (self):
 		"""
 		Linear Regression Method
@@ -38,21 +40,35 @@ class core(Parameters):
 		#TAKS:
 		# Extract Columns from the dataset
 		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
-		# Analize formulae
-		values = self.parameter.getDataset()
-		file = self.parameter.outputRoute + '/model.pmml'
-		ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
-		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available
+		# Analize formulae 
+		#values = pandas2ri.py2ri(self.parameter.getDataset())
+		#file = self.parameter.outputRoute + 'model.pmml'
+		'''ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
+		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available'''
 
 		lm = ro.r("""
 			library("r2pmml")
-	        resultfit = lm({0})
-	        r2pmml(resultfit,file="{1}")
-     	""".format(self.parameter.input, file))
+			dataset = read.csv(file="{0}", header = TRUE, sep=',')
+	        resultfit = lm({1}, data=dataset)
+	        r2pmml(resultfit,file="modelo.rda")
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters))
 
-		return(file)
-"""
-entrada = {'na__action':'na.omit', 'dataset': 'dataset.csv', 'formula': 'weight~group', 'weights': 'NULL', 'subset': 'NULL'}
-p = core(entrada)
-p.lm()	
-"""
+		print(lm)
+		#b = pd.read_csv(self.parameter.dataset)
+		
+		'''a = ("""
+			library("r2pmml")
+	        resultfit = lm({0}, data={1})
+	        r2pmml(resultfit,file="{2}")
+     	""").format(self.parameter.input, b, file)
+
+		print(a)'''
+
+
+
+parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
+dataset = core(parametros)
+dataset.lm()
+#entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
+#p = core(entrada)
+#p.lm()	
