@@ -47,7 +47,7 @@ class YamlGenerator:
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             paths["'/" + end_point + "'"] = method
         method = {}
-        method["get"] = {"operationId": "api.catalog.execute", "type": "string",
+        method["get"] = {"operationId": "api.catalog.execute", "type": "string", 'produces': ['application/json'],
                          "summary": 'Returns the complete catalog', 'response': {200: {
                 'description': 'JSON containing the catalog.'}}}
 
@@ -57,7 +57,7 @@ class YamlGenerator:
                                                    ('title', 'OPENCCML API'),
                                                    ('version', '0.1'),
                                                    ('consumes', ['application/json']),
-                                                   ('produces', ['application/json']),
+                                                   ('produces', ['text/xml']),
                                                    ('basePath', "'/openccml'"),
                                                    ('paths', paths)])
 
