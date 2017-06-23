@@ -92,7 +92,7 @@ dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "na.remove" ;
     dmmlcc:mandatory "optional" ;
     dcterms:description "A function which indicates what should happen when the data contain NAs" ;
-    dcterms:title "na.action" .
+    dcterms:title "na__action" .
 
 dmmlcc:response_parameter_04 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "NULL" ;
