@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" version="4.3">
+	<Header>
+		<Application name="JPMML-R" version="1.2.16"/>
+		<Timestamp>2017-06-24T16:56:28Z</Timestamp>
+	</Header>
+	<DataDictionary>
+		<DataField name="mpg" optype="continuous" dataType="double"/>
+		<DataField name="disp" optype="continuous" dataType="double"/>
+	</DataDictionary>
+	<RegressionModel functionName="regression">
+		<MiningSchema>
+			<MiningField name="mpg" usageType="target"/>
+			<MiningField name="disp"/>
+		</MiningSchema>
+		<RegressionTable intercept="29.599854756163943">
+			<NumericPredictor name="disp" coefficient="-0.04121511996278614"/>
+		</RegressionTable>
+	</RegressionModel>
+</PMML>
