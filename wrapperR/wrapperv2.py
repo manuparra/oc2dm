@@ -66,7 +66,7 @@ class core:
 
 
 
-parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
+parametros = {'Dataset': {'ruta': 'mtcars.csv', 'delimiter': ','}, 'Parametros': {'na__action': 'na.exclude', 'formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}}
 dataset = core(parametros)
 dataset.lm()
 #entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}

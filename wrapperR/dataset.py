@@ -57,7 +57,7 @@ class Dataset():
 		d = ''
 		for key, value in self.parameters.items():
 			if value != 'NULL':
-				d += key + '=' + value + ','
+				d += key.replace("__", ".") + ' = ' + value + ','
 
 		self.parameters = d[:-1]
 
@@ -65,7 +65,6 @@ class Dataset():
 		dataset = self.readDataset()
 		formula = self.parameters['formula'].rsplit('~', 1)
 		self.columnParameterDataset = formula
-
 
 	def lmFunction(self):
 		campos = [
@@ -80,15 +79,15 @@ class Dataset():
 				if campo[0] not in self.parameters.keys():
 					raise Exception ("No existe ese campo en los parametros pasados")
 				elif campo[0] == 'formula':
-					algo = [False for a in self.columnParameterDataset if a not in dataset.columns[0]]
+					algo = [False for a in self.columnParameterDataset if a not in dataset.columns]
 					if False in algo:
-						raise Exception ("No existe ese campo en los parametros pasados")
+						raise Exception ("No existen esas columnas")
 			elif campo[1] == 'opcional':
 				if campo[0] not in self.parameters.keys():
-					raise Exception ("No existe ese campo en los parametros pasados")
+					raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
 
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
-
+#parametros = {'Dataset': {'ruta': 'mtcars.csv', 'delimiter': ','}, 'Parametros': {'na__action': 'na.exclude', 'formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}}
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset = Dataset(parametros)
 
