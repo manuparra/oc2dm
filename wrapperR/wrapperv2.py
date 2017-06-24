@@ -50,10 +50,8 @@ class core:
 			library("r2pmml")
 			dataset = read.csv(file="{0}", header = TRUE, sep=',')
 	        resultfit = lm({1}, data=dataset)
-	        r2pmml(resultfit,file="modelo.rda")
-     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters))
-
-		print(lm)
+	        r2pmml(resultfit,file="{2}")
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 		#b = pd.read_csv(self.parameter.dataset)
 		
 		'''a = ("""

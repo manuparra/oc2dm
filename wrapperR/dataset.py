@@ -7,7 +7,7 @@ import numpy as np
 class Dataset():
 	def __init__(self, dictionary):
 		self.dataset = dictionary['Dataset']
-		self.output = ""
+		self.outputPMML = self.setOutput()
 		self.delimiter = dictionary['Dataset']
 		self.parameters = dictionary['Parametros']
 		self.columnParameterDataset = ""
@@ -85,6 +85,15 @@ class Dataset():
 			elif campo[1] == 'opcional':
 				if campo[0] not in self.parameters.keys():
 					raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
+
+		#if len(self.parameters) != len(campos):
+		#	raise Exception ("Distintos tamaños de arrays enviados")
+
+	def setOutput(self):
+		return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+
+	def getOutput(self):
+		return self.outputPMML
 
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'delimiter': ','}, 'Parametros': {'na__action': 'na.exclude', 'formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}}
