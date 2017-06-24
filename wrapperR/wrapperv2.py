@@ -34,37 +34,14 @@ class core:
 		self.parameter = Dataset(dictionary)
 	
 	def lm (self):
-		"""
-		Linear Regression Method
-		"""
-		#TAKS:
-		# Extract Columns from the dataset
-		# The input must be a **kwargs  and extract input parameters for the model (weight ~ group)
-		# Analize formulae 
-		#values = pandas2ri.py2ri(self.parameter.getDataset())
-		#file = self.parameter.outputRoute + 'model.pmml'
-		'''ro.globalenv["weight"] = ro.FloatVector(values[0]) # Or self.dataset[0] if header is not available
-		ro.globalenv["group"] = ro.FloatVector(values[1]) # self.dataset[1] if header is not available'''
-
 		lm = ro.r("""
 			library("r2pmml")
 			dataset = read.csv(file="{0}", header = TRUE, sep=',')
 	        resultfit = lm({1}, data=dataset)
 	        r2pmml(resultfit,file="{2}")
      	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
-		#b = pd.read_csv(self.parameter.dataset)
-		
-		'''a = ("""
-			library("r2pmml")
-	        resultfit = lm({0}, data={1})
-	        r2pmml(resultfit,file="{2}")
-     	""").format(self.parameter.input, b, file)
 
-		print(a)'''
-
-
-
-parametros = {'Dataset': {'ruta': 'mtcars.csv', 'delimiter': ','}, 'Parametros': {'na__action': 'na.exclude', 'formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}}
+parametros = {'na__action': 'na.exclude', 'weights': 'NULL', 'formula': 'mpg~disp', 'subset': 'NULL', 'dataset': 'mtcars.csv'}
 dataset = core(parametros)
 dataset.lm()
 #entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
