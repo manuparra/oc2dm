@@ -161,7 +161,7 @@ class Dataset():
 			else:
 				dataset['delimiter'] = ''
 		else:
-			raise Exception ("No existe un dataset " , campo[0])
+			raise Exception ("No existe un dataset ")
 		parameters = self.dictionary
 		self.dataset = dataset
 		self.parameters = parameters
