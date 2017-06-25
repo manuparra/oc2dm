@@ -30,8 +30,8 @@ class core:
 	"""
 	
 
-	def __init__(self, dictionary):
-		self.parameter = Dataset(dictionary)
+	def __init__(self, dictionary, method):
+		self.parameter = Dataset(dictionary, method)
 	
 	def lm (self):
 		lm = ro.r("""
@@ -49,9 +49,9 @@ class core:
 	        print(resultfit)
      	""".format(self.parameter.dataset['ruta'], self.parameter.parameters))
 
-parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
+parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 dataset = core(parametros)
-dataset.cor()
+dataset.lm()
 #entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #p = core(entrada)
 #p.lm()	

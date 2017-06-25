@@ -5,9 +5,9 @@ import re
 import numpy as np
 
 class Dataset():
-	def __init__(self, dictionary):
+	def __init__(self, dictionary, method):
 		self.dictionary = dictionary
-
+		self.method = method
 		self.dataset = {}
 		self.delimiter = {}
 		self.parameters = {}
@@ -62,9 +62,11 @@ class Dataset():
 			self.checkDatasetExists()
 			self.checkReadPermission()
 			self.checkHeader()
-			#self.getParametersDataset()
-			#self.LMFunction()
-			self.corFunction()
+			if self.method == "lm":
+				self.getParametersDataset()
+				self.LMFunction()
+			if self.method == "cor":
+				self.corFunction()
 			self.returnParsedParameters()
 		except Exception:
 			raise Exception("Fallo en el checkeo global")
