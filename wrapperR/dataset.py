@@ -140,7 +140,10 @@ class Dataset():
 		ALmacena el nombre del dataset sin la extension y añadiendole la extension pmml donde se guardara el modelo 
 	'''
 	def setOutput(self):
-		return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+		if self.method == "lm":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+		elif self.method == "cor":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML

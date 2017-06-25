@@ -46,12 +46,15 @@ class core:
 			library("r2pmml")
 			dataset = read.csv(file="{0}", header = TRUE, sep=',')
 	        resultfit = cor({1})
+	        saveRDS(resultfit, "{2}")
 	        print(resultfit)
-     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters))
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 
-parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
-dataset = core(parametros)
-dataset.lm()
+parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
+
+#parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
+dataset = core(parametros, "cor")
+dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #p = core(entrada)
 #p.lm()	
