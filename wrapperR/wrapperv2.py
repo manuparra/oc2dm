@@ -41,9 +41,17 @@ class core:
 	        r2pmml(resultfit,file="{2}")
      	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 
-parametros = {'na__action': 'na.exclude', 'weights': 'NULL', 'formula': 'mpg~disp', 'subset': 'NULL', 'dataset': 'mtcars.csv'}
+	def cor (self):
+		cor = ro.r("""
+			library("r2pmml")
+			dataset = read.csv(file="{0}", header = TRUE, sep=',')
+	        resultfit = cor({1})
+	        print(resultfit)
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters))
+
+parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 dataset = core(parametros)
-dataset.lm()
+dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #p = core(entrada)
 #p.lm()	
