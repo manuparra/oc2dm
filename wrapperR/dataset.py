@@ -14,7 +14,6 @@ class Dataset():
 		self.splitDatasetParameters(dictionary)
 
 		self.outputPMML = self.setOutput()
-		self.columnParameterDataset = ""
 		self.checkAll()		
 
 	'''
@@ -63,8 +62,9 @@ class Dataset():
 			self.checkDatasetExists()
 			self.checkReadPermission()
 			self.checkHeader()
-			self.getParametersDataset()
-			self.lmFunction()
+			#self.getParametersDataset()
+			#self.LMFunction()
+			self.corFunction()
 			self.returnParsedParameters()
 		except Exception:
 			raise Exception("Fallo en el checkeo global")
@@ -86,21 +86,16 @@ class Dataset():
 	def getParametersDataset(self):
 		dataset = self.readDataset()
 		formula = self.parameters['formula'].rsplit('~', 1)
-		self.columnParameterDataset = formula
+		return formula
 
 
 	'''
 		Comprueba los campos que necesita la función en cuestion (Regresión Lineal) con los parametros pasados, 
 		además comprobamos si estos parametros pueden o no pueden ser nulos y si son opcionales u obligatorios.
 	'''
-	def lmFunction(self):
+	def generalFunction(self, campos):
 		#Campos de la funcion LM
-		campos = [
-			('formula', 'obligatory', 'not null'),
-			('subset', 'obligatory', 'null'),
-			('weights', 'obligatory', 'null'),
-			('na__action', 'obligatory', 'not null')
-		]
+		
 		#lectura del dataset
 		dataset = self.readDataset()
 
@@ -113,7 +108,7 @@ class Dataset():
 
 				#Si el campo es formula comprobamos que los campos internos de formula esten en el dataset pasado
 				elif campo[0] == 'formula':
-					algo = [False for a in self.columnParameterDataset if a not in dataset.columns]
+					algo = [False for a in self.getParametersDataset() if a not in dataset.columns]
 					if False in algo:
 						raise Exception ("No existen esas columnas")
 			#Cuando es opcional comprobamos solo los parametros de entrada con los campos
@@ -129,6 +124,15 @@ class Dataset():
 
 		if len(self.parameters) > len(campos):
 			raise Exception ("Se enviaron mas parámetros de los que corresponden")
+
+	def LMFunction(self):
+		campos = [
+			('formula', 'obligatory', 'not null'),
+			('subset', 'obligatory', 'null'),
+			('weights', 'obligatory', 'null'),
+			('na__action', 'obligatory', 'not null')
+		]
+		self.generalFunction(campos)
 
 	'''
 		ALmacena el nombre del dataset sin la extension y añadiendole la extension pmml donde se guardara el modelo 
@@ -167,8 +171,16 @@ class Dataset():
 		self.parameters = parameters
 		self.delimiter = dataset['delimiter']
 
+	def corFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null'),
+			('y', 'obligatory', 'null'),
+			('method', 'obligatory', 'not null')
+		]
+		self.generalFunction(campos)
+		self.parameters['method'] = '"' + self.parameters['method'] + '"' 
 
-#parametros = {'na__action': 'na.exclude', 'weights': 'NULL', 'formula': 'mpg~disp', 'subset': 'NULL', 'dataset': 'mtcars.csv', 'delimiter': ','}
+#parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'delimiter': ','}, 'Parametros': {'na__action': 'na.exclude', 'formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}}
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
