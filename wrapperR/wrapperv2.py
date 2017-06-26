@@ -50,6 +50,9 @@ class core:
 	        print(resultfit)
      	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 
+	def arima(self):
+		pass
+
 parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
