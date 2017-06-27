@@ -1,7 +1,7 @@
 from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
 def execute(subset, weights, na__action, dataset, formula):
-    result = wrapperv2.core(locals())
+    result = wrapperv2.core(locals(), "lm")
     result.lm()
     file = result.parameter.getOutput()
     with open(file) as pmml:
@@ -9,7 +9,7 @@ def execute(subset, weights, na__action, dataset, formula):
 
 
 def execute_post(subset, weights, na__action, dataset, formula):
-    result = wrapperv2.core(locals())
+    result = wrapperv2.core(locals(), "lm")
     result.lm()
     file = result.parameter.getOutput()
     with open(file) as pmml:
