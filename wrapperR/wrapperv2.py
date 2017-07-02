@@ -51,7 +51,12 @@ class core:
      	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 
 	def arima(self):
-		pass
+		arima = ro.r("""
+			library("r2pmml")
+			dataset = read.csv(file="{0}", header = TRUE, sep=' ')
+	        resultfit = arima({1}, data=dataset)
+	        r2pmml(resultfit,file="{2}")
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
 
 parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 
