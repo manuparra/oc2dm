@@ -68,6 +68,10 @@ class Dataset():
 			if self.method == "cor":
 				self.corFunction()
 			self.returnParsedParameters()
+			if self.method == "arima":
+				self.getParametersDataset()
+				self.arimaFunction()
+			self.returnParsedParameters()
 		except Exception:
 			raise Exception("Fallo en el checkeo global")
 
@@ -144,6 +148,8 @@ class Dataset():
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "cor":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "arima":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML
@@ -184,6 +190,13 @@ class Dataset():
 		]
 		self.generalFunction(campos)
 		self.parameters['method'] = '"' + self.parameters['method'] + '"' 
+
+	def arimaFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null'),
+			('order', 'obligatory', 'null')			
+		]
+		self.generalFunction(campos)
 
 #parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}

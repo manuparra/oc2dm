@@ -7,7 +7,7 @@ from os import listdir
 import ruamel.yaml
 
 from config.config import turtle_folder
-
+from core.sparql_parser import sparql_parser
 
 class YamlGenerator:
     def __init__(self, input_path, output_path):
@@ -46,8 +46,27 @@ class YamlGenerator:
                               "summary": description, 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             paths["'/" + end_point + "'"] = method
+            # -> Download end-point
+            method = {}
+            method["get"] = {"operationId": "api." + end_point + ".download", 'produces': ['application/binary'],
+                             "parameters": [
+                                 {'in': 'query', 'name': 'file_format', 'description': 'asdasd', 'required': 'true',
+                                  'default': 'ttl',
+                                  'type': 'string'}], "type": "string",
+                             "summary": 'Returns the service definition in the specified format.', 'response': {200: {
+                    'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
+            method["post"] = {"operationId": "api." + end_point + ".download_post", 'produces': ['application/binary'],
+                              "parameters": [
+                                  {'in': 'query', 'name': 'file_format', 'description': 'asdasd', 'required': 'true',
+                                   'default': 'ttl',
+                                   'type': 'string'}],
+                              "type": "string",
+                              "summary": 'Returns the service definition in the specified format.', 'response': {200: {
+                    'description': 'The Turtle file.'}}}
+            paths["'/" + end_point + "/download'"] = method
+            # <- Download end-point
         method = {}
-        method["get"] = {"operationId": "api.catalog.execute", "type": "string",
+        method["get"] = {"operationId": "api.catalog.execute", "type": "string", 'produces': ['application/json'],
                          "summary": 'Returns the complete catalog', 'response': {200: {
                 'description': 'JSON containing the catalog.'}}}
 
@@ -57,7 +76,7 @@ class YamlGenerator:
                                                    ('title', 'OPENCCML API'),
                                                    ('version', '0.1'),
                                                    ('consumes', ['application/json']),
-                                                   ('produces', ['application/json']),
+                                                   ('produces', ['text/xml']),
                                                    ('basePath', "'/openccml'"),
                                                    ('paths', paths)])
 
