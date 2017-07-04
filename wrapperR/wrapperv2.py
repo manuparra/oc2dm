@@ -23,18 +23,20 @@ class core:
 	def __init__(self, dictionary, method):
 		self.parameter = Dataset(dictionary, method)
 	
-	def arima(self):
+	'''def arima(self):
 		arima = ro.r("""
 			library("r2pmml")
 			dataset = read.csv(file="{0}", header = TRUE, sep=' ')
 	        resultfit = arima({1}, data=dataset)
 	        r2pmml(resultfit,file="{2}")
-     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
+     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))'''
 
-parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
+#parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
-#entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
-#p = core(entrada)
+#entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
+entrada = {'data': '/home/ruben/Escritorio/openccml/wrapperR/prueba.csv', 'na__action':'na.omit','formula': 'nativeSpeaker~age+shoeSize+score'}
+p = core(entrada, "rf")
+rf(p)
 #p.lm()	
