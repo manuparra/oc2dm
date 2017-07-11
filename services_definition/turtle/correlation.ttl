@@ -54,13 +54,13 @@ dmmlcc:Feature_00 a mls:Feature  ;
     dmmlcc:mandatory "true" ;
     dmmlcc:storagebucket "dicits://" ;
     dcterms:description "Individual Feature" ;
-    dcterms:title "Feature" .
+    dcterms:title "x" .
 
 dmmlcc:Feature_01 dmmlcc:format dmmlcc:ParameterFormat_CVS ;
     dmmlcc:mandatory "true" ;
     dmmlcc:storagebucket "dicits://" ;
     dcterms:description "Individual Feature" ;
-    dcterms:title "Feature" .
+    dcterms:title "y" .
 
 dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
     dmmlcc:ImplementationSource "R" ;
@@ -76,7 +76,7 @@ dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "everything" ;
     dmmlcc:mandatory "optional" ;
     dcterms:description "An optional character string giving a method for computing covariances in the presence of missing values. This must be (an abbreviation of) one of the strings 'everything', 'all.obs', 'complete.obs', 'na.or.complete', or 'pairwise.complete.obs'." ;
-    dcterms:title "use" .
+    dcterms:title "method" .
 
 dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:mandatory "true" ;
