@@ -11,9 +11,8 @@ class Dataset():
 		self.dataset = {}
 		self.delimiter = {}
 		self.parameters = {}
-		self.splitDatasetParameters(dictionary)
 
-		self.outputPMML = self.setOutput()
+		self.outputPMML = ""
 		self.checkAll()		
 
 	'''
@@ -59,15 +58,42 @@ class Dataset():
 	'''
 	def checkAll(self):
 		try:
-			self.checkDatasetExists()
-			self.checkReadPermission()
-			self.checkHeader()
 			if self.method == "lm":
-				self.getParametersDataset()
+				self.splitDatasetParameters('dataset')
+
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+				
+				self.getParametersDataset('formula')
 				self.LMFunction()
+				self.returnParsedParameters()
+
 			if self.method == "cor":
+				self.splitDatasetParameters('dataset')
+
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
 				self.corFunction()
-			self.returnParsedParameters()
+				self.returnParsedParameters()
+			if self.method == "arima":
+				self.getParametersDataset('formula')
+				self.arimaFunction()
+				self.returnParsedParameters()
+			if self.method == "rf":
+				self.splitDatasetParameters('data')
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
+				self.getParametersDataset('formula')
+				self.rfFunction()
+				self.returnParsedParameters()
+
+			self.outputPMML = self.setOutput()
+
 		except Exception:
 			raise Exception("Fallo en el checkeo global")
 
@@ -85,9 +111,9 @@ class Dataset():
 	'''
 		Desgrana el campo formula para que los nombres de las columnas puedan ser leidas en formato array
 	'''
-	def getParametersDataset(self):
+	def getParametersDataset(self, field):
 		dataset = self.readDataset()
-		formula = self.parameters['formula'].rsplit('~', 1)
+		formula = re.split('-|/|~|\+', self.parameters[field])
 		return formula
 
 
@@ -106,11 +132,12 @@ class Dataset():
 			if campo[1] == 'obligatory':
 				#Compruebo los campos de la funcion con los parametros pasados al servicio web
 				if campo[0] not in self.parameters.keys():
-					raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
+					raise Exception ("No existe ese campo en los parametros pasados " + campo[0])
 
 				#Si el campo es formula comprobamos que los campos internos de formula esten en el dataset pasado
 				elif campo[0] == 'formula':
-					algo = [False for a in self.getParametersDataset() if a not in dataset.columns]
+					param = self.getParametersDataset('formula')
+					algo = [False for a in param if a not in dataset.columns]
 					if False in algo:
 						raise Exception ("No existen esas columnas")
 			#Cuando es opcional comprobamos solo los parametros de entrada con los campos
@@ -144,6 +171,10 @@ class Dataset():
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "cor":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "arima":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+		elif self.method == "rf":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML
@@ -157,13 +188,13 @@ class Dataset():
 			- Parametros de entrada
 		Asigna cada uno de estos en el correspondiente atributo
 	'''
-	def splitDatasetParameters(self, dictionary):
+	def splitDatasetParameters(self, nameDataset):
 		dataset = {}
 		parameters = {}
 
-		if 'dataset' in self.dictionary.keys():
-			dataset['ruta'] = self.dictionary['dataset']
-			del self.dictionary['dataset']
+		if nameDataset in self.dictionary.keys():
+			dataset['ruta'] = self.dictionary[nameDataset]
+			del self.dictionary[nameDataset]
 			if 'delimiter' in self.dictionary.keys():
 				dataset['delimiter'] = self.dictionary['delimiter']
 				del self.dictionary['delimiter']
@@ -184,6 +215,20 @@ class Dataset():
 		]
 		self.generalFunction(campos)
 		self.parameters['method'] = '"' + self.parameters['method'] + '"' 
+
+	def arimaFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null'),
+			('order', 'obligatory', 'null')			
+		]
+		self.generalFunction(campos)
+
+	def rfFunction(self):
+		campos = [
+			('formula', 'obligatory', 'not null'),
+			('na__action', 'optional', 'null')
+		]
+		self.generalFunction(campos)
 
 #parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
