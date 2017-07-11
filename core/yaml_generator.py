@@ -11,6 +11,12 @@ from core.sparql_parser import sparql_parser
 
 class YamlGenerator:
     def __init__(self, input_path, output_path):
+        """
+        Creates the catalog file in the specified directory using the definitions stored in the input path.
+        
+        :param input_path: a path containing all the services definitions
+        :param output_path: the path where the catalog will be stored
+        """
         ruamel.yaml.representer.RoundTripRepresenter.add_representer(collections.OrderedDict,
                                                                      ruamel.yaml.representer.RoundTripRepresenter.represent_ordereddict)
         self.services_list = listdir(input_path)
@@ -32,6 +38,10 @@ class YamlGenerator:
         os.remove(output_path + "/catalog_a.yml")
 
     def generate_yaml(self):
+        """
+        Builds the YAML catalog using the given data
+        :return: the catalog in YAML format
+        """
         paths = {}
         for file in self.services_list:
             parameters = self.generate_input(file)
@@ -81,12 +91,22 @@ class YamlGenerator:
                                                    ('paths', paths)])
 
     def generate_base(self, input_file):
+        """
+        Extract the "base" from the definition file and convert it to an usable dictionary
+        :param input_file: the service definition file name
+        :return: basic data and description of the given service
+        """
         parser = sparql_parser.SPARQL_driver(input_file)
         base = json.loads(parser.base.decode("utf-8"))
         description = base['results']['bindings']
         return description[0]['mldescription']['value']
 
     def generate_input(self, input_file):
+        """
+        Extract the "input" from the definition file and convert it to an usable dictionary
+        :param input_file: the service definition file name
+        :return: input parameters of the given service
+        """
         parser = sparql_parser.SPARQL_driver(input_file)
         input_parameters = json.loads(parser.inputparameters.decode("utf-8"))
         input = json.loads(parser.input.decode("utf-8"))
@@ -96,7 +116,7 @@ class YamlGenerator:
             name = parameter["mlinputtitle"]["value"]
             description = parameter["mlinputdescription"]["value"]
             required = parameter["mlinputmandatory"]["value"]
-            if 'false' in required:
+            if 'optional' in required:
                 required = False
             else:
                 required = True
@@ -108,7 +128,7 @@ class YamlGenerator:
             name = parameter['mldatasettitle']['value'].lower()
             description = parameter['mldatasetdescr']['value']
             required = parameter["mlmandatory"]["value"]
-            if 'false' in required:
+            if 'optional' in required:
                 required = False
             else:
                 required = True
@@ -123,8 +143,6 @@ def main():
 
 
 if __name__ == '__main__':
-    print(os.path.dirname(os.path.abspath(__file__)))
-    print(turtle_folder)
     sys.path.append('~/openccml')
     from core.sparql_parser import sparql_parser
 
