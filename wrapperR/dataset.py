@@ -82,7 +82,6 @@ class Dataset():
 					self.checkHeader()
 				self.corFunction()
 				self.returnParsedParameters()
-				print(self.parameters)
 
 			if self.method == "arima":
 				self.getParametersDataset('formula')
@@ -204,7 +203,7 @@ class Dataset():
 			if value != 'NULL':
 				d += key.replace("__", ".") + ' = ' + value + ','
 
-		self.parameters = d[:-1].replace("dc://", dc_storage)
+		self.parameters = d[:-1]
 
 	'''
 		Desgrana el campo formula para que los nombres de las columnas puedan ser leidas en formato array
@@ -320,6 +319,8 @@ class Dataset():
 		#Almacenamiento del dataset y parametros
 		self.dataset = dataset
 		self.parameters = parameters
+		#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
+		self.translateDC()
 		#self.delimiter = dataset['delimiter']
 
 	#Definición de campos de la regresíon lineal
@@ -461,6 +462,9 @@ class Dataset():
 		dicits = self.dataset['ruta'][:5]
 		#Si coincide esa ruta en lo leido
 		if 'dc://' in dicits:
+			ext = self.dataset['ruta'][:-3]
+			if not '.csv' in ext:
+				self.dataset['ruta'] = self.dataset['ruta'] + '.csv'
 			#Obtenemos de config la ruta absoluta de dc:// y le añadimos el resto de lo proporcionado
 			self.dataset['ruta'] = dc_storage + '/'+ self.dataset['ruta'][5:]
 

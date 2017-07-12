@@ -75,14 +75,14 @@ class core:
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
-#entrada = {'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'na__action':'na.exclude','formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}
+entrada = {'dataset': 'dc://mtcars', 'na__action':'na.exclude','formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3'}
 #parametros = {'formula': 'species~.', 'dataset': '/home/ruben/Escritorio/openccml/datasets/iris.csv'}
-#p = core(entrada, "lm")
+p = core(entrada, "lm")
 
 #dbscan(p)
-#p.lm()
+p.lm()
 #specClustering()
 #hClustering(p)
 #naiveBayes(p)
