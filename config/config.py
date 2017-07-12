@@ -30,3 +30,6 @@ wrapperR_folder = path.join(project_base_folder, 'wrapperR')
 
 # Dicits Storage Objects
 dc_storage = path.join(project_base_folder, 'datasets')
+
+# R functions
+functions_folder = path.join(wrapperR_folder, 'Functions')
