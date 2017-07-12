@@ -1,8 +1,8 @@
 import rpy2.robjects as ro
 
-def cor (objectCore):
+def cor (parameterCore):
 	cor = ro.r("""
 		dataset = read.csv(file="{0}", header = TRUE, sep=',')
 	    resultfit = cor({1})
 	    saveRDS(resultfit, "{2}")
-    """.format(objectCore.parameter.dataset['ruta'], objectCore.parameter.parameters, objectCore.parameter.outputPMML))
+    """.format(parameterCore.dataset['ruta'], parameterCore.parameters, parameterCore.outputPMML))
