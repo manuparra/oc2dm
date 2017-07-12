@@ -304,6 +304,8 @@ class Dataset():
 			dataset['ruta'] = self.dictionary[nameDataset]
 			#Borramos ese registro ya que de ahi saldran los parametros a pasarle al metodo y estos no suelen tener referencia alguna al dataset
 			del self.dictionary[nameDataset]
+			#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
+			self.translateDC()
 			#En caso de tener delimitador lo obtenemos tambien y lo separamos de los parametros
 			if 'delimiter' in self.dictionary.keys():
 				dataset['delimiter'] = self.dictionary['delimiter']
@@ -319,8 +321,7 @@ class Dataset():
 		#Almacenamiento del dataset y parametros
 		self.dataset = dataset
 		self.parameters = parameters
-		#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
-		self.translateDC()
+		
 		#self.delimiter = dataset['delimiter']
 
 	#Definición de campos de la regresíon lineal
@@ -462,7 +463,7 @@ class Dataset():
 		dicits = self.dataset['ruta'][:5]
 		#Si coincide esa ruta en lo leido
 		if 'dc://' in dicits:
-			ext = self.dataset['ruta'][:-3]
+			ext = self.dataset['ruta'][-4:]
 			if not '.csv' in ext:
 				self.dataset['ruta'] = self.dataset['ruta'] + '.csv'
 			#Obtenemos de config la ruta absoluta de dc:// y le añadimos el resto de lo proporcionado
