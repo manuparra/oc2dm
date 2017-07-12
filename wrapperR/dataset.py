@@ -325,10 +325,10 @@ class Dataset():
 	#Definición de campos de la regresíon lineal
 	def LMFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null'),
-			('subset', 'obligatory', 'null'),
-			('weights', 'obligatory', 'null'),
-			('na__action', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null', 'unquote'),
+			('subset', 'obligatory', 'null', 'unquote'),
+			('weights', 'obligatory', 'null', 'unquote'),
+			('na__action', 'obligatory', 'not null', 'unquote')
 		]
 		self.generalFunction(campos)
 
@@ -344,16 +344,16 @@ class Dataset():
 	#Definición de campos de arima
 	def arimaFunction(self):
 		campos = [
-			('x', 'obligatory', 'not null'),
-			('order', 'obligatory', 'null')			
+			('x', 'obligatory', 'not null', 'unquote'),
+			('order', 'obligatory', 'null', 'unquote')			
 		]
 		self.generalFunction(campos)
 
 	#Definición de campos del random forest
 	def rfFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null'),
-			('na__action', 'optional', 'null')
+			('formula', 'obligatory', 'not null', 'unquote'),
+			('na__action', 'optional', 'null', 'unquote')
 		]
 		self.generalFunction(campos)
 
@@ -401,28 +401,28 @@ class Dataset():
 	#Definición de campos del J48
 	def j48Function(self):
 		campos = [
-			('formula', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null', 'unquote')
 		]
 		#self.generalFunction(campos)
 
 	#Definición de campos del Linear Regression
 	def lRegressionFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null', 'unquote')
 		]
 		#self.generalFunction(campos)
 
 	#Definición de campos del Super Vector Machine
 	def svmFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null', 'unquote')
 		]
 		#self.generalFunction(campos)
 
 	#Definición de campos del naiveBayes
 	def naiveBayesFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null', 'unquote')
 		]
 		#self.generalFunction(campos)
 

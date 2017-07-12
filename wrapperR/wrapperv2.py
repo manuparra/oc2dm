@@ -34,24 +34,19 @@ class core:
 	def __init__(self, dictionary, method):
 		self.parameter = Dataset(dictionary, method)
 	
-	def arima(self):
-		arima = ro.r("""
-			library("r2pmml")
-			dataset = read.csv(file="{0}", header = TRUE, sep=' ')
-	        resultfit = arima({1}, data=dataset)
-	        r2pmml(resultfit,file="{2}")
-     	""".format(self.parameter.dataset['ruta'], self.parameter.parameters, self.parameter.outputPMML))
+	def lm(self):
+		lm(self.parameter)
 
 #parametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman'}
 
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
-#entrada = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
-#entrada = {'data': '/home/ruben/Escritorio/openccml/wrapperR/prueba.csv', 'na__action':'na.omit','formula': 'nativeSpeaker~age+shoeSize+score'}
+#entrada = {'na__action':'na.omit', 'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
+#entrada = {'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'na__action':'na.omit','formula': 'mpg~disp'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3'}
 #parametros = {'formula': 'species~.', 'dataset': '/home/ruben/Escritorio/openccml/datasets/iris.csv'}
-#p = core(parametros, "naiveBayes")
+#p = core(entrada, "lm")
 
 #dbscan(p)
 #p.lm()
