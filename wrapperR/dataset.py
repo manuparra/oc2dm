@@ -3,6 +3,9 @@ import csv
 import pandas as pd
 import re
 import numpy as np
+import sys
+sys.path.append('../')
+from config.config import dc_storage
 
 class Dataset():
 	def __init__(self, dictionary, method):
@@ -70,14 +73,17 @@ class Dataset():
 				self.returnParsedParameters()
 
 			if self.method == "cor":
-				self.splitDatasetParameters('dataset')
-
-				self.checkDatasetExists()
-				self.checkReadPermission()
-				self.checkHeader()
-
+				cols = ['x', 'y']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, '$')
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
 				self.corFunction()
 				self.returnParsedParameters()
+				print(self.parameters)
+
 			if self.method == "arima":
 				self.getParametersDataset('formula')
 				self.arimaFunction()
@@ -90,6 +96,98 @@ class Dataset():
 
 				self.getParametersDataset('formula')
 				self.rfFunction()
+				self.returnParsedParameters()
+			if self.method == "kmeans":
+				cols = ['x']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, None)
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
+				self.kmeansFunction()
+				self.returnParsedParameters()
+			if self.method == "dbscan":
+				cols = ['x']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, None)
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
+				self.dbscanFunction()
+				self.returnParsedParameters()
+
+			if self.method == "optics":
+				cols = ['x']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, None)
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
+				self.opticsFunction()
+				self.returnParsedParameters()
+			if self.method == "specClust":
+				cols = ['x']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, None)
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
+				self.specClustFunction()
+				self.returnParsedParameters()
+
+			if self.method == "hclust":
+				cols = ['x']
+				for col in cols:
+					self.splitDatasetParameters(None)
+					self.splitDatasetColumn(col, None)
+					self.checkDatasetExists()
+					self.checkReadPermission()
+					self.checkHeader()
+				self.hclustFunction()
+				self.returnParsedParameters()
+
+			if self.method == "j48":
+				self.splitDatasetParameters('dataset')
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
+				self.getParametersDataset('formula')
+				self.j48Function()
+				self.returnParsedParameters()
+
+			if self.method == "lRegression":
+				self.splitDatasetParameters('dataset')
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
+				self.getParametersDataset('formula')
+				self.j48Function()
+				self.returnParsedParameters()
+
+			if self.method == "svm":
+				self.splitDatasetParameters('dataset')
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
+				self.getParametersDataset('formula')
+				self.svmFunction()
+				self.returnParsedParameters()
+
+			if self.method == "naiveBayes":
+				self.splitDatasetParameters('dataset')
+				self.checkDatasetExists()
+				self.checkReadPermission()
+				self.checkHeader()
+
+				self.getParametersDataset('formula')
+				self.svmFunction()
 				self.returnParsedParameters()
 
 			self.outputPMML = self.setOutput()
@@ -106,7 +204,7 @@ class Dataset():
 			if value != 'NULL':
 				d += key.replace("__", ".") + ' = ' + value + ','
 
-		self.parameters = d[:-1]
+		self.parameters = d[:-1].replace("dc://", dc_storage)
 
 	'''
 		Desgrana el campo formula para que los nombres de las columnas puedan ser leidas en formato array
@@ -144,27 +242,19 @@ class Dataset():
 			elif campo[1] == 'opcional':
 				if campo[0] not in self.parameters.keys():
 					raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
-
-
 			#Comprueba si los parametros pasados pueden ser null o no. En caso de no poderlo ser lanza una excepción
 			if campo[2] == 'not null':
 				if not self.parameters[campo[0]] or self.parameters[campo[0]] == 'NULL':
 					raise Exception ("No puede ser el parametro " + campo[0] + " null ")
+			#Entre comilla el campo indicado
+			if campo[3] == 'quote':
+				self.parameters[campo[0]] = '"' + self.parameters[campo[0]] + '"' 
 
 		if len(self.parameters) > len(campos):
 			raise Exception ("Se enviaron mas parámetros de los que corresponden")
 
-	def LMFunction(self):
-		campos = [
-			('formula', 'obligatory', 'not null'),
-			('subset', 'obligatory', 'null'),
-			('weights', 'obligatory', 'null'),
-			('na__action', 'obligatory', 'not null')
-		]
-		self.generalFunction(campos)
-
 	'''
-		ALmacena el nombre del dataset sin la extension y añadiendole la extension pmml donde se guardara el modelo 
+		Almacena el nombre del dataset sin la extension y añadiendole la extension pmml donde se guardara el modelo 
 	'''
 	def setOutput(self):
 		if self.method == "lm":
@@ -175,6 +265,24 @@ class Dataset():
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "rf":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+		elif self.method == "kmeans":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "dbscan":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "optics":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "specClust":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "hclust":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "j48":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "lRegression":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "svm":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+		elif self.method == "naiveBayes":
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML
@@ -191,31 +299,49 @@ class Dataset():
 	def splitDatasetParameters(self, nameDataset):
 		dataset = {}
 		parameters = {}
-
-		if nameDataset in self.dictionary.keys():
+		#Comprueba si el nombre de dataset no esta None y además esta en los parametros pasados
+		if nameDataset and nameDataset in self.dictionary.keys():
+			#Obtiene la ruta del dataset
 			dataset['ruta'] = self.dictionary[nameDataset]
+			#Borramos ese registro ya que de ahi saldran los parametros a pasarle al metodo y estos no suelen tener referencia alguna al dataset
 			del self.dictionary[nameDataset]
+			#En caso de tener delimitador lo obtenemos tambien y lo separamos de los parametros
 			if 'delimiter' in self.dictionary.keys():
 				dataset['delimiter'] = self.dictionary['delimiter']
 				del self.dictionary['delimiter']
 			else:
 				dataset['delimiter'] = ''
+		#En caso de que no se tenga dataset, ya que en el paso de parametros no esté la ruta del dataset especificada que no haga nada, si está pero no se encuentra en los parametros pasados que lance excepcion
 		else:
-			raise Exception ("No existe un dataset ")
+			if nameDataset:
+				raise Exception ("No existe un dataset ")
+		#Parametros sin el dataset
 		parameters = self.dictionary
+		#Almacenamiento del dataset y parametros
 		self.dataset = dataset
 		self.parameters = parameters
-		self.delimiter = dataset['delimiter']
+		#self.delimiter = dataset['delimiter']
 
-	def corFunction(self):
+	#Definición de campos de la regresíon lineal
+	def LMFunction(self):
 		campos = [
-			('x', 'obligatory', 'not null'),
-			('y', 'obligatory', 'null'),
-			('method', 'obligatory', 'not null')
+			('formula', 'obligatory', 'not null'),
+			('subset', 'obligatory', 'null'),
+			('weights', 'obligatory', 'null'),
+			('na__action', 'obligatory', 'not null')
 		]
 		self.generalFunction(campos)
-		self.parameters['method'] = '"' + self.parameters['method'] + '"' 
 
+	#Definición de campos de la correlación
+	def corFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote'),
+			('y', 'obligatory', 'null', 'unquote'),
+			('method', 'obligatory', 'not null', 'quote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos de arima
 	def arimaFunction(self):
 		campos = [
 			('x', 'obligatory', 'not null'),
@@ -223,12 +349,121 @@ class Dataset():
 		]
 		self.generalFunction(campos)
 
+	#Definición de campos del random forest
 	def rfFunction(self):
 		campos = [
 			('formula', 'obligatory', 'not null'),
 			('na__action', 'optional', 'null')
 		]
 		self.generalFunction(campos)
+
+	#Definición de campos del kmeans
+	def kmeansFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote'),
+			('centers', 'obligatory', 'not null', 'unquote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos del DBSCAN
+	def dbscanFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote'),
+			('eps', 'obligatory', 'not null', 'unquote'),
+			('minPts', 'obligatory', 'not null', 'unquote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos del OPTICS
+	def opticsFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote'),
+			('eps', 'obligatory', 'not null', 'unquote'),
+			('minPts', 'obligatory', 'not null', 'unquote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos del Spectral Clustering
+	def specClustFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote'),
+			('centers', 'obligatory', 'not null', 'unquote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos del Hierarchical Clustering
+	def hclustFunction(self):
+		campos = [
+			('x', 'obligatory', 'not null', 'unquote')
+		]
+		self.generalFunction(campos)
+
+	#Definición de campos del J48
+	def j48Function(self):
+		campos = [
+			('formula', 'obligatory', 'not null')
+		]
+		#self.generalFunction(campos)
+
+	#Definición de campos del Linear Regression
+	def lRegressionFunction(self):
+		campos = [
+			('formula', 'obligatory', 'not null')
+		]
+		#self.generalFunction(campos)
+
+	#Definición de campos del Super Vector Machine
+	def svmFunction(self):
+		campos = [
+			('formula', 'obligatory', 'not null')
+		]
+		#self.generalFunction(campos)
+
+	#Definición de campos del naiveBayes
+	def naiveBayesFunction(self):
+		campos = [
+			('formula', 'obligatory', 'not null')
+		]
+		#self.generalFunction(campos)
+
+	'''
+		Guarda la ruta y parsea la estructura con la que viene la ruta por la nueva ruta que va a ser leída por R.
+		Por ejemplo: x = pruebaDataset.csv   quedaría por x = dataset siendo el nombre dataset usando en el wrapper
+		ya que se lee el dataset y se almacena sobre una variable llamada dataset, esta debe de ser igual a la que 
+		obtiene la variable de ejemplo x
+	'''
+	def splitDatasetColumn(self, col, delimiter):
+		#Si tiene delimitador
+		if delimiter != None:
+			#Divide por el delimitador proporcionado en la funcion. Ej: /home/ruben/Escritorio/openccml/datasets/mtcars$mpg
+			formula = self.parameters[col].split(delimiter)
+			#Guarda la ruta con el formato de este que se presupone es csv
+			self.dataset['ruta'] = formula[0] + '.csv'
+			#Reemplazamos el dataset pasado por la estructura nueva de este. Ej: x = pruebaDataset.csv quedaría por x = dataset
+			self.parameters[col] = self.parameters[col].replace(formula[0], 'dataset')
+			#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
+			self.translateDC()
+			#Leemos el dataset
+			dataset = self.readDataset()
+			#Comprueba que en el spliteo del dataset y la columna, esta columna esté como una columna del dataset
+			if formula[1] not in dataset.columns:
+				raise Exception ("La columna no existe nano")
+		else:
+			#Guarda la ruta con el formato de este que se presupone es csv
+			self.dataset['ruta'] = self.parameters[col] + '.csv'
+			#Reemplazamos el dataset pasado por la estructura nueva de este. Ej: x = pruebaDataset.csv quedaría por x = dataset
+			self.parameters[col] = self.parameters[col].replace(self.parameters[col], 'dataset')
+			#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
+			self.translateDC()
+
+	def translateDC(self):
+		#Obtenemos los 5 primeros caracteres de la ruta que son los que definiran si tiene dc://
+		dicits = self.dataset['ruta'][:5]
+		#Si coincide esa ruta en lo leido
+		if 'dc://' in dicits:
+			#Obtenemos de config la ruta absoluta de dc:// y le añadimos el resto de lo proporcionado
+			self.dataset['ruta'] = dc_storage + '/'+ self.dataset['ruta'][5:]
+
 
 #parametros = {'x': 'dataset$mpg', 'y': 'dataset$disp', 'method': 'spearman', 'dataset': 'mtcars.csv'}
 #parametros = {'Dataset': {'ruta': 'mtcars.csv', 'separator': ','}, 'Parametros': {"formula": 'mpgd~disp', 'weights': 'NULL'}}
