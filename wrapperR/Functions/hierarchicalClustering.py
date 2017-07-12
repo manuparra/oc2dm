@@ -1,9 +1,9 @@
 import rpy2.robjects as ro
 
-def hClustering(objectCore):
+def hClustering(parameterCore):
 	hClustering = ro.r("""
         library("fastcluster")
         dataset = read.csv(file="{0}", header = TRUE, sep=',')
 	    resultfit = hclust(dist({1}))
 	    saveRDS(resultfit, "{2}")
-    """.format(objectCore.parameter.dataset['ruta'], objectCore.parameter.parameters, objectCore.parameter.outputPMML))
+    """.format(parameterCore.dataset['ruta'], parameterCore.parameters, parameterCore.outputPMML))

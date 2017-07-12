@@ -37,12 +37,45 @@ class core:
 	def lm(self):
 		lm(self.parameter)
 
+	def cor(self):
+		cor(self.parameter)
+
+	def dbscan(self):
+		dbscan(self.parameter)
+
+	def hierarchicalClustering(self):
+		hierarchicalClustering(self.parameter)
+
+	def j48(self):
+		j48(self.parameter)
+
+	def kmeans(self):
+		kmeans(self.parameter)
+
+	def logisticRegression(self):
+		logisticRegression(self.parameter)
+
+	def naiveBayes(self):
+		naiveBayes(self.parameter)
+
+	def optics(self):
+		optics(self.parameter)
+
+	def rf(self):
+		rf(self.parameter)
+
+	def specClustering(self):
+		specClustering(self.parameter)
+
+	def superVectorMachine(self):
+		svm(self.parameter)
+
 #parametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman'}
 
 #parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
-#entrada = {'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'na__action':'na.omit','formula': 'mpg~disp'}
+#entrada = {'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'na__action':'na.exclude','formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3'}
 #parametros = {'formula': 'species~.', 'dataset': '/home/ruben/Escritorio/openccml/datasets/iris.csv'}
