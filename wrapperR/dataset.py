@@ -372,7 +372,8 @@ class Dataset():
 	def kmeansFunction(self):
 		campos = [
 			('x', 'obligatory', 'not null', 'unquote'),
-			('centers', 'obligatory', 'not null', 'unquote')
+			('centers', 'obligatory', 'not null', 'unquote'),
+			('iter__max', 'obligatory', 'not null', 'unquote')
 		]
 		self.generalFunction(campos)
 
@@ -414,28 +415,28 @@ class Dataset():
 		campos = [
 			('formula', 'obligatory', 'not null', 'unquote')
 		]
-		#self.generalFunction(campos)
+		self.generalFunction(campos)
 
 	#Definición de campos del Linear Regression
 	def lRegressionFunction(self):
 		campos = [
 			('formula', 'obligatory', 'not null', 'unquote')
 		]
-		#self.generalFunction(campos)
+		self.generalFunction(campos)
 
 	#Definición de campos del Super Vector Machine
 	def svmFunction(self):
 		campos = [
 			('formula', 'obligatory', 'not null', 'unquote')
 		]
-		#self.generalFunction(campos)
+		self.generalFunction(campos)
 
 	#Definición de campos del naiveBayes
 	def naiveBayesFunction(self):
 		campos = [
 			('formula', 'obligatory', 'not null', 'unquote')
 		]
-		#self.generalFunction(campos)
+		self.generalFunction(campos)
 
 	'''
 		Guarda la ruta y parsea la estructura con la que viene la ruta por la nueva ruta que va a ser leída por R.
