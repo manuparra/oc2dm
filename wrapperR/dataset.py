@@ -223,8 +223,10 @@ class Dataset():
 		
 		#lectura del dataset
 		dataset = self.readDataset()
-
-		for campo in campos:	
+		
+		firstColCampos = []
+		for campo in campos:
+			firstColCampos.append(campo[0])
 			#Si es obligatorio comprobamos los campos tanto en el dataset(formula), como en los parametros de entrada
 			if campo[1] == 'obligatory':
 				#Compruebo los campos de la funcion con los parametros pasados al servicio web
@@ -238,17 +240,22 @@ class Dataset():
 					if False in algo:
 						raise Exception ("No existen esas columnas")
 			#Cuando es opcional comprobamos solo los parametros de entrada con los campos
-			elif campo[1] == 'opcional':
-				if campo[0] not in self.parameters.keys():
-					raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
+			#elif campo[1] == 'opcional':
+			#	if campo[0] not in self.parameters.keys():
+			#		raise Exception ("No existe ese campo en los parametros pasados " , campo[0])
 			#Comprueba si los parametros pasados pueden ser null o no. En caso de no poderlo ser lanza una excepción
 			if campo[2] == 'not null':
 				if not self.parameters[campo[0]] or self.parameters[campo[0]] == 'NULL':
 					raise Exception ("No puede ser el parametro " + campo[0] + " null ")
 			#Entre comilla el campo indicado
 			if campo[3] == 'quote':
-				self.parameters[campo[0]] = '"' + self.parameters[campo[0]] + '"' 
+				self.parameters[campo[0]] = '"' + self.parameters[campo[0]] + '"'
 
+
+		al = set(list(self.parameters.keys())) == set(firstColCampos) & set(list(self.parameters.keys()))
+		if not al:
+			raise Exception ("Se enviaron unos parametros que no corresponden con lo que se requiere")
+			
 		if len(self.parameters) > len(campos):
 			raise Exception ("Se enviaron mas parámetros de los que corresponden")
 
@@ -304,6 +311,8 @@ class Dataset():
 			dataset['ruta'] = self.dictionary[nameDataset]
 			#Borramos ese registro ya que de ahi saldran los parametros a pasarle al metodo y estos no suelen tener referencia alguna al dataset
 			del self.dictionary[nameDataset]
+
+			self.dataset = dataset
 			#Traduce la ruta pasada por dc:// por la ruta absoluta leida del fichero config.py del main
 			self.translateDC()
 			#En caso de tener delimitador lo obtenemos tambien y lo separamos de los parametros
