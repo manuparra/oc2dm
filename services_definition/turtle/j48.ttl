@@ -1,0 +1,92 @@
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dmmlcc:J48_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:J48_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:J48_Service_Operation ;
+    dcterms:created "2017-04-20" ;
+    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+    dcterms:description "Generates unpruned or pruned C4.5 decision trees (Quinlan, 1993)." ;
+    dcterms:modified "2017-05-04" ;
+    dcterms:publisher "DICITS_ML" ;
+    dcterms:title "J48" ;
+    rdfs:comments "J48 builds decision trees from a set of training data in the same way as ID3, using the concept of information entropy." .
+
+dmmlcc:J48_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
+    dcterms:description "The service requires authentication, and the type of authentication" .
+
+dmmlcc:J48_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_dataset_01 ;
+    dcterms:description "Input data contains Dataset or Feature/s" ;
+    dcterms:title "InputDataSet" .
+
+dmmlcc:J48_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02,
+        dmmlcc:response_parameter_03 ;
+    dcterms:description "Input Parameters" ;
+    dcterms:title "Input" .
+
+dmmlcc:J48_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:J48_Service_InputParameters ;
+    dcterms:description "Operation performing the service" ;
+    mls:executes mls:LinearRegression_Implementation ;
+    mls:hasInput dmmlcc:J48_Service_Input ;
+    mls:hasOutput dmmlcc:J48_Service_Output .
+
+dmmlcc:LinearRegression_Model a dmmlcc:PMML_Model ;
+    dmmlcc:storagebucket "dicits://models/" ;
+    dcterms:description "PMML model to represent mining models" ;
+    dcterms:title "PMML Model related" .
+
+dmmlcc:LinearRegression_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
+
+dmmlcc:LinearRegression_Service_Output a dmmlcc:MLServiceOutput ;
+    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+    mls:Model dmmlcc:LinearRegression_Model ;
+    mls:ModelEvaluation dmmlcc:LinearRegression_ModelEvaluation .
+
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "j48" ;
+    dmmlcc:package "rweka" ;
+    dcterms:description "J48 Tree in R" .
+
+dmmlcc:ParameterFormat_CVS_00 a dmmlcc:csv ;
+    dcterms:description "CSV Source file format" .
+
+dmmlcc:contains_dataset_01 <file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/@type:> "dmmlcc:contains" ;
+    mls:Data dmmlcc:dataset_01 .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
+    dcterms:description  "A symbolic description of the model to be fit." ;
+    dcterms:title "formula" .
+
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
+    dcterms:description "An optional data frame containing the variables in the model." ;
+    dcterms:title "data" .
+
+dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "na.remove" ;
+    dmmlcc:mandatory "optional" ;
+    dcterms:description "a function which indicates what should happen when the data contain NAs." ;
+    dcterms:title "na__action" .
+
+mls:LinearRegression_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
+    dcterms:description "Implementation of J48 tree" .
+
