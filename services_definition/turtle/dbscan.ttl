@@ -1,0 +1,100 @@
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dmmlcc:DBSCAN_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:DBSCAN_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:DBSCAN_Service_Operation ;
+    dcterms:created "2017-04-20" ;
+    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+    dcterms:description "A fast reimplementation of several density-based algorithms of the DBSCAN family for spatial data. Includes the DBSCAN (density-based spatial clustering of applications with noise) and OPTICS (ordering points to identify the clustering structure) clustering algorithms HDBSCAN (hierarchical DB-SCAN) and the LOF (local outlier factor) algorithm. The implementations uses the kd-tree data structure (from library ANN) for faster k-nearest neighbor search. An R interface to fast kNN and fixed-radius NN search is also provided." ;
+    dcterms:modified "2017-05-04" ;
+    dcterms:publisher "DICITS_ML" ;
+    dcterms:title "DBSCAN" ;
+    rdfs:comments "Density Based Clustering of Applications with Noise (DBSCAN) and Related Algorithms." .
+
+dmmlcc:DBSCAN_Model a dmmlcc:PMML_Model ;
+    dmmlcc:storagebucket "dicits://models/" ;
+    dcterms:description "PMML model to represent mining models" ;
+    dcterms:title "PMML Model related" .
+
+dmmlcc:DBSCAN_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
+
+dmmlcc:DBSCAN_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
+    dcterms:description "The service requires authentication, and the type of authentication" .
+
+dmmlcc:DBSCAN_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_dataset_01 ;
+    dcterms:description "Input data contains Dataset or Feature/s" ;
+    dcterms:title "InputDataSet" .
+
+dmmlcc:DBSCAN_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02,
+        dmmlcc:response_parameter_03,
+        dmmlcc:response_parameter_04 ;
+    dcterms:description "Input Parameters" ;
+    dcterms:title "Input" .
+
+dmmlcc:DBSCAN_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:DBSCAN_Service_InputParameters ;
+    dcterms:description "Operation performing the service" ;
+    mls:executes mls:DBSCAN_Implementation ;
+    mls:hasInput dmmlcc:DBSCAN_Service_Input ;
+    mls:hasOutput dmmlcc:DBSCAN_Service_Output .
+
+dmmlcc:DBSCAN_Service_Output a dmmlcc:MLServiceOutput ;
+    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+    mls:Model dmmlcc:DBSCAN_Model ;
+    mls:ModelEvaluation dmmlcc:DBSCAN_ModelEvaluation .
+
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "dbscan" ;
+    dmmlcc:package "dbscan" ;
+    dcterms:description "DBSCAN in R" .
+
+dmmlcc:ParameterFormat_CVS_00 a dmmlcc:csv ;
+    dcterms:description "CSV Source file format" .
+
+dmmlcc:contains_dataset_01 a dmmlcc:contains ;
+    mls:Data dmmlcc:dataset_01 .
+
+dmmlcc:dataset_01  a mls:DataSet ;
+    dmmlcc:format dmmlcc:ParameterFormat_CVS_00 ;
+    dmmlcc:mandatory "true" ;
+    dmmlcc:storagebucket "dicits://" ;
+    dcterms:description "Dataset on which the service is applied" ;
+    dcterms:title "DataSet" .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
+    dcterms:description "a data matrix or a dist object.   Alternatively,  a frNN object with fixed-radius nearest neighbors can also be specified. In this case eps can be missing and will be taken form the frNN object." ;
+    dcterms:title "x" .
+
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "optional" ;
+    dcterms:description "Size of the epsilon neighborhood." ;
+    dcterms:title "eps" .
+
+dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "5" ;
+    dmmlcc:mandatory "optional" ;
+    dcterms:description "number  of  minimum  points  in  the  eps  region  (for  core  points).   Default  is  5 points." ;
+    dcterms:title "minpts" .
+
+mls:DBSCAN_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
+    dcterms:description "Implementation of DBSCAN" .
+
