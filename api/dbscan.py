@@ -2,7 +2,7 @@ from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
 
 
-def execute(x, minpts, eps):
+def execute(x, minPts, eps):
     print(locals())
     result = wrapperv2.core(locals(), "dbscan")
     result.dbscan()
