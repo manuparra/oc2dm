@@ -47,7 +47,8 @@ class core:
 		hierarchicalClustering(self.parameter)
 
 	def j48(self):
-		j48(self.parameter)
+		#print(self.parameter.parameters)
+		J48(self.parameter)
 
 	def kmeans(self):
 		kmeans(self.parameter)
@@ -69,20 +70,20 @@ class core:
 
 	def superVectorMachine(self):
 		svm(self.parameter)
-
-#parametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman'}
+#corParametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman', 'use': 'everything'}
+#j48Parametros = {'formula': 'species~petal_width', 'data': '/home/ruben/Escritorio/openccml/datasets/iris.csv', 'na__action': 'na.exclude'}
+#kmeansParametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3', 'iter__max': '3'}
+#dbscanParametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'eps':' 8', 'minPts': '30'}
 
 #parametros = {'na__action':'na.omit', 'dataset': 'dc://mtcars', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
 #entrada = {'dataset': 'dc://mtcars', 'na__action':'na.exclude','formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}
-parametros = {'x': 'dc://mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
-#parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3'}
-#parametros = {'formula': 'species~.', 'dataset': '/home/ruben/Escritorio/openccml/datasets/iris.csv'}
-p = core(parametros, "cor")
+#parametros = {'x': 'dc://mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
+#p = core(dbscanParametros, "dbscan")
 
 #dbscan(p)
-#p.lm()
+#p.dbscan()
 #specClustering()
 #hClustering(p)
 #naiveBayes(p)

@@ -150,7 +150,7 @@ class Dataset():
 				self.returnParsedParameters()
 
 			if self.method == "j48":
-				self.splitDatasetParameters('dataset')
+				self.splitDatasetParameters('data')
 				self.checkDatasetExists()
 				self.checkReadPermission()
 				self.checkHeader()
@@ -348,7 +348,8 @@ class Dataset():
 		campos = [
 			('x', 'obligatory', 'not null', 'unquote'),
 			('y', 'obligatory', 'null', 'unquote'),
-			('method', 'obligatory', 'not null', 'quote')
+			('method', 'obligatory', 'not null', 'quote'),
+			('use', 'obligatory', 'not null', 'quote'),
 		]
 		self.generalFunction(campos)
 
@@ -413,7 +414,8 @@ class Dataset():
 	#Definición de campos del J48
 	def j48Function(self):
 		campos = [
-			('formula', 'obligatory', 'not null', 'unquote')
+			('formula', 'obligatory', 'not null', 'unquote'),
+			('na__action', 'obligatory', 'not null', 'unquote')
 		]
 		self.generalFunction(campos)
 
