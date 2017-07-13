@@ -2,11 +2,13 @@ from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
 
 
-def execute(x, y, method):
+def execute(x, y, method, use):
+    print(locals())
     result = wrapperv2.core(locals(), "cor")
     result.cor()
 
-def execute_post(use):
+
+def execute_post(x, y, method, use):
     result = wrapperv2.core(locals(), "cor")
     result.cor()
 
