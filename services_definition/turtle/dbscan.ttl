@@ -69,13 +69,6 @@ dmmlcc:ParameterFormat_CVS_00 a dmmlcc:csv ;
 dmmlcc:contains_dataset_01 a dmmlcc:contains ;
     mls:Data dmmlcc:dataset_01 .
 
-dmmlcc:dataset_01  a mls:DataSet ;
-    dmmlcc:format dmmlcc:ParameterFormat_CVS_00 ;
-    dmmlcc:mandatory "true" ;
-    dmmlcc:storagebucket "dicits://" ;
-    dcterms:description "Dataset on which the service is applied" ;
-    dcterms:title "DataSet" .
-
 dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "" ;
     dmmlcc:mandatory "true" ;
@@ -92,7 +85,7 @@ dmmlcc:response_parameter_03 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "5" ;
     dmmlcc:mandatory "optional" ;
     dcterms:description "number  of  minimum  points  in  the  eps  region  (for  core  points).   Default  is  5 points." ;
-    dcterms:title "minpts" .
+    dcterms:title "minPts" .
 
 mls:DBSCAN_Implementation a mls:Implementation ;
     dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
