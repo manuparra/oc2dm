@@ -70,13 +70,13 @@ class core:
 	def superVectorMachine(self):
 		svm(self.parameter)
 
-parametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman'}
+#parametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman'}
 
-#parametros = {'na__action':'na.omit', 'dataset': 'mtcars.csv', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
+#parametros = {'na__action':'na.omit', 'dataset': 'dc://mtcars', 'formula': 'mpg~disp', 'weights': 'NULL', 'subset': 'NULL'}
 #dataset.cor()
 #entrada = {'na__action':'na.omit', 'dataset': '/home/ruben/Escritorio/openccml/datasets/mtcars.csv', 'formula': 'mpg~disp+cyl/hp', 'weights': 'NULL', 'subset': 'NULL'}
 #entrada = {'dataset': 'dc://mtcars', 'na__action':'na.exclude','formula': 'mpg~disp', 'subset': 'NULL', 'weights': 'NULL'}
-#parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
+parametros = {'x': 'dc://mtcars$mpg', 'y': '/home/ruben/Escritorio/openccml/datasets/mtcars$disp', 'method': 'spearman'}
 #parametros = {'x': '/home/ruben/Escritorio/openccml/datasets/mtcars', 'centers': '3'}
 #parametros = {'formula': 'species~.', 'dataset': '/home/ruben/Escritorio/openccml/datasets/iris.csv'}
 p = core(parametros, "cor")
