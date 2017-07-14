@@ -166,7 +166,7 @@ class Dataset():
 				self.checkHeader()
 
 				self.getParametersDataset('formula')
-				self.j48Function()
+				self.lRegressionFunction()
 				self.returnParsedParameters()
 
 			if self.method == "svm":
@@ -272,23 +272,23 @@ class Dataset():
 		elif self.method == "rf":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "kmeans":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "dbscan":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "optics":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "specClust":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "hclust":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "j48":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "lRegression":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "svm":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "naiveBayes":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML
