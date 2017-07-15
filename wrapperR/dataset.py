@@ -400,7 +400,9 @@ class Dataset():
 	def specClustFunction(self):
 		campos = [
 			('x', 'obligatory', 'not null', 'unquote'),
-			('centers', 'obligatory', 'not null', 'unquote')
+			('centers', 'obligatory', 'not null', 'unquote'),
+			('na__action', 'obligatory', 'not null', 'unquote')
+
 		]
 		self.generalFunction(campos)
 
@@ -429,14 +431,17 @@ class Dataset():
 	#Definición de campos del Super Vector Machine
 	def svmFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null', 'unquote')
+			('formula', 'obligatory', 'not null', 'unquote'),
+			('na__action', 'obligatory', 'not null', 'unquote')
+
 		]
 		self.generalFunction(campos)
 
 	#Definición de campos del naiveBayes
 	def naiveBayesFunction(self):
 		campos = [
-			('formula', 'obligatory', 'not null', 'unquote')
+			('formula', 'obligatory', 'not null', 'unquote'),
+			('na__action', 'obligatory', 'not null', 'unquote')
 		]
 		self.generalFunction(campos)
 
