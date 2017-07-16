@@ -1,0 +1,86 @@
+@prefix mls: <http://www.w3.org/ns/mls#> .
+@prefix dmmlcc: <http://dicits.ugr.es/dmmlcc#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
+@prefix waa: <http://purl.oclc.org/NET/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dmmlcc:HierarchicalClustering_Service a dmmlcc:MLService ;
+    dmmlcc:hasAuthentication dmmlcc:HierarchicalClustering_Service_Auth ;
+    dmmlcc:hasOperation dmmlcc:HierarchicalClustering_Service_Operation ;
+    dcterms:created "2017-04-20" ;
+    dcterms:creator "Manuel Parra, Ruben Castro, J. Antonio Cortes" ;
+    dcterms:description "This function performs a hierarchical cluster analysis using a set of dissimilarities for the n objects being clustered. Initially, each object is assigned to its own cluster and then the algorithm proceeds iteratively, at each stage joining the two most similar clusters, continuing until there is just a single cluster. At each stage distances between clusters are recomputed by the Lance–Williams dissimilarity update formula according to the particular clustering method being used." ;
+    dcterms:modified "2017-05-04" ;
+    dcterms:publisher "DICITS_ML" ;
+    dcterms:title "HierarchicalClustering" ;
+    rdfs:comments "Hierarchical cluster analysis on a set of dissimilarities and methods for analyzing it. " .
+
+dmmlcc:HierarchicalClustering_Service_Auth a dmmlcc:MLServiceAuthentication ;
+    waa:WebAuthenticationrequiresAuthentication "None" ;
+    dcterms:description "The service requires authentication, and the type of authentication" .
+
+dmmlcc:HierarchicalClustering_Service_Input a dmmlcc:MLServiceInput ;
+    dmmlcc:contains dmmlcc:contains_dataset_01 ;
+    dcterms:description "Input data contains Dataset or Feature/s" ;
+    dcterms:title "InputDataSet" .
+
+dmmlcc:HierarchicalClustering_Service_InputParameters a dmmlcc:MLServiceInputParameters ;
+    dmmlcc:Parameters dmmlcc:response_parameter_01,
+        dmmlcc:response_parameter_02,
+        dmmlcc:response_parameter_03 ;
+    dcterms:description "Input Parameters" ;
+    dcterms:title "Input" .
+
+dmmlcc:HierarchicalClustering_Service_Operation a dmmlcc:MLOperation ;
+    dmmlcc:hasInputParameters dmmlcc:HierarchicalClustering_Service_InputParameters ;
+    dcterms:description "Operation performing the service" ;
+    mls:executes mls:HierarchicalClustering_Implementation ;
+    mls:hasInput dmmlcc:HierarchicalClustering_Service_Input ;
+    mls:hasOutput dmmlcc:HierarchicalClustering_Service_Output .
+
+dmmlcc:HierarchicalClustering_Model a dmmlcc:PMML_Model ;
+    dmmlcc:storagebucket "dicits://models/" ;
+    dcterms:description "PMML model to represent mining models" ;
+    dcterms:title "PMML Model related" .
+
+dmmlcc:HierarchicalClustering_ModelEvaluation a dmmlcc:ModelEvaluation ;
+    dmmlcc:storagebucket "dicits://modelevaluation/" ;
+    dcterms:description "Model Evaluation" ;
+    dcterms:title "Model evaluation" .
+
+dmmlcc:HierarchicalClustering_Service_Output a dmmlcc:MLServiceOutput ;
+    dcterms:description "Output of the service contains Model or ModelEvaluation or Data" ;
+    mls:Model dmmlcc:HierarchicalClustering_Model ;
+    mls:ModelEvaluation dmmlcc:HierarchicalClustering_ModelEvaluation .
+
+dmmlcc:MLAlgorithm_01 a mls:Algorithm ;
+    dmmlcc:ImplementationSource "R" ;
+    dmmlcc:functions "kmeans" ;
+    dmmlcc:package "core" ;
+    dcterms:description "K-means Clustering in R" .
+
+dmmlcc:ParameterFormat_CVS_00 a dmmlcc:csv ;
+    dcterms:description "CSV Source file format" .
+
+dmmlcc:contains_dataset_01 <file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/@type:> "dmmlcc:contains" ;
+    mls:Data dmmlcc:dataset_01 .
+
+dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "" ;
+    dmmlcc:mandatory "true" ;
+    dcterms:description "an object of the type produced by hclust." ;
+    dcterms:title "x" .
+
+dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
+    dmmlcc:defaultvalue "NULL" ;
+    dmmlcc:mandatory "optional" ;
+    dcterms:description "the agglomeration method to be used." ;
+    dcterms:title "method" .
+
+mls:HierarchicalClustering_Implementation a mls:Implementation ;
+    dmmlcc:implements dmmlcc:MLAlgorithm_01 ;
+    dcterms:description "Implementation of hierarchical clustering" .
+
