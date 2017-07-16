@@ -1,11 +1,15 @@
-from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
+from wrapperR import wrapperv2
 
 
 def execute(x, y, method, use):
     print(locals())
     result = wrapperv2.core(locals(), "cor")
     result.cor()
+    file = result.parameter.getOutput()
+    print(file)
+    with open(file, 'rb') as pmml:
+        return pmml
 
 
 def execute_post(x, y, method, use):

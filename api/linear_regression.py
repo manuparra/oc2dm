@@ -1,6 +1,9 @@
-from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
+from wrapperR import wrapperv2
+
+
 def execute(subset, weights, na__action, dataset, formula):
+    print(locals())
     result = wrapperv2.core(locals(), "lm")
     result.lm()
     file = result.parameter.getOutput()

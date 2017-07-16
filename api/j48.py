@@ -1,5 +1,5 @@
-from wrapperR import wrapperv2
 from config.config import turtle_folder, jsonld_folder
+from wrapperR import wrapperv2
 
 
 def execute(na__action, data, formula):
