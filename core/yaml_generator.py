@@ -48,6 +48,7 @@ class YamlGenerator:
             description = self.generate_base(file)
             end_point = file[:-4]
             method = {}
+
             method["get"] = {"operationId": "api." + end_point + ".execute", "parameters": parameters, "type": "string",
                              "summary": description, 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
@@ -55,19 +56,24 @@ class YamlGenerator:
                               "type": "string",
                               "summary": description, 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
+            if 'linear_regression' in file:
+                method['get']['produces'] = ['text/xml']
+                method['post']['produces'] = ['text/xml']
             paths["'/" + end_point + "'"] = method
             # -> Download end-point
             method = {}
             method["get"] = {"operationId": "api." + end_point + ".download", 'produces': ['application/binary'],
                              "parameters": [
-                                 {'in': 'query', 'name': 'file_format', 'description': 'asdasd', 'required': 'true',
+                                 {'in': 'query', 'name': 'file_format',
+                                  'description': 'Download the service definition.', 'required': 'true',
                                   'default': 'ttl',
                                   'type': 'string'}], "type": "string",
                              "summary": 'Returns the service definition in the specified format.', 'response': {200: {
                     'description': 'Output of the service contains Model or ModelEvaluation or Data'}}}
             method["post"] = {"operationId": "api." + end_point + ".download_post", 'produces': ['application/binary'],
                               "parameters": [
-                                  {'in': 'query', 'name': 'file_format', 'description': 'asdasd', 'required': 'true',
+                                  {'in': 'query', 'name': 'file_format',
+                                   'description': 'Download the service definition.', 'required': 'true',
                                    'default': 'ttl',
                                    'type': 'string'}],
                               "type": "string",
@@ -86,7 +92,7 @@ class YamlGenerator:
                                                    ('title', 'OPENCCML API'),
                                                    ('version', '0.1'),
                                                    ('consumes', ['application/json']),
-                                                   ('produces', ['text/xml']),
+                                                   ('produces', ['application/binary']),
                                                    ('basePath', "'/openccml'"),
                                                    ('paths', paths)])
 
