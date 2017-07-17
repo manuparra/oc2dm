@@ -88,7 +88,7 @@ class Dataset():
 				self.arimaFunction()
 				self.returnParsedParameters()
 			if self.method == "rf":
-				self.splitDatasetParameters('data')
+				self.splitDatasetParameters('dataset')
 				self.checkDatasetExists()
 				self.checkReadPermission()
 				self.checkHeader()
@@ -270,7 +270,7 @@ class Dataset():
 		elif self.method == "arima":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "rf":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.rds'
 		elif self.method == "kmeans":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "dbscan":
@@ -365,7 +365,25 @@ class Dataset():
 	def rfFunction(self):
 		campos = [
 			('formula', 'obligatory', 'not null', 'unquote'),
-			('na__action', 'optional', 'null', 'unquote')
+			('na__action', 'optional', 'null', 'unquote'),
+			('subset', 'optional', 'null', 'unquote'),
+			('ntree', 'optional', 'null', 'unquote'),
+			('mtry', 'optional', 'null', 'unquote'),
+			('replace', 'optional', 'null', 'unquote'),
+			('classwt', 'optional', 'null', 'unquote'),
+			('cutoff', 'optional', 'null', 'unquote'),
+			('strata', 'optional', 'null', 'unquote'),
+			('sampsize', 'optional', 'null', 'unquote'),
+			('nodesize', 'optional', 'null', 'unquote'),
+			('maxnodes', 'optional', 'null', 'unquote'),
+			('importance', 'optional', 'null', 'unquote'),
+			('localImp', 'optional', 'null', 'unquote'),
+			('nPerm', 'optional', 'null', 'unquote'),
+			('proximity', 'optional', 'null', 'unquote'),
+			('oob__prox', 'optional', 'null', 'unquote'),
+			('norm__votes', 'optional', 'null', 'unquote'),
+			('keep__forest', 'optional', 'null', 'unquote'),
+			('keep_inbag', 'optional', 'null', 'unquote')
 		]
 		self.generalFunction(campos)
 
