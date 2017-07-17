@@ -79,7 +79,7 @@ class core:
 #hClustParametros = {'x': 'dc://mtcars', 'method':'NULL'}
 #lRegressionParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris'}
 #svmParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris', 'na__action':'na.omit'}
-#naiveBayesParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris', 'na__action':'na.pass'}
+#naiveBayesParametros = {'formula': 'species~petal_width', 'na__action':'na.pass', 'dataset': 'dc://iris'}
 
 #p = core(naiveBayesParametros, "naiveBayes")
 #p.naiveBayes()
