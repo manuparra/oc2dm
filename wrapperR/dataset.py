@@ -270,25 +270,25 @@ class Dataset():
 		elif self.method == "arima":
 			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
 		elif self.method == "rf":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "kmeans":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "dbscan":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "optics":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "specClust":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "hclust":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "j48":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "lRegression":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "svm":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 		elif self.method == "naiveBayes":
-			return os.path.splitext(self.dataset['ruta'])[0] + '.pmml'
+			return os.path.splitext(self.dataset['ruta'])[0] + '.Rdata'
 
 	'''
 		Devuelve el nombre del fichero de salida PMML
@@ -409,7 +409,8 @@ class Dataset():
 	#Definición de campos del Hierarchical Clustering
 	def hclustFunction(self):
 		campos = [
-			('x', 'obligatory', 'not null', 'unquote')
+			('x', 'obligatory', 'not null', 'unquote'),
+			('method', 'obligatory', 'null', 'unquote')
 		]
 		self.generalFunction(campos)
 
