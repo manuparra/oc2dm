@@ -70,6 +70,7 @@ class core:
 
 	def superVectorMachine(self):
 		svm(self.parameter)
+#rfParametros = {'formula': 'species~petal_width', 'na__action':'na.pass', 'dataset': 'dc://iris', 'subset':'NULL', 'ntree':'3'}
 #corParametros = {'x': 'dc://mtcars$mpg', 'y': 'dc://mtcars$disp', 'method': 'spearman', 'use': 'everything'}
 #j48Parametros = {'formula': 'species~petal_width', 'data': '/home/ruben/Escritorio/openccml/datasets/iris.csv', 'na__action': 'na.exclude'}
 #kmeansParametros = {'x': 'dc://mtcars', 'centers': '3', 'iter__max': '3000'}
@@ -81,5 +82,5 @@ class core:
 #svmParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris', 'na__action':'na.omit'}
 #naiveBayesParametros = {'formula': 'species~petal_width', 'na__action':'na.pass', 'dataset': 'dc://iris'}
 
-#p = core(naiveBayesParametros, "naiveBayes")
-#p.naiveBayes()
+#p = core(rfParametros, "rf")
+#p.rf()
