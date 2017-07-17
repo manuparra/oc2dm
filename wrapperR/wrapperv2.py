@@ -75,11 +75,11 @@ class core:
 #kmeansParametros = {'x': 'dc://mtcars', 'centers': '3', 'iter__max': '3000'}
 #dbscanParametros = {'x': 'dc://mtcars', 'eps':' 8', 'minPts': '30'}
 #opticsParametros = {'x': 'dc://mtcars', 'eps':' 8', 'minPts': '30'}
-#specClusteringParametros = {'x': 'dc://mtcars', 'centers': '3'}
-#hClustParametros = {'x': 'dc://mtcars'}
+#specClusteringParametros = {'x': 'dc://mtcars', 'centers': '3', 'na__action':'na.omit'}
+#hClustParametros = {'x': 'dc://mtcars', 'method':'NULL'}
 #lRegressionParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris'}
-#svmParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris'}
-#naiveBayesParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris'}
+#svmParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris', 'na__action':'na.omit'}
+#naiveBayesParametros = {'formula': 'species~petal_width', 'dataset': 'dc://iris', 'na__action':'na.pass'}
 
 #p = core(naiveBayesParametros, "naiveBayes")
 #p.naiveBayes()
