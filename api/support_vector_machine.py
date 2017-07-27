@@ -2,7 +2,7 @@ from config.config import turtle_folder, jsonld_folder
 from wrapperR import wrapperv2
 
 
-def execute(x, formula, na__action):
+def execute(dataset, formula, na__action):
     print(locals())
     result = wrapperv2.core(locals(), "svm")
     result.superVectorMachine()
@@ -11,7 +11,7 @@ def execute(x, formula, na__action):
         return pmml.read()
 
 
-def execute_post(x, formula, na__action):
+def execute_post(dataset, formula, na__action):
     print(locals())
     result = wrapperv2.core(locals(), "svm")
     result.superVectorMachine()

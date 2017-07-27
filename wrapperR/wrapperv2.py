@@ -15,19 +15,19 @@
 
 """RWrapper"""
 
-from dataset import *
-from functions.cor import *
-from functions.dbscan import *
-from functions.hierarchicalClustering import *
-from functions.J48 import *
-from functions.kmeans import *
-from functions.lm import *
-from functions.logisticRegression import *
-from functions.naiveBayes import *
-from functions.optics import *
-from functions.rf import *
-from functions.specClustering import *
-from functions.superVectorMachine import *
+from wrapperR.dataset import *
+from wrapperR.functions.cor import *
+from wrapperR.functions.dbscan import *
+from wrapperR.functions.hierarchicalClustering import *
+from wrapperR.functions.J48 import *
+from wrapperR.functions.kmeans import *
+from wrapperR.functions.lm import *
+from wrapperR.functions.logisticRegression import *
+from wrapperR.functions.naiveBayes import *
+from wrapperR.functions.optics import *
+from wrapperR.functions.rf import *
+from wrapperR.functions.specClustering import *
+from wrapperR.functions.superVectorMachine import *
 
 class core:
 

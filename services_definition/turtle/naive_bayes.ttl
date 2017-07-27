@@ -73,7 +73,7 @@ dmmlcc:response_parameter_01 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "" ;
     dmmlcc:mandatory "true" ;
     dcterms:description "A numeric matrix, or a data frame of categorical and/or numeric variables." ;
-    dcterms:title "x" .
+    dcterms:title "dataset" .
 
 dmmlcc:response_parameter_02 a dmmlcc:MLServiceInputParameter ;
     dmmlcc:defaultvalue "" ;

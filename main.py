@@ -14,5 +14,5 @@ yml = YamlGenerator(turtle_folder, catalog_folder)
 
 # Start OpenCCML Service
 f = FALSY(static_dir='/core/static')
-f.swagger('catalog/catalog.yml', ui=True, theme='impress',api_url=api_servername)
+f.swagger('catalog/catalog.yml', ui=True, theme='impress')
 api = f.api
