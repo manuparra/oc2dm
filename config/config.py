@@ -8,7 +8,7 @@ from os import path
 api_servername="http://docker.ugr.es:8203"
 
 # Project Base Folder. Application code home
-project_base_folder = path.join('/home', 'jacortes', 'PycharmProjects', 'openccml')
+project_base_folder = path.join('/home', 'tfg_user', 'openccml')
 
 # Folder with the Services Definition in Turtle format
 turtle_folder = path.join(project_base_folder, 'services_definition', 'turtle')
@@ -33,3 +33,6 @@ dc_storage = path.join(project_base_folder, 'datasets')
 
 # R functions
 functions_folder = path.join(wrapperR_folder, 'Functions')
+
+# Job controller folder
+job_controller_folder = path.join(project_base_folder, 'job_controller')

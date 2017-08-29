@@ -1,15 +1,14 @@
 from config.config import turtle_folder, jsonld_folder
 from wrapperR import wrapperv2
-
+from job_controller.job_controller import start_job
 
 def execute(subset, weights, na__action, dataset, formula):
-    print(locals())
+    start_job("linear_regression", dataset)
     result = wrapperv2.core(locals(), "lm")
     result.lm()
     file = result.parameter.getOutput()
     with open(file) as pmml:
         return pmml.read()
-
 
 def execute_post(subset, weights, na__action, dataset, formula):
     result = wrapperv2.core(locals(), "lm")
