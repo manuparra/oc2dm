@@ -43,5 +43,7 @@ def error_job(job_id):
 
 def node_job(job_id):
     i_id = instance_id(get_ip())
-    payload = {'job_id': job_id, 'instance_id': i_id}
+    print(i_id, job_id)
+    payload = {'job_id': job_id, 'instance_id': i_id['instance_id']}
     response = requests.post("http://10.10.0.7:5000/v1/nodes/jobs/insert_nodejobs", headers = headers, data = json.dumps(payload))
+    print(str(response.content))

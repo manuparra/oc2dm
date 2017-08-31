@@ -6,26 +6,28 @@ def execute(subset, weights, na__action, dataset, formula):
     data = locals()
     job_id = start_job("linear_regression", dataset)
     node_job(job_id)
-    result = wrapperv2.core(data, "lm")
-    result.lm()
+    try:
+     result = wrapperv2.core(data, "lm")
+     result.lm()
+    except Exception as e:
+        error_job(job_id)
+        return {'Error: ': e}
     finish_job(job_id)
     file = result.parameter.getOutput()
     with open(file) as pmml:
         return pmml.read()
-    """
-    try:
-        result = wrapperv2.core(locals(), "lm")
-        result.lm()
-    except:
-        error_job(job_id)
-        return 'Error'
-    file = result.parameter.getOutput()
-    with open(file) as pmml:
-        return pmml.read()
-    """
+
 def execute_post(subset, weights, na__action, dataset, formula):
-    result = wrapperv2.core(locals(), "lm")
-    result.lm()
+    data = locals()
+    job_id = start_job("linear_regression", dataset)
+    node_job(job_id)
+    try:
+     result = wrapperv2.core(data, "lm")
+     result.lm()
+    except Exception as e:
+        error_job(job_id)
+        return {'Error: ': e}
+    finish_job(job_id)
     file = result.parameter.getOutput()
     with open(file) as pmml:
         return pmml.read()
